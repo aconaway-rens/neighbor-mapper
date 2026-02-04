@@ -54,7 +54,7 @@ class DiscoveryError(Exception):
 
 
 
-def connect_device(host, username, password, device_type="cisco_ios"):
+def connect_device(host, device_type, username, password):
     return ConnectHandler(
         device_type=device_type,
         host=host,
@@ -63,7 +63,7 @@ def connect_device(host, username, password, device_type="cisco_ios"):
         fast_cli=True,
     )
 
-def try_connect(host, username, password, device_type="cisco_ios"): 
+def try_connect(host, device_type, username, password): 
     try: 
         return ConnectHandler( device_type=device_type, host=host, username=username, password=password, fast_cli=True, ) 
     except NetmikoTimeoutException: 
@@ -101,7 +101,7 @@ def parse_lldp_neighbors_detail(output: str):
     # Similar idea; vendor-specific parsing needed
     return []
 
-def discover_topology(seed_host, username, password, max_depth=5):
+def discover_topology(seed_host, device_type, username, password, max_depth=5):
     topo = Topology()
     visited = set()
     queue = deque([(seed_host, 0)])
@@ -113,7 +113,7 @@ def discover_topology(seed_host, username, password, max_depth=5):
         visited.add(host)
 
         try: 
-            conn = try_connect(seed_host, username, password) 
+            conn = try_connect(seed_host, device_type, username, password) 
         except DiscoveryError as e: 
             return DiscoveryResult(topo=None, error=e.message)
 
@@ -164,8 +164,8 @@ def build_adjacency(topo: Topology):
     return adj
 
 def render_text_topology(topo: Topology, root: str | None = None) -> str:
-    if host not in topo.devices:
-        topo.devices[host] = Device(hostname=host, mgmt_ip=host)
+    # if hostname not in topo.devices:
+    #     topo.devices[host] = Device(hostname=host, mgmt_ip=host)
     adj = build_adjacency(topo)
     if not adj:
          return "Discovery succeeded, but no neighbors were found."
@@ -204,6 +204,9 @@ TEMPLATE = """
 <h1>Layer 2 Neighbor Map</h1>
 <form method="post">
   <label>Seed IP/Hostname: <input name="seed" required></label><br>
+  <label>Device Type: <select name="device_type" required>
+    <option value="cisco_xe">Cisco IOS-XE</option>
+    <option value="cisco_ios">Cisco IOS</option></select></label><br>
   <label>Username: <input name="username" required></label><br>
   <label>Password: <input name="password" type="password" required></label><br>
   <button type="submit">Discover</button>
@@ -227,8 +230,9 @@ def index():
         seed = request.form["seed"]
         username = request.form["username"]
         password = request.form["password"]
+        device_type = request.form['device_type']
 
-        result = discover_topology(seed, username, password)
+        result = discover_topology(seed, device_type, username, password)
 
         if result.error:
             error_msg = result.error

@@ -12,3 +12,2439 @@
 2026-02-04 21:20:35,573 [DEBUG] Started the / route
 2026-02-04 21:20:45,587 [DEBUG] Timed out connecting to 3.2.1.5.
 2026-02-04 21:20:45,596 [INFO] 192.168.65.1 - - [04/Feb/2026 21:20:45] "POST / HTTP/1.1" 200 -
+2026-02-04 21:53:41,501 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.17.0.2:8000
+2026-02-04 21:53:41,502 [INFO] [33mPress CTRL+C to quit[0m
+2026-02-04 21:53:57,796 [DEBUG] Started the / route
+2026-02-04 21:53:57,800 [INFO] 172.17.0.1 - - [04/Feb/2026 21:53:57] "GET / HTTP/1.1" 200 -
+2026-02-04 21:53:57,876 [INFO] 172.17.0.1 - - [04/Feb/2026 21:53:57] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-04 21:54:31,135 [DEBUG] Started the / route
+2026-02-04 21:54:41,146 [DEBUG] Timed out connecting to 5.5.5.5.
+2026-02-04 21:54:41,149 [INFO] 172.17.0.1 - - [04/Feb/2026 21:54:41] "POST / HTTP/1.1" 200 -
+2026-02-04 21:58:41,940 [DEBUG] Started the / route
+2026-02-04 21:58:41,996 [DEBUG] starting thread (client mode): 0x1d1fa480
+2026-02-04 21:58:41,997 [DEBUG] Local version/idstring: SSH-2.0-paramiko_4.0.0
+2026-02-04 21:58:42,046 [DEBUG] Remote version/idstring: SSH-2.0-Cisco-1.25
+2026-02-04 21:58:42,047 [INFO] Connected (version 2.0, client Cisco-1.25)
+2026-02-04 21:58:42,048 [DEBUG] === Key exchange possibilities ===
+2026-02-04 21:58:42,048 [DEBUG] kex algos: curve25519-sha256, curve25519-sha256@libssh.org, ecdh-sha2-nistp256, ecdh-sha2-nistp384, ecdh-sha2-nistp521, diffie-hellman-group14-sha256, diffie-hellman-group16-sha512
+2026-02-04 21:58:42,048 [DEBUG] server key: rsa-sha2-512, rsa-sha2-256, ssh-rsa
+2026-02-04 21:58:42,048 [DEBUG] client encrypt: chacha20-poly1305@openssh.com, aes128-gcm@openssh.com, aes256-gcm@openssh.com, aes128-gcm, aes256-gcm, aes128-ctr, aes192-ctr, aes256-ctr
+2026-02-04 21:58:42,049 [DEBUG] server encrypt: chacha20-poly1305@openssh.com, aes128-gcm@openssh.com, aes256-gcm@openssh.com, aes128-gcm, aes256-gcm, aes128-ctr, aes192-ctr, aes256-ctr
+2026-02-04 21:58:42,049 [DEBUG] client mac: hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com
+2026-02-04 21:58:42,049 [DEBUG] server mac: hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com
+2026-02-04 21:58:42,049 [DEBUG] client compress: none
+2026-02-04 21:58:42,050 [DEBUG] server compress: none
+2026-02-04 21:58:42,050 [DEBUG] client lang: <none>
+2026-02-04 21:58:42,050 [DEBUG] server lang: <none>
+2026-02-04 21:58:42,050 [DEBUG] kex follows: False
+2026-02-04 21:58:42,051 [DEBUG] === Key exchange agreements ===
+2026-02-04 21:58:42,051 [DEBUG] Kex: curve25519-sha256@libssh.org
+2026-02-04 21:58:42,051 [DEBUG] HostKey: rsa-sha2-512
+2026-02-04 21:58:42,051 [DEBUG] Cipher: aes128-ctr
+2026-02-04 21:58:42,052 [DEBUG] MAC: hmac-sha2-256-etm@openssh.com
+2026-02-04 21:58:42,052 [DEBUG] Compression: none
+2026-02-04 21:58:42,052 [DEBUG] === End of kex handshake ===
+2026-02-04 21:58:42,136 [DEBUG] kex engine KexCurve25519 specified hash_algo <built-in function openssl_sha256>
+2026-02-04 21:58:42,138 [DEBUG] Switch to new keys ...
+2026-02-04 21:58:42,138 [DEBUG] Adding ssh-rsa host key for 10.255.6.4: b'e076065d42d91f631f1dc2131eaed6cf'
+2026-02-04 21:58:42,139 [DEBUG] Got EXT_INFO: {'server-sig-algs': b'ssh-rsa,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,ssh-ed25519,x509v3-ecdsa-sha2-nistp256,x509v3-ecdsa-sha2-nistp384,x509v3-ecdsa-sha2-nistp521,rsa-sha2-256,rsa-sha2-512,x509v3-rsa2048-sha256'}
+2026-02-04 21:58:42,191 [DEBUG] userauth is OK
+2026-02-04 21:58:42,278 [INFO] Authentication (password) successful!
+2026-02-04 21:58:42,278 [DEBUG] [chan 0] Max packet in: 32768 bytes
+2026-02-04 21:58:42,331 [DEBUG] [chan 0] Max packet out: 65536 bytes
+2026-02-04 21:58:42,331 [DEBUG] Secsh channel 0 opened.
+2026-02-04 21:58:42,384 [DEBUG] [chan 0] Sesch channel 0 request ok
+2026-02-04 21:58:42,438 [DEBUG] [chan 0] Sesch channel 0 request ok
+2026-02-04 21:58:42,439 [DEBUG] write_channel: b'\n'
+2026-02-04 21:58:42,540 [DEBUG] write_channel: b'terminal width 511\n'
+2026-02-04 21:58:42,541 [DEBUG] read_channel: allegan-1a#
+allegan-1a#
+2026-02-04 21:58:42,552 [DEBUG] read_channel: 
+2026-02-04 21:58:42,562 [DEBUG] read_channel: 
+2026-02-04 21:58:42,573 [DEBUG] read_channel: 
+2026-02-04 21:58:42,584 [DEBUG] read_channel: 
+2026-02-04 21:58:42,595 [DEBUG] read_channel: 
+2026-02-04 21:58:42,605 [DEBUG] read_channel: terminal widt
+2026-02-04 21:58:42,616 [DEBUG] read_channel: h 511
+allegan-1a#
+2026-02-04 21:58:42,616 [DEBUG] Pattern found: (terminal width 511) allegan-1a#
+allegan-1a#terminal width 511
+2026-02-04 21:58:42,617 [DEBUG] In disable_paging
+2026-02-04 21:58:42,617 [DEBUG] Command: terminal length 0
+
+2026-02-04 21:58:42,617 [DEBUG] write_channel: b'terminal length 0\n'
+2026-02-04 21:58:42,618 [DEBUG] read_channel: 
+2026-02-04 21:58:42,628 [DEBUG] read_channel: 
+2026-02-04 21:58:42,639 [DEBUG] read_channel: 
+2026-02-04 21:58:42,650 [DEBUG] read_channel: 
+2026-02-04 21:58:42,660 [DEBUG] read_channel: 
+2026-02-04 21:58:42,671 [DEBUG] read_channel: 
+2026-02-04 21:58:42,681 [DEBUG] read_channel: terminal len
+2026-02-04 21:58:42,692 [DEBUG] read_channel: gth 0
+allegan-1a#
+2026-02-04 21:58:42,693 [DEBUG] Pattern found: (terminal\ length\ 0) 
+allegan-1a#terminal length 0
+2026-02-04 21:58:42,693 [DEBUG] 
+allegan-1a#terminal length 0
+2026-02-04 21:58:42,693 [DEBUG] Exiting disable_paging
+2026-02-04 21:58:42,704 [DEBUG] read_channel: 
+2026-02-04 21:58:42,705 [DEBUG] Clear buffer detects data in the channel
+2026-02-04 21:58:42,726 [DEBUG] read_channel: 
+2026-02-04 21:58:42,727 [DEBUG] write_channel: b'\n'
+2026-02-04 21:58:42,728 [DEBUG] read_channel: 
+2026-02-04 21:58:42,739 [DEBUG] read_channel: 
+2026-02-04 21:58:42,750 [DEBUG] read_channel: 
+2026-02-04 21:58:42,760 [DEBUG] read_channel: 
+2026-02-04 21:58:42,771 [DEBUG] read_channel: 
+2026-02-04 21:58:42,782 [DEBUG] read_channel: 
+2026-02-04 21:58:42,792 [DEBUG] read_channel: 
+allegan-1a#
+2026-02-04 21:58:42,793 [DEBUG] Pattern found: ((?:\#|>)) 
+allegan-1a#
+2026-02-04 21:58:42,804 [DEBUG] read_channel: 
+2026-02-04 21:58:42,804 [DEBUG] [find_prompt()]: prompt is allegan-1a#
+2026-02-04 21:58:42,815 [DEBUG] read_channel: 
+2026-02-04 21:58:42,816 [DEBUG] write_channel: b'\n'
+2026-02-04 21:58:42,842 [DEBUG] read_channel: 
+2026-02-04 21:58:42,842 [DEBUG] write_channel: b'\n'
+2026-02-04 21:58:42,868 [DEBUG] read_channel: 
+2026-02-04 21:58:42,869 [DEBUG] write_channel: b'\n'
+2026-02-04 21:58:42,920 [DEBUG] read_channel: 
+allegan-1a#
+allegan-1a#
+2026-02-04 21:58:42,931 [DEBUG] read_channel: 
+allegan-1a#
+2026-02-04 21:58:42,931 [DEBUG] Clear buffer detects data in the channel
+2026-02-04 21:58:42,952 [DEBUG] read_channel: 
+2026-02-04 21:58:42,953 [DEBUG] [find_prompt()]: prompt is allegan-1a#
+2026-02-04 21:58:42,963 [DEBUG] read_channel: 
+2026-02-04 21:58:42,964 [DEBUG] write_channel: b'\n'
+2026-02-04 21:58:42,990 [DEBUG] read_channel: 
+2026-02-04 21:58:42,991 [DEBUG] write_channel: b'\n'
+2026-02-04 21:58:43,016 [DEBUG] read_channel: 
+2026-02-04 21:58:43,017 [DEBUG] write_channel: b'\n'
+2026-02-04 21:58:43,067 [DEBUG] read_channel: 
+allegan-1a#
+allegan-1a#
+2026-02-04 21:58:43,078 [DEBUG] read_channel: 
+allegan-1a#
+2026-02-04 21:58:43,079 [DEBUG] Clear buffer detects data in the channel
+2026-02-04 21:58:43,099 [DEBUG] read_channel: 
+2026-02-04 21:58:43,100 [DEBUG] [find_prompt()]: prompt is allegan-1a#
+2026-02-04 21:58:43,101 [DEBUG] write_channel: b'show cdp neighbors detail\n'
+2026-02-04 21:58:43,101 [DEBUG] read_channel: 
+2026-02-04 21:58:43,112 [DEBUG] read_channel: 
+2026-02-04 21:58:43,123 [DEBUG] read_channel: 
+2026-02-04 21:58:43,134 [DEBUG] read_channel: 
+2026-02-04 21:58:43,144 [DEBUG] read_channel: 
+2026-02-04 21:58:43,155 [DEBUG] read_channel: 
+2026-02-04 21:58:43,166 [DEBUG] read_channel: show cdp n
+2026-02-04 21:58:43,176 [DEBUG] read_channel: eighbors d
+2026-02-04 21:58:43,187 [DEBUG] read_channel: 
+2026-02-04 21:58:43,197 [DEBUG] read_channel: 
+2026-02-04 21:58:43,208 [DEBUG] read_channel: 
+2026-02-04 21:58:43,219 [DEBUG] read_channel: etail
+
+2026-02-04 21:58:43,220 [DEBUG] Pattern found: (show\ cdp\ neighbors\ detail) show cdp neighbors detail
+2026-02-04 21:58:43,245 [DEBUG] read_channel: 
+2026-02-04 21:58:43,271 [DEBUG] read_channel: -------------------------
+Device ID: bahuccxsub
+Entry address(es): 
+  IP address: 10.3.253.11
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/2,  Port ID (outgoing port): eth0
+Holdtime : 157 sec
+
+Version :
+Linux 4.18.0-513.11.1.el8_9.x86_64 #1 SMP Wed Jan 17 02:00:40 EST 2024 CCM:15.0.1.10000-27.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.d754
+Duplex: full
+
+-------------------------
+Device ID: bahtftpmed
+Entry address(es): 
+  IP address: 10.3.253.10
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/1,  Port ID (outgoing port): eth0
+Holdtime : 133 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13901-2.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.0b02
+Duplex: full
+
+-------------------------
+Device ID: bahpcd
+Entry address(es): 
+  IP address: 10.3.253.13
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/4,  Port ID (outgoing port): eth0
+Holdtime : 155 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13900-46.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.6115
+Duplex: full
+
+-------------------------
+Device ID: bahcmsub1
+Entry address(es): 
+  IP address: 10.3.253.6
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/3,  Port ID (outgoing port): eth0
+Holdtime : 148 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13901-2.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.121c
+Duplex: full
+
+-------------------------
+Device ID: bahcmsub2
+Entry address(es): 
+  IP address: 10.3.253.7
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/4,  Port ID (outgoing port): eth0
+Holdtime : 144 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13901-2.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.6560
+Duplex: full
+
+-------------------------
+Device ID: trh-1.switch
+Entry address(es): 
+  IP address: 172.18.164.5
+Platform: cisco C9300-24P,  Capabilities: Router Switch IGMP 
+Interface: TwentyFiveGigE1/1/1,  Port ID (outgoing port): TwentyFiveGigE3/1/2
+Holdtime : 125 sec
+
+Version :
+Cisco IOS Software [Dublin], Catalyst L3 Switch Software (CAT9K_IOSXE), Version 17.12.4, RELEASE SOFTWARE (fc3)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2024 by Cisco Systems, Inc.
+Compiled Tue 23-Jul-24 09:40 by mcpre
+
+advertisement version: 2
+Peer Source MAC: f87a.41a9.e5d6
+VTP Management Domain: 'TRH-1'
+Duplex: full
+Management address(es): 
+  IP address: 172.18.164.5
+
+-------------------------
+Device ID: AGHVG03.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.23
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/9,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 165 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: e8b7.487b.043d
+Duplex: full
+
+-------------------------
+Device ID: AGHVG02.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.22
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/8,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 152 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: 6400.f137.33e1
+Duplex: full
+
+-------------------------
+Device ID: AGHVG01.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.21
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/7,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 161 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: e8b7.487b.046a
+Duplex: full
+
+-------------------------
+Device ID: AGHCUBE.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.27
+Platform: Cisco CISCO2921/K9,  Capabilities: Router Source-Route-Bridge Switch 
+Interface: FiveGigabitEthernet1/0/5,  Port ID (outgoing port): GigabitEthernet0/0
+Holdtime : 164 sec
+
+Version :
+Cisco IOS Software, C2900 Software (C2900-UNIVERSALK9-M), Version 15.7(3)M8, RELEASE SOFTWARE (fc1)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2021 by Cisco Systems, Inc.
+Compiled Tue 02-Mar-21 07:51 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: d867.d99c.2d70
+VTP Management Domain: ''
+Duplex: full
+Management address(es): 
+  IP address: 10.3.253.27
+
+-------------------------
+Device ID: AGHVG06.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.26
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/12,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 140 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: 2894.0f50.31d6
+Duplex: full
+
+-------------------------
+Device ID: AGHVG05.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.25
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/11,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 175 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: e8b7.487b.00c3
+Duplex: full
+
+-------------------------
+Device ID: AGHVG04.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.24
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/10,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 164 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: e8b7.487b.00be
+Duplex: full
+
+-------------------------
+Device ID: AGH-CORE
+Entry address(es): 
+  IP address: 172.17.1.254
+Platform: cisco WS-C3850-24XS,  Capabilities: Router Switch IGMP 
+Interface: TwentyFiveGigE1/1/2,  Port ID (outgoing port): TenGigabitEthernet4/1/1
+Holdtime : 144 sec
+
+Version :
+Cisco IOS Software [Everest], Catalyst L3 Switch Software (CAT3K_CAA-UNIVERSALK9-M), Version 16.6.4, RELEASE SOFTWARE (fc3)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2018 by Cisco Systems, Inc.
+Compiled Sun 08-Jul-18 02:57 by mcpre
+
+advertisement version: 2
+Peer Source MAC: 6cdd.30f2.4919
+VTP Management Domain: 'AGH'
+Native VLAN: 1
+Duplex: full
+Management address(es): 
+  IP address: 172.17.1.254
+
+-------------------------
+Device ID: AGH-CORE
+Entry address(es): 
+  IP address: 172.17.1.254
+Platform: cisco WS-C3850-24XS,  Capabilities: Router Switch IGMP 
+Interface: TwentyFiveGigE1/1/4,  Port ID (outgoing port): TenGigabitEthernet3/1/1
+Holdtime : 148 sec
+
+Version :
+Cisco IOS Software [Everest], Catalyst L3 Switch Software (CAT3K_CAA-UNIVERSALK9-M), Version 16.6.4, RELEASE SOFTWARE (fc3)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2018 by Cisco Systems, Inc.
+Compiled Sun 08-Jul-18 02:57 by mcpre
+
+advertisement version: 2
+Peer Source MAC: 6cdd.30f0.8c19
+VTP Management Domain: 'AGH'
+Native VLAN: 1
+Duplex: full
+Management address(es): 
+  IP address: 172.17.1.254
+
+-------------------------
+Device ID: bahcucsub
+Entry address(es): 
+  IP address: 10.3.253.8
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/1,  Port ID (outgoing port): eth0
+Holdtime : 144 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13900-61.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.394d
+Duplex: full
+
+-------------------------
+Device ID: bahcersub
+Entry address(es): 
+  IP address: 10.3.253.9
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/2,  Port ID (outgoing port): eth0
+Holdtime : 175 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13900-49.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.11de
+Duplex: full
+
+
+Total cdp entries displayed : 17
+allegan-1a#
+2026-02-04 21:58:43,282 [DEBUG] read_channel: 
+2026-02-04 21:58:43,283 [DEBUG] write_channel: b'\n'
+2026-02-04 21:58:43,308 [DEBUG] read_channel: 
+2026-02-04 21:58:43,309 [DEBUG] write_channel: b'\n'
+2026-02-04 21:58:43,336 [DEBUG] read_channel: 
+2026-02-04 21:58:43,337 [DEBUG] write_channel: b'\n'
+2026-02-04 21:58:43,387 [DEBUG] read_channel: 
+allegan-1a#
+allegan-1a#
+2026-02-04 21:58:43,398 [DEBUG] read_channel: 
+allegan-1a#
+2026-02-04 21:58:43,398 [DEBUG] Clear buffer detects data in the channel
+2026-02-04 21:58:43,419 [DEBUG] read_channel: 
+2026-02-04 21:58:43,420 [DEBUG] [find_prompt()]: prompt is allegan-1a#
+2026-02-04 21:58:43,422 [DEBUG] write_channel: b'show lldp neighbors detail\n'
+2026-02-04 21:58:43,422 [DEBUG] read_channel: 
+2026-02-04 21:58:43,433 [DEBUG] read_channel: 
+2026-02-04 21:58:43,443 [DEBUG] read_channel: 
+2026-02-04 21:58:43,454 [DEBUG] read_channel: 
+2026-02-04 21:58:43,464 [DEBUG] read_channel: 
+2026-02-04 21:58:43,475 [DEBUG] read_channel: sh
+2026-02-04 21:58:43,486 [DEBUG] read_channel: ow lldp ne
+2026-02-04 21:58:43,497 [DEBUG] read_channel: ighbors 
+2026-02-04 21:58:43,507 [DEBUG] read_channel: 
+2026-02-04 21:58:43,518 [DEBUG] read_channel: 
+2026-02-04 21:58:43,528 [DEBUG] read_channel: de
+2026-02-04 21:58:43,539 [DEBUG] read_channel: tail
+
+2026-02-04 21:58:43,540 [DEBUG] Pattern found: (show\ lldp\ neighbors\ detail) show lldp neighbors detail
+2026-02-04 21:58:43,566 [DEBUG] read_channel: ------------------------------------------------
+Local Intf: Twe1/1/1
+Local Intf service instance: -
+Chassis id: 50c7.09a0.6d1e
+Port id: 543
+Port Description: Access Handoff BeaconHealth.EV-ETHS-ON-149308.Inet VLAN 149 Copper
+System Name: ADV_RAD_SERVICES_EVM-ETHS-OF-12679.E0
+
+System Description: 
+Juniper Networks, Inc. ex3400-24t Ethernet Switch, kernel JUNOS 15.1X53-D592.1, Build date: 2019-10-24 19:15:40 UTC Copyright (c) 1996-2019 Juniper Networks, Inc.
+
+Time remaining: 101 seconds
+System Capabilities: B,R
+Enabled Capabilities: B,R
+Management Addresses - not advertised
+Auto Negotiation - not supported
+Physical media capabilities:
+    Other/unknown
+Media Attachment Unit type - not advertised
+Vlan ID: 149
+Peer Source MAC: 50c7.09a0.6d3d
+
+MED Information:
+
+    MED Codes:
+          (NP) Network Policy, (LI) Location Identification
+          (PS) Power Source Entity, (PD) Power Device
+          (IN) Inventory
+
+    Inventory information - not advertised
+    Capabilities: NP, LI, PS
+    Device type: Network connectivity
+    Network Policies - not advertised
+    Power requirements - not advertised
+    Location - not advertised
+
+------------------------------------------------
+Local Intf: Fi1/0/4
+Local Intf service instance: -
+Chassis id: 303e.a724.ef4b
+Port id: 303e.a724.ef4b
+Port Description - not advertised
+System Name - not advertised
+System Description - not advertised
+
+Time remaining: 120 seconds
+System Capabilities - not advertised
+Enabled Capabilities - not advertised
+Management Addresses - not advertised
+Auto Negotiation - not supported
+Physical media capabilities - not advertised
+Media Attachment Unit type - not advertised
+Vlan ID: - not advertised
+Peer Source MAC: 303e.a724.ef4b
+
+------------------------------------------------
+Local Intf: Fi1/0/2
+Local Intf service instance: -
+Chassis id: 303e.a724.f577
+Port id: 303e.a724.f577
+Port Description - not advertised
+System Name - not advertised
+System Description - not advertised
+
+Time remaining: 112 seconds
+System Capabilities - not advertised
+Enabled Capabilities - not advertised
+Management Addresses - not advertised
+Auto Negotiation - not supported
+Physical media capabilities - not advertised
+Media Attachment Unit type - not advertised
+Vlan ID: - not advertised
+Peer Source MAC: 303e.a724.f577
+
+------------------------------------------------
+Local Intf: Fi1/0/3
+Local Intf service instance: -
+Chassis id: 303e.a724.f407
+Port id: 303e.a724.f407
+Port Description - not advertised
+System Name - not advertised
+System Description - not advertised
+
+Time remaining: 104 seconds
+System Capabilities - not advertised
+Enabled Capabilities - not advertised
+Management Addresses - not advertised
+Auto Negotiation - not supported
+Physical media capabilities - not advertised
+Media Attachment Unit type - not advertised
+Vlan ID: - not advertised
+Peer Source MAC: 303e.a724.f407
+
+------------------------------------------------
+Local Intf: Fi1/0/1
+Local Intf service instance: -
+Chassis id: 303e.a724.f227
+Port id: 303e.a724.f227
+Port Description - not advertised
+System Name - not advertised
+System Description - not advertised
+
+Time remaining: 96 seconds
+System Capabilities - not advertised
+Enabled Capabilities - not advertised
+Management Addresses - not advertised
+Auto Negotiation - not supported
+Physical media capabilities - not advertised
+Media Attachment Unit type - not advertised
+Vlan ID: - not advertised
+Peer Source MAC: 303e.a724.f227
+
+
+Total entries displayed: 5
+
+allegan-1a#
+2026-02-04 21:58:43,568 [DEBUG] write_channel: b'\n'
+2026-02-04 21:58:43,568 [DEBUG] read_channel: 
+2026-02-04 21:58:43,579 [DEBUG] read_channel: 
+2026-02-04 21:58:43,589 [DEBUG] read_channel: 
+2026-02-04 21:58:43,600 [DEBUG] read_channel: 
+2026-02-04 21:58:43,610 [DEBUG] read_channel: 
+2026-02-04 21:58:43,621 [DEBUG] read_channel: 
+2026-02-04 21:58:43,632 [DEBUG] read_channel: 
+allegan-1a#
+2026-02-04 21:58:43,632 [DEBUG] Pattern found: ([>#]) 
+allegan-1a#
+2026-02-04 21:58:43,633 [DEBUG] write_channel: b'exit\n'
+2026-02-04 21:58:43,633 [ERROR] Exception on / [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/app.py", line 236, in index
+    topo_text = render_text_topology(result.topo)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/app.py", line 167, in render_text_topology
+    if host not in topo.devices:
+       ^^^^
+NameError: name 'host' is not defined
+2026-02-04 21:58:43,637 [INFO] 172.17.0.1 - - [04/Feb/2026 21:58:43] "[35m[1mPOST / HTTP/1.1[0m" 500 -
+2026-02-04 21:58:43,690 [DEBUG] EOF in transport thread
+2026-02-04 22:00:44,957 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.17.0.2:8000
+2026-02-04 22:00:44,958 [INFO] [33mPress CTRL+C to quit[0m
+2026-02-04 22:00:50,968 [DEBUG] Started the / route
+2026-02-04 22:00:50,971 [INFO] 172.17.0.1 - - [04/Feb/2026 22:00:50] "GET / HTTP/1.1" 200 -
+2026-02-04 22:01:03,105 [DEBUG] Started the / route
+2026-02-04 22:01:03,160 [DEBUG] starting thread (client mode): 0xde0d1ca0
+2026-02-04 22:01:03,160 [DEBUG] Local version/idstring: SSH-2.0-paramiko_4.0.0
+2026-02-04 22:01:03,211 [DEBUG] Remote version/idstring: SSH-2.0-Cisco-1.25
+2026-02-04 22:01:03,211 [INFO] Connected (version 2.0, client Cisco-1.25)
+2026-02-04 22:01:03,224 [DEBUG] === Key exchange possibilities ===
+2026-02-04 22:01:03,225 [DEBUG] kex algos: curve25519-sha256, curve25519-sha256@libssh.org, ecdh-sha2-nistp256, ecdh-sha2-nistp384, ecdh-sha2-nistp521, diffie-hellman-group14-sha256, diffie-hellman-group16-sha512
+2026-02-04 22:01:03,225 [DEBUG] server key: rsa-sha2-512, rsa-sha2-256, ssh-rsa
+2026-02-04 22:01:03,225 [DEBUG] client encrypt: chacha20-poly1305@openssh.com, aes128-gcm@openssh.com, aes256-gcm@openssh.com, aes128-gcm, aes256-gcm, aes128-ctr, aes192-ctr, aes256-ctr
+2026-02-04 22:01:03,226 [DEBUG] server encrypt: chacha20-poly1305@openssh.com, aes128-gcm@openssh.com, aes256-gcm@openssh.com, aes128-gcm, aes256-gcm, aes128-ctr, aes192-ctr, aes256-ctr
+2026-02-04 22:01:03,226 [DEBUG] client mac: hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com
+2026-02-04 22:01:03,226 [DEBUG] server mac: hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com
+2026-02-04 22:01:03,226 [DEBUG] client compress: none
+2026-02-04 22:01:03,226 [DEBUG] server compress: none
+2026-02-04 22:01:03,226 [DEBUG] client lang: <none>
+2026-02-04 22:01:03,227 [DEBUG] server lang: <none>
+2026-02-04 22:01:03,227 [DEBUG] kex follows: False
+2026-02-04 22:01:03,227 [DEBUG] === Key exchange agreements ===
+2026-02-04 22:01:03,227 [DEBUG] Kex: curve25519-sha256@libssh.org
+2026-02-04 22:01:03,227 [DEBUG] HostKey: rsa-sha2-512
+2026-02-04 22:01:03,228 [DEBUG] Cipher: aes128-ctr
+2026-02-04 22:01:03,228 [DEBUG] MAC: hmac-sha2-256-etm@openssh.com
+2026-02-04 22:01:03,228 [DEBUG] Compression: none
+2026-02-04 22:01:03,228 [DEBUG] === End of kex handshake ===
+2026-02-04 22:01:03,303 [DEBUG] kex engine KexCurve25519 specified hash_algo <built-in function openssl_sha256>
+2026-02-04 22:01:03,304 [DEBUG] Switch to new keys ...
+2026-02-04 22:01:03,305 [DEBUG] Got EXT_INFO: {'server-sig-algs': b'ssh-rsa,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,ssh-ed25519,x509v3-ecdsa-sha2-nistp256,x509v3-ecdsa-sha2-nistp384,x509v3-ecdsa-sha2-nistp521,rsa-sha2-256,rsa-sha2-512,x509v3-rsa2048-sha256'}
+2026-02-04 22:01:03,306 [DEBUG] Adding ssh-rsa host key for 10.255.6.4: b'e076065d42d91f631f1dc2131eaed6cf'
+2026-02-04 22:01:03,359 [DEBUG] userauth is OK
+2026-02-04 22:01:03,451 [INFO] Authentication (password) successful!
+2026-02-04 22:01:03,452 [DEBUG] [chan 0] Max packet in: 32768 bytes
+2026-02-04 22:01:03,505 [DEBUG] [chan 0] Max packet out: 65536 bytes
+2026-02-04 22:01:03,506 [DEBUG] Secsh channel 0 opened.
+2026-02-04 22:01:03,560 [DEBUG] [chan 0] Sesch channel 0 request ok
+2026-02-04 22:01:03,613 [DEBUG] [chan 0] Sesch channel 0 request ok
+2026-02-04 22:01:03,614 [DEBUG] write_channel: b'\n'
+2026-02-04 22:01:03,715 [DEBUG] write_channel: b'terminal width 511\n'
+2026-02-04 22:01:03,715 [DEBUG] read_channel: allegan-1a#
+allegan-1a#
+2026-02-04 22:01:03,726 [DEBUG] read_channel: 
+2026-02-04 22:01:03,737 [DEBUG] read_channel: 
+2026-02-04 22:01:03,747 [DEBUG] read_channel: 
+2026-02-04 22:01:03,758 [DEBUG] read_channel: 
+2026-02-04 22:01:03,769 [DEBUG] read_channel: 
+2026-02-04 22:01:03,779 [DEBUG] read_channel: termina
+2026-02-04 22:01:03,790 [DEBUG] read_channel: l width 51
+2026-02-04 22:01:03,801 [DEBUG] read_channel: 1
+allegan-1a#
+2026-02-04 22:01:03,801 [DEBUG] Pattern found: (terminal width 511) allegan-1a#
+allegan-1a#terminal width 511
+2026-02-04 22:01:03,802 [DEBUG] In disable_paging
+2026-02-04 22:01:03,802 [DEBUG] Command: terminal length 0
+
+2026-02-04 22:01:03,803 [DEBUG] write_channel: b'terminal length 0\n'
+2026-02-04 22:01:03,803 [DEBUG] read_channel: 
+2026-02-04 22:01:03,814 [DEBUG] read_channel: 
+2026-02-04 22:01:03,824 [DEBUG] read_channel: 
+2026-02-04 22:01:03,835 [DEBUG] read_channel: 
+2026-02-04 22:01:03,845 [DEBUG] read_channel: 
+2026-02-04 22:01:03,856 [DEBUG] read_channel: te
+2026-02-04 22:01:03,867 [DEBUG] read_channel: rminal l
+2026-02-04 22:01:03,877 [DEBUG] read_channel: ength 
+2026-02-04 22:01:03,888 [DEBUG] read_channel: 0
+allegan-1a#
+2026-02-04 22:01:03,888 [DEBUG] Pattern found: (terminal\ length\ 0) 
+allegan-1a#terminal length 0
+2026-02-04 22:01:03,889 [DEBUG] 
+allegan-1a#terminal length 0
+2026-02-04 22:01:03,889 [DEBUG] Exiting disable_paging
+2026-02-04 22:01:03,900 [DEBUG] read_channel: 
+2026-02-04 22:01:03,901 [DEBUG] Clear buffer detects data in the channel
+2026-02-04 22:01:03,921 [DEBUG] read_channel: 
+2026-02-04 22:01:03,923 [DEBUG] write_channel: b'\n'
+2026-02-04 22:01:03,923 [DEBUG] read_channel: 
+2026-02-04 22:01:03,934 [DEBUG] read_channel: 
+2026-02-04 22:01:03,944 [DEBUG] read_channel: 
+2026-02-04 22:01:03,955 [DEBUG] read_channel: 
+2026-02-04 22:01:03,966 [DEBUG] read_channel: 
+2026-02-04 22:01:03,977 [DEBUG] read_channel: 
+2026-02-04 22:01:03,987 [DEBUG] read_channel: 
+allegan-1a#
+2026-02-04 22:01:03,988 [DEBUG] Pattern found: ((?:\#|>)) 
+allegan-1a#
+2026-02-04 22:01:03,999 [DEBUG] read_channel: 
+2026-02-04 22:01:03,999 [DEBUG] [find_prompt()]: prompt is allegan-1a#
+2026-02-04 22:01:04,010 [DEBUG] read_channel: 
+2026-02-04 22:01:04,011 [DEBUG] write_channel: b'\n'
+2026-02-04 22:01:04,036 [DEBUG] read_channel: 
+2026-02-04 22:01:04,037 [DEBUG] write_channel: b'\n'
+2026-02-04 22:01:04,063 [DEBUG] read_channel: 
+2026-02-04 22:01:04,064 [DEBUG] write_channel: b'\n'
+2026-02-04 22:01:04,114 [DEBUG] read_channel: 
+allegan-1a#
+allegan-1a#
+2026-02-04 22:01:04,125 [DEBUG] read_channel: 
+allegan-1a#
+2026-02-04 22:01:04,126 [DEBUG] Clear buffer detects data in the channel
+2026-02-04 22:01:04,146 [DEBUG] read_channel: 
+2026-02-04 22:01:04,147 [DEBUG] [find_prompt()]: prompt is allegan-1a#
+2026-02-04 22:01:04,157 [DEBUG] read_channel: 
+2026-02-04 22:01:04,158 [DEBUG] write_channel: b'\n'
+2026-02-04 22:01:04,184 [DEBUG] read_channel: 
+2026-02-04 22:01:04,185 [DEBUG] write_channel: b'\n'
+2026-02-04 22:01:04,211 [DEBUG] read_channel: 
+2026-02-04 22:01:04,212 [DEBUG] write_channel: b'\n'
+2026-02-04 22:01:04,263 [DEBUG] read_channel: 
+allegan-1a#
+allegan-1a#
+2026-02-04 22:01:04,274 [DEBUG] read_channel: 
+allegan-1a#
+2026-02-04 22:01:04,274 [DEBUG] Clear buffer detects data in the channel
+2026-02-04 22:01:04,295 [DEBUG] read_channel: 
+2026-02-04 22:01:04,295 [DEBUG] [find_prompt()]: prompt is allegan-1a#
+2026-02-04 22:01:04,296 [DEBUG] write_channel: b'show cdp neighbors detail\n'
+2026-02-04 22:01:04,296 [DEBUG] read_channel: 
+2026-02-04 22:01:04,307 [DEBUG] read_channel: 
+2026-02-04 22:01:04,318 [DEBUG] read_channel: 
+2026-02-04 22:01:04,328 [DEBUG] read_channel: 
+2026-02-04 22:01:04,339 [DEBUG] read_channel: 
+2026-02-04 22:01:04,350 [DEBUG] read_channel: 
+2026-02-04 22:01:04,361 [DEBUG] read_channel: show cdp neighbors d
+2026-02-04 22:01:04,371 [DEBUG] read_channel: 
+2026-02-04 22:01:04,382 [DEBUG] read_channel: 
+2026-02-04 22:01:04,393 [DEBUG] read_channel: 
+2026-02-04 22:01:04,404 [DEBUG] read_channel: 
+2026-02-04 22:01:04,414 [DEBUG] read_channel: etail
+
+2026-02-04 22:01:04,415 [DEBUG] Pattern found: (show\ cdp\ neighbors\ detail) show cdp neighbors detail
+2026-02-04 22:01:04,441 [DEBUG] read_channel: 
+2026-02-04 22:01:04,467 [DEBUG] read_channel: -------------------------
+Device ID: bahuccxsub
+Entry address(es): 
+  IP address: 10.3.253.11
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/2,  Port ID (outgoing port): eth0
+Holdtime : 139 sec
+
+Version :
+Linux 4.18.0-513.11.1.el8_9.x86_64 #1 SMP Wed Jan 17 02:00:40 EST 2024 CCM:15.0.1.10000-27.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.d754
+Duplex: full
+
+-------------------------
+Device ID: bahtftpmed
+Entry address(es): 
+  IP address: 10.3.253.10
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/1,  Port ID (outgoing port): eth0
+Holdtime : 176 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13901-2.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.0b02
+Duplex: full
+
+-------------------------
+Device ID: bahpcd
+Entry address(es): 
+  IP address: 10.3.253.13
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/4,  Port ID (outgoing port): eth0
+Holdtime : 136 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13900-46.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.6115
+Duplex: full
+
+-------------------------
+Device ID: bahcmsub1
+Entry address(es): 
+  IP address: 10.3.253.6
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/3,  Port ID (outgoing port): eth0
+Holdtime : 129 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13901-2.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.121c
+Duplex: full
+
+-------------------------
+Device ID: bahcmsub2
+Entry address(es): 
+  IP address: 10.3.253.7
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/4,  Port ID (outgoing port): eth0
+Holdtime : 125 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13901-2.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.6560
+Duplex: full
+
+-------------------------
+Device ID: trh-1.switch
+Entry address(es): 
+  IP address: 172.18.164.5
+Platform: cisco C9300-24P,  Capabilities: Router Switch IGMP 
+Interface: TwentyFiveGigE1/1/1,  Port ID (outgoing port): TwentyFiveGigE3/1/2
+Holdtime : 159 sec
+
+Version :
+Cisco IOS Software [Dublin], Catalyst L3 Switch Software (CAT9K_IOSXE), Version 17.12.4, RELEASE SOFTWARE (fc3)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2024 by Cisco Systems, Inc.
+Compiled Tue 23-Jul-24 09:40 by mcpre
+
+advertisement version: 2
+Peer Source MAC: f87a.41a9.e5d6
+VTP Management Domain: 'TRH-1'
+Duplex: full
+Management address(es): 
+  IP address: 172.18.164.5
+
+-------------------------
+Device ID: AGHVG03.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.23
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/9,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 131 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: e8b7.487b.043d
+Duplex: full
+
+-------------------------
+Device ID: AGHVG02.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.22
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/8,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 167 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: 6400.f137.33e1
+Duplex: full
+
+-------------------------
+Device ID: AGHVG01.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.21
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/7,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 134 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: e8b7.487b.046a
+Duplex: full
+
+-------------------------
+Device ID: AGHCUBE.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.27
+Platform: Cisco CISCO2921/K9,  Capabilities: Router Source-Route-Bridge Switch 
+Interface: FiveGigabitEthernet1/0/5,  Port ID (outgoing port): GigabitEthernet0/0
+Holdtime : 130 sec
+
+Version :
+Cisco IOS Software, C2900 Software (C2900-UNIVERSALK9-M), Version 15.7(3)M8, RELEASE SOFTWARE (fc1)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2021 by Cisco Systems, Inc.
+Compiled Tue 02-Mar-21 07:51 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: d867.d99c.2d70
+VTP Management Domain: ''
+Duplex: full
+Management address(es): 
+  IP address: 10.3.253.27
+
+-------------------------
+Device ID: AGHVG06.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.26
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/12,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 159 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: 2894.0f50.31d6
+Duplex: full
+
+-------------------------
+Device ID: AGHVG05.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.25
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/11,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 142 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: e8b7.487b.00c3
+Duplex: full
+
+-------------------------
+Device ID: AGHVG04.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.24
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/10,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 138 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: e8b7.487b.00be
+Duplex: full
+
+-------------------------
+Device ID: AGH-CORE
+Entry address(es): 
+  IP address: 172.17.1.254
+Platform: cisco WS-C3850-24XS,  Capabilities: Router Switch IGMP 
+Interface: TwentyFiveGigE1/1/2,  Port ID (outgoing port): TenGigabitEthernet4/1/1
+Holdtime : 162 sec
+
+Version :
+Cisco IOS Software [Everest], Catalyst L3 Switch Software (CAT3K_CAA-UNIVERSALK9-M), Version 16.6.4, RELEASE SOFTWARE (fc3)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2018 by Cisco Systems, Inc.
+Compiled Sun 08-Jul-18 02:57 by mcpre
+
+advertisement version: 2
+Peer Source MAC: 6cdd.30f2.4919
+VTP Management Domain: 'AGH'
+Native VLAN: 1
+Duplex: full
+Management address(es): 
+  IP address: 172.17.1.254
+
+-------------------------
+Device ID: AGH-CORE
+Entry address(es): 
+  IP address: 172.17.1.254
+Platform: cisco WS-C3850-24XS,  Capabilities: Router Switch IGMP 
+Interface: TwentyFiveGigE1/1/4,  Port ID (outgoing port): TenGigabitEthernet3/1/1
+Holdtime : 165 sec
+
+Version :
+Cisco IOS Software [Everest], Catalyst L3 Switch Software (CAT3K_CAA-UNIVERSALK9-M), Version 16.6.4, RELEASE SOFTWARE (fc3)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2018 by Cisco Systems, Inc.
+Compiled Sun 08-Jul-18 02:57 by mcpre
+
+advertisement version: 2
+Peer Source MAC: 6cdd.30f0.8c19
+VTP Management Domain: 'AGH'
+Native VLAN: 1
+Duplex: full
+Management address(es): 
+  IP address: 172.17.1.254
+
+-------------------------
+Device ID: bahcucsub
+Entry address(es): 
+  IP address: 10.3.253.8
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/1,  Port ID (outgoing port): eth0
+Holdtime : 125 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13900-61.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.394d
+Duplex: full
+
+-------------------------
+Device ID: bahcersub
+Entry address(es): 
+  IP address: 10.3.253.9
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/2,  Port ID (outgoing port): eth0
+Holdtime : 157 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13900-49.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.11de
+Duplex: full
+
+
+Total cdp entries displayed : 17
+allegan-1a#
+2026-02-04 22:01:04,478 [DEBUG] read_channel: 
+2026-02-04 22:01:04,479 [DEBUG] write_channel: b'\n'
+2026-02-04 22:01:04,504 [DEBUG] read_channel: 
+2026-02-04 22:01:04,505 [DEBUG] write_channel: b'\n'
+2026-02-04 22:01:04,530 [DEBUG] read_channel: 
+2026-02-04 22:01:04,531 [DEBUG] write_channel: b'\n'
+2026-02-04 22:01:04,582 [DEBUG] read_channel: 
+allegan-1a#
+allegan-1a#
+2026-02-04 22:01:04,593 [DEBUG] read_channel: 
+allegan-1a#
+2026-02-04 22:01:04,593 [DEBUG] Clear buffer detects data in the channel
+2026-02-04 22:01:04,614 [DEBUG] read_channel: 
+2026-02-04 22:01:04,614 [DEBUG] [find_prompt()]: prompt is allegan-1a#
+2026-02-04 22:01:04,615 [DEBUG] write_channel: b'show lldp neighbors detail\n'
+2026-02-04 22:01:04,615 [DEBUG] read_channel: 
+2026-02-04 22:01:04,626 [DEBUG] read_channel: 
+2026-02-04 22:01:04,636 [DEBUG] read_channel: 
+2026-02-04 22:01:04,647 [DEBUG] read_channel: 
+2026-02-04 22:01:04,658 [DEBUG] read_channel: 
+2026-02-04 22:01:04,669 [DEBUG] read_channel: 
+2026-02-04 22:01:04,680 [DEBUG] read_channel: show lldp ne
+2026-02-04 22:01:04,691 [DEBUG] read_channel: ighbors 
+2026-02-04 22:01:04,701 [DEBUG] read_channel: 
+2026-02-04 22:01:04,712 [DEBUG] read_channel: 
+2026-02-04 22:01:04,723 [DEBUG] read_channel: de
+2026-02-04 22:01:04,734 [DEBUG] read_channel: tail
+------------------------------------------------
+Local Intf: Twe1/1/1
+Local Intf service instance: -
+Chassis id: 50c7.09a0.6d1e
+Port id: 543
+Port Description: Access Handoff BeaconHealth.EV-ETHS-ON-149308.Inet VLAN 149 Copper
+System Name: ADV_RAD_SERVICES_EVM-ETHS-OF-12679.E0
+
+System Description: 
+Juniper Networks, Inc. ex3400-24t Ethernet Switch, kernel JUNOS 15.1X53-D592.1, Build date: 2019-10-24 19:15:40 UTC Copyright (c) 1996-2019 Juniper Networks, Inc.
+
+Time remaining: 97 seconds
+System Capabilities: B,R
+Enabled Capabilities: B,R
+Management Addresses - not advertised
+Auto Negotiation - not supported
+Physical media capabilities:
+    Other/unknown
+Media Attachment Unit type - not advertised
+Vlan ID: 149
+Peer Source MAC: 50c7.09a0.6d3d
+
+MED Information:
+
+    MED Codes:
+          (NP) Network Policy, (LI) Location Identification
+          (PS) Power Source Entity, (PD) Power Device
+          (IN) Inventory
+
+    Inventory information - not advertised
+    Capabilities: NP, LI, PS
+    Device type: Network connectivity
+    Network Policies - not advertised
+    Power requirements - not advertised
+    Location - not advertised
+
+------------------------------------------------
+Local Intf: Fi1/0/4
+Local Intf service instance: -
+Chassis id: 303e.a724.ef4b
+Port id: 303e.a724.ef4b
+Port Description - not advertised
+System Name - not advertised
+System Description - not advertised
+
+Time remaining: 99 seconds
+System Capabilities - not advertised
+Enabled Capabilities - not advertised
+Management Addresses - not advertised
+Auto Negotiation - not supported
+Physical media capabilities - not advertised
+Media Attachment Unit type - not advertised
+Vlan ID: - not advertised
+Peer Source MAC: 303e.a724.ef4b
+
+------------------------------------------------
+Local Intf: Fi1/0/2
+Local Intf service instance: -
+Chassis id: 303e.a724.f577
+Port id: 303e.a724.f577
+Port Description - not advertised
+System Name - not advertised
+System Description - not advertised
+
+Time remaining: 120 seconds
+System Capabilities - not advertised
+Enabled Capabilities - not advertised
+Management Addresses - not advertised
+Auto Negotiation - not supported
+Physical media capabilities - not advertised
+Media Attachment Unit type - not advertised
+Vlan ID: - not advertised
+Peer Source MAC: 303e.a724.f577
+
+------------------------------------------------
+Local Intf: Fi1/0/3
+Local Intf service instance: -
+Chassis id: 303e.a724.f407
+Port id: 303e.a724.f407
+Port Description - not advertised
+System Name - not advertised
+System Description - not advertised
+
+Time remaining: 112 seconds
+System Capabilities - not advertised
+Enabled Capabilities - not advertised
+Management Addresses - not advertised
+Auto Negotiation - not supported
+Physical media capabilities - not advertised
+Media Attachment Unit type - not advertised
+Vlan ID: - not advertised
+Peer Source MAC: 303e.a724.f407
+
+------------------------------------------------
+Local Intf: Fi1/0/1
+Local Intf service instance: -
+Chassis id: 303e.a724.f227
+Port id: 303e.a724.f227
+Port Description - not advertised
+System Name - not advertised
+System Description - not advertised
+
+Time remaining: 104 seconds
+System Capabilities - not advertised
+Enabled Capabilities - not advertised
+Management Addresses - not advertised
+Auto Negotiation - not supported
+Physical media capabilities - not advertised
+Media Attachment Unit type - not advertised
+Vlan ID: - not advertised
+Peer Source MAC: 303e.a724.f227
+
+
+Total entries displayed: 5
+
+allegan-1a#
+2026-02-04 22:01:04,735 [DEBUG] Pattern found: (show\ lldp\ neighbors\ detail) show lldp neighbors detail
+2026-02-04 22:01:04,760 [DEBUG] read_channel: 
+2026-02-04 22:01:04,761 [DEBUG] write_channel: b'\n'
+2026-02-04 22:01:04,761 [DEBUG] read_channel: 
+2026-02-04 22:01:04,772 [DEBUG] read_channel: 
+2026-02-04 22:01:04,783 [DEBUG] read_channel: 
+2026-02-04 22:01:04,793 [DEBUG] read_channel: 
+2026-02-04 22:01:04,804 [DEBUG] read_channel: 
+2026-02-04 22:01:04,814 [DEBUG] read_channel: 
+2026-02-04 22:01:04,825 [DEBUG] read_channel: 
+allegan-1a#
+2026-02-04 22:01:04,826 [DEBUG] Pattern found: ([>#]) 
+allegan-1a#
+2026-02-04 22:01:04,826 [DEBUG] write_channel: b'exit\n'
+2026-02-04 22:01:04,827 [ERROR] Exception on / [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/app.py", line 236, in index
+    topo_text = render_text_topology(result.topo)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/app.py", line 167, in render_text_topology
+    if host not in topo.devices:
+       ^^^^
+NameError: name 'host' is not defined
+2026-02-04 22:01:04,829 [INFO] 172.17.0.1 - - [04/Feb/2026 22:01:04] "[35m[1mPOST / HTTP/1.1[0m" 500 -
+2026-02-04 22:01:04,879 [DEBUG] EOF in transport thread
+2026-02-04 22:04:10,245 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.17.0.2:8000
+2026-02-04 22:04:10,247 [INFO] [33mPress CTRL+C to quit[0m
+2026-02-04 22:04:15,404 [DEBUG] Started the / route
+2026-02-04 22:04:15,406 [INFO] 172.17.0.1 - - [04/Feb/2026 22:04:15] "GET / HTTP/1.1" 200 -
+2026-02-04 22:04:26,284 [DEBUG] Started the / route
+2026-02-04 22:04:26,345 [DEBUG] starting thread (client mode): 0xf78aa3f0
+2026-02-04 22:04:26,345 [DEBUG] Local version/idstring: SSH-2.0-paramiko_4.0.0
+2026-02-04 22:04:26,395 [DEBUG] Remote version/idstring: SSH-2.0-Cisco-1.25
+2026-02-04 22:04:26,395 [INFO] Connected (version 2.0, client Cisco-1.25)
+2026-02-04 22:04:26,407 [DEBUG] === Key exchange possibilities ===
+2026-02-04 22:04:26,407 [DEBUG] kex algos: curve25519-sha256, curve25519-sha256@libssh.org, ecdh-sha2-nistp256, ecdh-sha2-nistp384, ecdh-sha2-nistp521, diffie-hellman-group14-sha256, diffie-hellman-group16-sha512
+2026-02-04 22:04:26,408 [DEBUG] server key: rsa-sha2-512, rsa-sha2-256, ssh-rsa
+2026-02-04 22:04:26,408 [DEBUG] client encrypt: chacha20-poly1305@openssh.com, aes128-gcm@openssh.com, aes256-gcm@openssh.com, aes128-gcm, aes256-gcm, aes128-ctr, aes192-ctr, aes256-ctr
+2026-02-04 22:04:26,408 [DEBUG] server encrypt: chacha20-poly1305@openssh.com, aes128-gcm@openssh.com, aes256-gcm@openssh.com, aes128-gcm, aes256-gcm, aes128-ctr, aes192-ctr, aes256-ctr
+2026-02-04 22:04:26,409 [DEBUG] client mac: hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com
+2026-02-04 22:04:26,409 [DEBUG] server mac: hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com
+2026-02-04 22:04:26,409 [DEBUG] client compress: none
+2026-02-04 22:04:26,410 [DEBUG] server compress: none
+2026-02-04 22:04:26,410 [DEBUG] client lang: <none>
+2026-02-04 22:04:26,410 [DEBUG] server lang: <none>
+2026-02-04 22:04:26,411 [DEBUG] kex follows: False
+2026-02-04 22:04:26,411 [DEBUG] === Key exchange agreements ===
+2026-02-04 22:04:26,411 [DEBUG] Kex: curve25519-sha256@libssh.org
+2026-02-04 22:04:26,412 [DEBUG] HostKey: rsa-sha2-512
+2026-02-04 22:04:26,412 [DEBUG] Cipher: aes128-ctr
+2026-02-04 22:04:26,412 [DEBUG] MAC: hmac-sha2-256-etm@openssh.com
+2026-02-04 22:04:26,412 [DEBUG] Compression: none
+2026-02-04 22:04:26,413 [DEBUG] === End of kex handshake ===
+2026-02-04 22:04:26,497 [DEBUG] kex engine KexCurve25519 specified hash_algo <built-in function openssl_sha256>
+2026-02-04 22:04:26,498 [DEBUG] Switch to new keys ...
+2026-02-04 22:04:26,498 [DEBUG] Adding ssh-rsa host key for 10.255.6.4: b'e076065d42d91f631f1dc2131eaed6cf'
+2026-02-04 22:04:26,498 [DEBUG] Got EXT_INFO: {'server-sig-algs': b'ssh-rsa,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,ssh-ed25519,x509v3-ecdsa-sha2-nistp256,x509v3-ecdsa-sha2-nistp384,x509v3-ecdsa-sha2-nistp521,rsa-sha2-256,rsa-sha2-512,x509v3-rsa2048-sha256'}
+2026-02-04 22:04:26,556 [DEBUG] userauth is OK
+2026-02-04 22:04:26,647 [INFO] Authentication (password) successful!
+2026-02-04 22:04:26,648 [DEBUG] [chan 0] Max packet in: 32768 bytes
+2026-02-04 22:04:26,706 [DEBUG] [chan 0] Max packet out: 65536 bytes
+2026-02-04 22:04:26,707 [DEBUG] Secsh channel 0 opened.
+2026-02-04 22:04:26,769 [DEBUG] [chan 0] Sesch channel 0 request ok
+2026-02-04 22:04:26,836 [DEBUG] [chan 0] Sesch channel 0 request ok
+2026-02-04 22:04:26,837 [DEBUG] write_channel: b'\n'
+2026-02-04 22:04:26,937 [DEBUG] write_channel: b'terminal width 511\n'
+2026-02-04 22:04:26,938 [DEBUG] read_channel: allegan-1a#
+allegan-1a#
+2026-02-04 22:04:26,949 [DEBUG] read_channel: 
+2026-02-04 22:04:26,959 [DEBUG] read_channel: 
+2026-02-04 22:04:26,970 [DEBUG] read_channel: 
+2026-02-04 22:04:26,981 [DEBUG] read_channel: 
+2026-02-04 22:04:26,991 [DEBUG] read_channel: 
+2026-02-04 22:04:27,002 [DEBUG] read_channel: terminal w
+2026-02-04 22:04:27,013 [DEBUG] read_channel: idth 51
+2026-02-04 22:04:27,023 [DEBUG] read_channel: 1
+
+2026-02-04 22:04:27,024 [DEBUG] Pattern found: (terminal width 511) allegan-1a#
+allegan-1a#terminal width 511
+2026-02-04 22:04:27,025 [DEBUG] In disable_paging
+2026-02-04 22:04:27,025 [DEBUG] Command: terminal length 0
+
+2026-02-04 22:04:27,025 [DEBUG] write_channel: b'terminal length 0\n'
+2026-02-04 22:04:27,026 [DEBUG] read_channel: allegan-1a#
+2026-02-04 22:04:27,036 [DEBUG] read_channel: 
+2026-02-04 22:04:27,047 [DEBUG] read_channel: 
+2026-02-04 22:04:27,057 [DEBUG] read_channel: 
+2026-02-04 22:04:27,068 [DEBUG] read_channel: 
+2026-02-04 22:04:27,079 [DEBUG] read_channel: 
+2026-02-04 22:04:27,089 [DEBUG] read_channel: 
+2026-02-04 22:04:27,100 [DEBUG] read_channel: 
+2026-02-04 22:04:27,111 [DEBUG] read_channel: termi
+2026-02-04 22:04:27,121 [DEBUG] read_channel: nal l
+2026-02-04 22:04:27,132 [DEBUG] read_channel: ength 0
+allegan-1a#
+2026-02-04 22:04:27,132 [DEBUG] Pattern found: (terminal\ length\ 0) 
+allegan-1a#terminal length 0
+2026-02-04 22:04:27,133 [DEBUG] 
+allegan-1a#terminal length 0
+2026-02-04 22:04:27,133 [DEBUG] Exiting disable_paging
+2026-02-04 22:04:27,144 [DEBUG] read_channel: 
+2026-02-04 22:04:27,146 [DEBUG] Clear buffer detects data in the channel
+2026-02-04 22:04:27,167 [DEBUG] read_channel: 
+2026-02-04 22:04:27,167 [DEBUG] write_channel: b'\n'
+2026-02-04 22:04:27,168 [DEBUG] read_channel: 
+2026-02-04 22:04:27,178 [DEBUG] read_channel: 
+2026-02-04 22:04:27,189 [DEBUG] read_channel: 
+2026-02-04 22:04:27,199 [DEBUG] read_channel: 
+2026-02-04 22:04:27,210 [DEBUG] read_channel: 
+2026-02-04 22:04:27,221 [DEBUG] read_channel: 
+2026-02-04 22:04:27,231 [DEBUG] read_channel: 
+2026-02-04 22:04:27,242 [DEBUG] read_channel: 
+2026-02-04 22:04:27,252 [DEBUG] read_channel: 
+allegan-1a#
+2026-02-04 22:04:27,253 [DEBUG] Pattern found: ((?:\#|>)) 
+allegan-1a#
+2026-02-04 22:04:27,263 [DEBUG] read_channel: 
+2026-02-04 22:04:27,264 [DEBUG] [find_prompt()]: prompt is allegan-1a#
+2026-02-04 22:04:27,274 [DEBUG] read_channel: 
+2026-02-04 22:04:27,275 [DEBUG] write_channel: b'\n'
+2026-02-04 22:04:27,301 [DEBUG] read_channel: 
+2026-02-04 22:04:27,302 [DEBUG] write_channel: b'\n'
+2026-02-04 22:04:27,327 [DEBUG] read_channel: 
+2026-02-04 22:04:27,328 [DEBUG] write_channel: b'\n'
+2026-02-04 22:04:27,379 [DEBUG] read_channel: 
+allegan-1a#
+allegan-1a#
+2026-02-04 22:04:27,390 [DEBUG] read_channel: 
+allegan-1a#
+2026-02-04 22:04:27,390 [DEBUG] Clear buffer detects data in the channel
+2026-02-04 22:04:27,410 [DEBUG] read_channel: 
+2026-02-04 22:04:27,411 [DEBUG] [find_prompt()]: prompt is allegan-1a#
+2026-02-04 22:04:27,422 [DEBUG] read_channel: 
+2026-02-04 22:04:27,423 [DEBUG] write_channel: b'\n'
+2026-02-04 22:04:27,449 [DEBUG] read_channel: 
+2026-02-04 22:04:27,449 [DEBUG] write_channel: b'\n'
+2026-02-04 22:04:27,475 [DEBUG] read_channel: 
+2026-02-04 22:04:27,476 [DEBUG] write_channel: b'\n'
+2026-02-04 22:04:27,527 [DEBUG] read_channel: 
+allegan-1a#
+allegan-1a#
+2026-02-04 22:04:27,538 [DEBUG] read_channel: 
+allegan-1a#
+2026-02-04 22:04:27,538 [DEBUG] Clear buffer detects data in the channel
+2026-02-04 22:04:27,559 [DEBUG] read_channel: 
+2026-02-04 22:04:27,560 [DEBUG] [find_prompt()]: prompt is allegan-1a#
+2026-02-04 22:04:27,561 [DEBUG] write_channel: b'show cdp neighbors detail\n'
+2026-02-04 22:04:27,561 [DEBUG] read_channel: 
+2026-02-04 22:04:27,572 [DEBUG] read_channel: 
+2026-02-04 22:04:27,583 [DEBUG] read_channel: 
+2026-02-04 22:04:27,593 [DEBUG] read_channel: 
+2026-02-04 22:04:27,604 [DEBUG] read_channel: 
+2026-02-04 22:04:27,614 [DEBUG] read_channel: 
+2026-02-04 22:04:27,625 [DEBUG] read_channel: show cdp n
+2026-02-04 22:04:27,636 [DEBUG] read_channel: eighbors 
+2026-02-04 22:04:27,646 [DEBUG] read_channel: d
+2026-02-04 22:04:27,657 [DEBUG] read_channel: 
+2026-02-04 22:04:27,668 [DEBUG] read_channel: e
+2026-02-04 22:04:27,679 [DEBUG] read_channel: tail
+
+2026-02-04 22:04:27,680 [DEBUG] Pattern found: (show\ cdp\ neighbors\ detail) show cdp neighbors detail
+2026-02-04 22:04:27,705 [DEBUG] read_channel: 
+2026-02-04 22:04:27,733 [DEBUG] read_channel: -------------------------
+Device ID: bahuccxsub
+Entry address(es): 
+  IP address: 10.3.253.11
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/2,  Port ID (outgoing port): eth0
+Holdtime : 120 sec
+
+Version :
+Linux 4.18.0-513.11.1.el8_9.x86_64 #1 SMP Wed Jan 17 02:00:40 EST 2024 CCM:15.0.1.10000-27.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.d754
+Duplex: full
+
+-------------------------
+Device ID: bahtftpmed
+Entry address(es): 
+  IP address: 10.3.253.10
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/1,  Port ID (outgoing port): eth0
+Holdtime : 157 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13901-2.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.0b02
+Duplex: full
+
+-------------------------
+Device ID: bahpcd
+Entry address(es): 
+  IP address: 10.3.253.13
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/4,  Port ID (outgoing port): eth0
+Holdtime : 179 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13900-46.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.6115
+Duplex: full
+
+-------------------------
+Device ID: bahcmsub1
+Entry address(es): 
+  IP address: 10.3.253.6
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/3,  Port ID (outgoing port): eth0
+Holdtime : 172 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13901-2.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.121c
+Duplex: full
+
+-------------------------
+Device ID: bahcmsub2
+Entry address(es): 
+  IP address: 10.3.253.7
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/4,  Port ID (outgoing port): eth0
+Holdtime : 168 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13901-2.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.6560
+Duplex: full
+
+-------------------------
+Device ID: trh-1.switch
+Entry address(es): 
+  IP address: 172.18.164.5
+Platform: cisco C9300-24P,  Capabilities: Router Switch IGMP 
+Interface: TwentyFiveGigE1/1/1,  Port ID (outgoing port): TwentyFiveGigE3/1/2
+Holdtime : 167 sec
+
+Version :
+Cisco IOS Software [Dublin], Catalyst L3 Switch Software (CAT9K_IOSXE), Version 17.12.4, RELEASE SOFTWARE (fc3)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2024 by Cisco Systems, Inc.
+Compiled Tue 23-Jul-24 09:40 by mcpre
+
+advertisement version: 2
+Peer Source MAC: f87a.41a9.e5d6
+VTP Management Domain: 'TRH-1'
+Duplex: full
+Management address(es): 
+  IP address: 172.18.164.5
+
+-------------------------
+Device ID: AGHVG03.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.23
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/9,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 135 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: e8b7.487b.043d
+Duplex: full
+
+-------------------------
+Device ID: AGHVG02.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.22
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/8,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 126 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: 6400.f137.33e1
+Duplex: full
+
+-------------------------
+Device ID: AGHVG01.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.21
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/7,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 147 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: e8b7.487b.046a
+Duplex: full
+
+-------------------------
+Device ID: AGHCUBE.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.27
+Platform: Cisco CISCO2921/K9,  Capabilities: Router Source-Route-Bridge Switch 
+Interface: FiveGigabitEthernet1/0/5,  Port ID (outgoing port): GigabitEthernet0/0
+Holdtime : 146 sec
+
+Version :
+Cisco IOS Software, C2900 Software (C2900-UNIVERSALK9-M), Version 15.7(3)M8, RELEASE SOFTWARE (fc1)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2021 by Cisco Systems, Inc.
+Compiled Tue 02-Mar-21 07:51 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: d867.d99c.2d70
+VTP Management Domain: ''
+Duplex: full
+Management address(es): 
+  IP address: 10.3.253.27
+
+-------------------------
+Device ID: AGHVG06.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.26
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/12,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 165 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: 2894.0f50.31d6
+Duplex: full
+
+-------------------------
+Device ID: AGHVG05.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.25
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/11,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 162 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: e8b7.487b.00c3
+Duplex: full
+
+-------------------------
+Device ID: AGHVG04.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.24
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/10,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 149 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: e8b7.487b.00be
+Duplex: full
+
+-------------------------
+Device ID: AGH-CORE
+Entry address(es): 
+  IP address: 172.17.1.254
+Platform: cisco WS-C3850-24XS,  Capabilities: Router Switch IGMP 
+Interface: TwentyFiveGigE1/1/2,  Port ID (outgoing port): TenGigabitEthernet4/1/1
+Holdtime : 170 sec
+
+Version :
+Cisco IOS Software [Everest], Catalyst L3 Switch Software (CAT3K_CAA-UNIVERSALK9-M), Version 16.6.4, RELEASE SOFTWARE (fc3)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2018 by Cisco Systems, Inc.
+Compiled Sun 08-Jul-18 02:57 by mcpre
+
+advertisement version: 2
+Peer Source MAC: 6cdd.30f2.4919
+VTP Management Domain: 'AGH'
+Native VLAN: 1
+Duplex: full
+Management address(es): 
+  IP address: 172.17.1.254
+
+-------------------------
+Device ID: AGH-CORE
+Entry address(es): 
+  IP address: 172.17.1.254
+Platform: cisco WS-C3850-24XS,  Capabilities: Router Switch IGMP 
+Interface: TwentyFiveGigE1/1/4,  Port ID (outgoing port): TenGigabitEthernet3/1/1
+Holdtime : 169 sec
+
+Version :
+Cisco IOS Software [Everest], Catalyst L3 Switch Software (CAT3K_CAA-UNIVERSALK9-M), Version 16.6.4, RELEASE SOFTWARE (fc3)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2018 by Cisco Systems, Inc.
+Compiled Sun 08-Jul-18 02:57 by mcpre
+
+advertisement version: 2
+Peer Source MAC: 6cdd.30f0.8c19
+VTP Management Domain: 'AGH'
+Native VLAN: 1
+Duplex: full
+Management address(es): 
+  IP address: 172.17.1.254
+
+-------------------------
+Device ID: bahcucsub
+Entry address(es): 
+  IP address: 10.3.253.8
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/1,  Port ID (outgoing port): eth0
+Holdtime : 168 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13900-61.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.394d
+Duplex: full
+
+-------------------------
+Device ID: bahcersub
+Entry address(es): 
+  IP address: 10.3.253.9
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/2,  Port ID (outgoing port): eth0
+Holdtime : 138 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13900-49.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.11de
+Duplex: full
+
+
+Total cdp entries displayed : 17
+allegan-1a#
+2026-02-04 22:04:27,744 [DEBUG] read_channel: 
+2026-02-04 22:04:27,744 [DEBUG] write_channel: b'\n'
+2026-02-04 22:04:27,770 [DEBUG] read_channel: 
+2026-02-04 22:04:27,771 [DEBUG] write_channel: b'\n'
+2026-02-04 22:04:27,797 [DEBUG] read_channel: 
+2026-02-04 22:04:27,798 [DEBUG] write_channel: b'\n'
+2026-02-04 22:04:27,849 [DEBUG] read_channel: 
+allegan-1a#
+allegan-1a#
+2026-02-04 22:04:27,859 [DEBUG] read_channel: 
+allegan-1a#
+2026-02-04 22:04:27,860 [DEBUG] Clear buffer detects data in the channel
+2026-02-04 22:04:27,880 [DEBUG] read_channel: 
+2026-02-04 22:04:27,881 [DEBUG] [find_prompt()]: prompt is allegan-1a#
+2026-02-04 22:04:27,882 [DEBUG] write_channel: b'show lldp neighbors detail\n'
+2026-02-04 22:04:27,882 [DEBUG] read_channel: 
+2026-02-04 22:04:27,893 [DEBUG] read_channel: 
+2026-02-04 22:04:27,904 [DEBUG] read_channel: 
+2026-02-04 22:04:27,915 [DEBUG] read_channel: 
+2026-02-04 22:04:27,925 [DEBUG] read_channel: 
+2026-02-04 22:04:27,936 [DEBUG] read_channel: 
+2026-02-04 22:04:27,947 [DEBUG] read_channel: show lldp
+2026-02-04 22:04:27,957 [DEBUG] read_channel:  neighb
+2026-02-04 22:04:27,968 [DEBUG] read_channel: ors 
+2026-02-04 22:04:27,979 [DEBUG] read_channel: 
+2026-02-04 22:04:27,989 [DEBUG] read_channel: 
+2026-02-04 22:04:28,000 [DEBUG] read_channel: deta
+2026-02-04 22:04:28,011 [DEBUG] read_channel: il
+------------------------------------------------
+Local Intf: Twe1/1/1
+Local Intf service instance: -
+Chassis id: 50c7.09a0.6d1e
+Port id: 543
+Port Description: Access Handoff BeaconHealth.EV-ETHS-ON-149308.Inet VLAN 149 Copper
+System Name: ADV_RAD_SERVICES_EVM-ETHS-OF-12679.E0
+
+System Description: 
+Juniper Networks, Inc. ex3400-24t Ethernet Switch, kernel JUNOS 15.1X53-D592.1, Build date: 2019-10-24 19:15:40 UTC Copyright (c) 1996-2019 Juniper Networks, Inc.
+
+Time remaining: 111 seconds
+System Capabilities: B,R
+Enabled Capabilities: B,R
+Management Addresses - not advertised
+Auto Negotiation - not supported
+Physical media capabilities:
+    Other/unknown
+Media Attachment Unit type - not advertised
+Vlan ID: 149
+Peer Source MAC: 50c7.09a0.6d3d
+
+MED Information:
+
+    MED Codes:
+          (NP) Network Policy, (LI) Location Identification
+          (PS) Power Source Entity, (PD) Power Device
+          (IN) Inventory
+
+    Inventory information - not advertised
+    Capabilities: NP, LI, PS
+    Device type: Network connectivity
+    Network Policies - not advertised
+    Power requirements - not advertised
+    Location - not advertised
+
+------------------------------------------------
+Local Intf: Fi1/0/4
+Local Intf service instance: -
+Chassis id: 303e.a724.ef4b
+Port id: 303e.a724.ef4b
+Port Description - not advertised
+System Name - not advertised
+System Description - not advertised
+
+Time remaining: 105 seconds
+System Capabilities - not advertised
+Enabled Capabilities - not advertised
+Management Addresses - not advertised
+Auto Negotiation - not supported
+Physical media capabilities - not advertised
+Media Attachment Unit type - not advertised
+Vlan ID: - not advertised
+Peer Source MAC: 303e.a724.ef4b
+
+------------------------------------------------
+Local Intf: Fi1/0/2
+Local Intf service instance: -
+Chassis id: 303e.a724.f577
+Port id: 303e.a724.f577
+Port Description - not advertised
+System Name - not advertised
+System Description - not advertised
+
+Time remaining: 97 seconds
+System Capabilities - not advertised
+Enabled Capabilities - not advertised
+Management Addresses - not advertised
+Auto Negotiation - not supported
+Physical media capabilities - not advertised
+Media Attachment Unit type - not advertised
+Vlan ID: - not advertised
+Peer Source MAC: 303e.a724.f577
+
+------------------------------------------------
+Local Intf: Fi1/0/3
+Local Intf service instance: -
+Chassis id: 303e.a724.f407
+Port id: 303e.a724.f407
+Port Description - not advertised
+System Name - not advertised
+System Description - not advertised
+
+Time remaining: 118 seconds
+System Capabilities - not advertised
+Enabled Capabilities - not advertised
+Management Addresses - not advertised
+Auto Negotiation - not supported
+Physical media capabilities - not advertised
+Media Attachment Unit type - not advertised
+Vlan ID: - not advertised
+Peer Source MAC: 303e.a724.f407
+
+------------------------------------------------
+Local Intf: Fi1/0/1
+Local Intf service instance: -
+Chassis id: 303e.a724.f227
+Port id: 303e.a724.f227
+Port Description - not advertised
+System Name - not advertised
+System Description - not advertised
+
+Time remaining: 110 seconds
+System Capabilities - not advertised
+Enabled Capabilities - not advertised
+Management Addresses - not advertised
+Auto Negotiation - not supported
+Physical media capabilities - not advertised
+Media Attachment Unit type - not advertised
+Vlan ID: - not advertised
+Peer Source MAC: 303e.a724.f227
+
+
+Total entries displayed: 5
+
+allegan-1a#
+2026-02-04 22:04:28,012 [DEBUG] Pattern found: (show\ lldp\ neighbors\ detail) show lldp neighbors detail
+2026-02-04 22:04:28,037 [DEBUG] read_channel: 
+2026-02-04 22:04:28,038 [DEBUG] write_channel: b'\n'
+2026-02-04 22:04:28,039 [DEBUG] read_channel: 
+2026-02-04 22:04:28,049 [DEBUG] read_channel: 
+2026-02-04 22:04:28,060 [DEBUG] read_channel: 
+2026-02-04 22:04:28,071 [DEBUG] read_channel: 
+2026-02-04 22:04:28,081 [DEBUG] read_channel: 
+2026-02-04 22:04:28,092 [DEBUG] read_channel: 
+2026-02-04 22:04:28,103 [DEBUG] read_channel: 
+allegan-1a#
+2026-02-04 22:04:28,103 [DEBUG] Pattern found: ([>#]) 
+allegan-1a#
+2026-02-04 22:04:28,104 [DEBUG] write_channel: b'exit\n'
+2026-02-04 22:04:28,106 [INFO] 172.17.0.1 - - [04/Feb/2026 22:04:28] "POST / HTTP/1.1" 200 -
+2026-02-04 22:04:28,157 [DEBUG] EOF in transport thread
+2026-02-04 22:16:47,527 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://172.17.0.2:8000
+2026-02-04 22:16:47,528 [INFO] [33mPress CTRL+C to quit[0m
+2026-02-04 22:17:00,955 [DEBUG] Started the / route
+2026-02-04 22:17:00,960 [INFO] 172.17.0.1 - - [04/Feb/2026 22:17:00] "GET / HTTP/1.1" 200 -
+2026-02-04 22:17:15,884 [DEBUG] Started the / route
+2026-02-04 22:17:15,950 [DEBUG] starting thread (client mode): 0xbbd03740
+2026-02-04 22:17:15,951 [DEBUG] Local version/idstring: SSH-2.0-paramiko_4.0.0
+2026-02-04 22:17:16,000 [DEBUG] Remote version/idstring: SSH-2.0-Cisco-1.25
+2026-02-04 22:17:16,000 [INFO] Connected (version 2.0, client Cisco-1.25)
+2026-02-04 22:17:16,003 [DEBUG] === Key exchange possibilities ===
+2026-02-04 22:17:16,003 [DEBUG] kex algos: curve25519-sha256, curve25519-sha256@libssh.org, ecdh-sha2-nistp256, ecdh-sha2-nistp384, ecdh-sha2-nistp521, diffie-hellman-group14-sha256, diffie-hellman-group16-sha512
+2026-02-04 22:17:16,003 [DEBUG] server key: rsa-sha2-512, rsa-sha2-256, ssh-rsa
+2026-02-04 22:17:16,003 [DEBUG] client encrypt: chacha20-poly1305@openssh.com, aes128-gcm@openssh.com, aes256-gcm@openssh.com, aes128-gcm, aes256-gcm, aes128-ctr, aes192-ctr, aes256-ctr
+2026-02-04 22:17:16,004 [DEBUG] server encrypt: chacha20-poly1305@openssh.com, aes128-gcm@openssh.com, aes256-gcm@openssh.com, aes128-gcm, aes256-gcm, aes128-ctr, aes192-ctr, aes256-ctr
+2026-02-04 22:17:16,004 [DEBUG] client mac: hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com
+2026-02-04 22:17:16,004 [DEBUG] server mac: hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com
+2026-02-04 22:17:16,005 [DEBUG] client compress: none
+2026-02-04 22:17:16,005 [DEBUG] server compress: none
+2026-02-04 22:17:16,005 [DEBUG] client lang: <none>
+2026-02-04 22:17:16,005 [DEBUG] server lang: <none>
+2026-02-04 22:17:16,006 [DEBUG] kex follows: False
+2026-02-04 22:17:16,006 [DEBUG] === Key exchange agreements ===
+2026-02-04 22:17:16,006 [DEBUG] Kex: curve25519-sha256@libssh.org
+2026-02-04 22:17:16,006 [DEBUG] HostKey: rsa-sha2-512
+2026-02-04 22:17:16,006 [DEBUG] Cipher: aes128-ctr
+2026-02-04 22:17:16,007 [DEBUG] MAC: hmac-sha2-256-etm@openssh.com
+2026-02-04 22:17:16,007 [DEBUG] Compression: none
+2026-02-04 22:17:16,007 [DEBUG] === End of kex handshake ===
+2026-02-04 22:17:16,082 [DEBUG] kex engine KexCurve25519 specified hash_algo <built-in function openssl_sha256>
+2026-02-04 22:17:16,083 [DEBUG] Switch to new keys ...
+2026-02-04 22:17:16,084 [DEBUG] Got EXT_INFO: {'server-sig-algs': b'ssh-rsa,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,ssh-ed25519,x509v3-ecdsa-sha2-nistp256,x509v3-ecdsa-sha2-nistp384,x509v3-ecdsa-sha2-nistp521,rsa-sha2-256,rsa-sha2-512,x509v3-rsa2048-sha256'}
+2026-02-04 22:17:16,084 [DEBUG] Adding ssh-rsa host key for 10.255.6.4: b'e076065d42d91f631f1dc2131eaed6cf'
+2026-02-04 22:17:16,135 [DEBUG] userauth is OK
+2026-02-04 22:17:16,236 [INFO] Authentication (password) successful!
+2026-02-04 22:17:16,237 [DEBUG] [chan 0] Max packet in: 32768 bytes
+2026-02-04 22:17:16,290 [DEBUG] [chan 0] Max packet out: 65536 bytes
+2026-02-04 22:17:16,292 [DEBUG] Secsh channel 0 opened.
+2026-02-04 22:17:16,345 [DEBUG] [chan 0] Sesch channel 0 request ok
+2026-02-04 22:17:16,397 [DEBUG] [chan 0] Sesch channel 0 request ok
+2026-02-04 22:17:16,398 [DEBUG] write_channel: b'\n'
+2026-02-04 22:17:16,499 [DEBUG] write_channel: b'terminal width 511\n'
+2026-02-04 22:17:16,500 [DEBUG] read_channel: allegan-1a#
+allegan-1a#
+2026-02-04 22:17:16,510 [DEBUG] read_channel: 
+2026-02-04 22:17:16,521 [DEBUG] read_channel: 
+2026-02-04 22:17:16,532 [DEBUG] read_channel: 
+2026-02-04 22:17:16,543 [DEBUG] read_channel: 
+2026-02-04 22:17:16,553 [DEBUG] read_channel: 
+2026-02-04 22:17:16,564 [DEBUG] read_channel: terminal wid
+2026-02-04 22:17:16,575 [DEBUG] read_channel: th 511
+allegan-1a#
+2026-02-04 22:17:16,576 [DEBUG] Pattern found: (terminal width 511) allegan-1a#
+allegan-1a#terminal width 511
+2026-02-04 22:17:16,576 [DEBUG] In disable_paging
+2026-02-04 22:17:16,576 [DEBUG] Command: terminal length 0
+
+2026-02-04 22:17:16,577 [DEBUG] write_channel: b'terminal length 0\n'
+2026-02-04 22:17:16,577 [DEBUG] read_channel: 
+2026-02-04 22:17:16,587 [DEBUG] read_channel: 
+2026-02-04 22:17:16,598 [DEBUG] read_channel: 
+2026-02-04 22:17:16,609 [DEBUG] read_channel: 
+2026-02-04 22:17:16,620 [DEBUG] read_channel: 
+2026-02-04 22:17:16,631 [DEBUG] read_channel: 
+2026-02-04 22:17:16,642 [DEBUG] read_channel: termin
+2026-02-04 22:17:16,652 [DEBUG] read_channel: al length 0
+
+2026-02-04 22:17:16,653 [DEBUG] Pattern found: (terminal\ length\ 0) 
+allegan-1a#terminal length 0
+2026-02-04 22:17:16,653 [DEBUG] 
+allegan-1a#terminal length 0
+2026-02-04 22:17:16,654 [DEBUG] Exiting disable_paging
+2026-02-04 22:17:16,664 [DEBUG] read_channel: allegan-1a#
+2026-02-04 22:17:16,666 [DEBUG] Clear buffer detects data in the channel
+2026-02-04 22:17:16,686 [DEBUG] read_channel: 
+2026-02-04 22:17:16,687 [DEBUG] write_channel: b'\n'
+2026-02-04 22:17:16,688 [DEBUG] read_channel: 
+2026-02-04 22:17:16,698 [DEBUG] read_channel: 
+2026-02-04 22:17:16,709 [DEBUG] read_channel: 
+2026-02-04 22:17:16,720 [DEBUG] read_channel: 
+2026-02-04 22:17:16,731 [DEBUG] read_channel: 
+2026-02-04 22:17:16,741 [DEBUG] read_channel: 
+2026-02-04 22:17:16,752 [DEBUG] read_channel: 
+allegan-1a#
+2026-02-04 22:17:16,752 [DEBUG] Pattern found: ((?:\#|>)) 
+allegan-1a#
+2026-02-04 22:17:16,763 [DEBUG] read_channel: 
+2026-02-04 22:17:16,763 [DEBUG] [find_prompt()]: prompt is allegan-1a#
+2026-02-04 22:17:16,774 [DEBUG] read_channel: 
+2026-02-04 22:17:16,774 [DEBUG] write_channel: b'\n'
+2026-02-04 22:17:16,800 [DEBUG] read_channel: 
+2026-02-04 22:17:16,801 [DEBUG] write_channel: b'\n'
+2026-02-04 22:17:16,827 [DEBUG] read_channel: 
+2026-02-04 22:17:16,828 [DEBUG] write_channel: b'\n'
+2026-02-04 22:17:16,879 [DEBUG] read_channel: 
+allegan-1a#
+allegan-1a#
+2026-02-04 22:17:16,890 [DEBUG] read_channel: 
+allegan-1a#
+2026-02-04 22:17:16,890 [DEBUG] Clear buffer detects data in the channel
+2026-02-04 22:17:16,911 [DEBUG] read_channel: 
+2026-02-04 22:17:16,912 [DEBUG] [find_prompt()]: prompt is allegan-1a#
+2026-02-04 22:17:16,922 [DEBUG] read_channel: 
+2026-02-04 22:17:16,923 [DEBUG] write_channel: b'\n'
+2026-02-04 22:17:16,949 [DEBUG] read_channel: 
+2026-02-04 22:17:16,950 [DEBUG] write_channel: b'\n'
+2026-02-04 22:17:16,976 [DEBUG] read_channel: 
+2026-02-04 22:17:16,977 [DEBUG] write_channel: b'\n'
+2026-02-04 22:17:17,028 [DEBUG] read_channel: 
+allegan-1a#
+allegan-1a#
+2026-02-04 22:17:17,039 [DEBUG] read_channel: 
+allegan-1a#
+2026-02-04 22:17:17,039 [DEBUG] Clear buffer detects data in the channel
+2026-02-04 22:17:17,060 [DEBUG] read_channel: 
+2026-02-04 22:17:17,060 [DEBUG] [find_prompt()]: prompt is allegan-1a#
+2026-02-04 22:17:17,061 [DEBUG] write_channel: b'show cdp neighbors detail\n'
+2026-02-04 22:17:17,061 [DEBUG] read_channel: 
+2026-02-04 22:17:17,072 [DEBUG] read_channel: 
+2026-02-04 22:17:17,083 [DEBUG] read_channel: 
+2026-02-04 22:17:17,093 [DEBUG] read_channel: 
+2026-02-04 22:17:17,103 [DEBUG] read_channel: 
+2026-02-04 22:17:17,114 [DEBUG] read_channel: 
+2026-02-04 22:17:17,125 [DEBUG] read_channel: show c
+2026-02-04 22:17:17,136 [DEBUG] read_channel: dp nei
+2026-02-04 22:17:17,146 [DEBUG] read_channel: ghbors d
+2026-02-04 22:17:17,157 [DEBUG] read_channel: 
+2026-02-04 22:17:17,168 [DEBUG] read_channel: 
+2026-02-04 22:17:17,178 [DEBUG] read_channel: etail
+
+2026-02-04 22:17:17,179 [DEBUG] Pattern found: (show\ cdp\ neighbors\ detail) show cdp neighbors detail
+2026-02-04 22:17:17,204 [DEBUG] read_channel: 
+2026-02-04 22:17:17,230 [DEBUG] read_channel: 
+2026-02-04 22:17:17,256 [DEBUG] read_channel: -------------------------
+Device ID: bahuccxsub
+Entry address(es): 
+  IP address: 10.3.253.11
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/2,  Port ID (outgoing port): eth0
+Holdtime : 149 sec
+
+Version :
+Linux 4.18.0-513.11.1.el8_9.x86_64 #1 SMP Wed Jan 17 02:00:40 EST 2024 CCM:15.0.1.10000-27.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.d754
+Duplex: full
+
+-------------------------
+Device ID: bahtftpmed
+Entry address(es): 
+  IP address: 10.3.253.10
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/1,  Port ID (outgoing port): eth0
+Holdtime : 125 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13901-2.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.0b02
+Duplex: full
+
+-------------------------
+Device ID: bahpcd
+Entry address(es): 
+  IP address: 10.3.253.13
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/4,  Port ID (outgoing port): eth0
+Holdtime : 147 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13900-46.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.6115
+Duplex: full
+
+-------------------------
+Device ID: bahcmsub1
+Entry address(es): 
+  IP address: 10.3.253.6
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/3,  Port ID (outgoing port): eth0
+Holdtime : 140 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13901-2.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.121c
+Duplex: full
+
+-------------------------
+Device ID: bahcmsub2
+Entry address(es): 
+  IP address: 10.3.253.7
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/4,  Port ID (outgoing port): eth0
+Holdtime : 136 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13901-2.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.6560
+Duplex: full
+
+-------------------------
+Device ID: trh-1.switch
+Entry address(es): 
+  IP address: 172.18.164.5
+Platform: cisco C9300-24P,  Capabilities: Router Switch IGMP 
+Interface: TwentyFiveGigE1/1/1,  Port ID (outgoing port): TwentyFiveGigE3/1/2
+Holdtime : 165 sec
+
+Version :
+Cisco IOS Software [Dublin], Catalyst L3 Switch Software (CAT9K_IOSXE), Version 17.12.4, RELEASE SOFTWARE (fc3)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2024 by Cisco Systems, Inc.
+Compiled Tue 23-Jul-24 09:40 by mcpre
+
+advertisement version: 2
+Peer Source MAC: f87a.41a9.e5d6
+VTP Management Domain: 'TRH-1'
+Duplex: full
+Management address(es): 
+  IP address: 172.18.164.5
+
+-------------------------
+Device ID: AGHVG03.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.23
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/9,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 161 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: e8b7.487b.043d
+Duplex: full
+
+-------------------------
+Device ID: AGHVG02.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.22
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/8,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 127 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: 6400.f137.33e1
+Duplex: full
+
+-------------------------
+Device ID: AGHVG01.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.21
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/7,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 124 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: e8b7.487b.046a
+Duplex: full
+
+-------------------------
+Device ID: AGHCUBE.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.27
+Platform: Cisco CISCO2921/K9,  Capabilities: Router Source-Route-Bridge Switch 
+Interface: FiveGigabitEthernet1/0/5,  Port ID (outgoing port): GigabitEthernet0/0
+Holdtime : 148 sec
+
+Version :
+Cisco IOS Software, C2900 Software (C2900-UNIVERSALK9-M), Version 15.7(3)M8, RELEASE SOFTWARE (fc1)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2021 by Cisco Systems, Inc.
+Compiled Tue 02-Mar-21 07:51 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: d867.d99c.2d70
+VTP Management Domain: ''
+Duplex: full
+Management address(es): 
+  IP address: 10.3.253.27
+
+-------------------------
+Device ID: AGHVG06.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.26
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/12,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 177 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: 2894.0f50.31d6
+Duplex: full
+
+-------------------------
+Device ID: AGHVG05.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.25
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/11,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 149 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: e8b7.487b.00c3
+Duplex: full
+
+-------------------------
+Device ID: AGHVG04.bhsin.org
+Entry address(es): 
+  IP address: 10.3.253.24
+Platform: Cisco VG224,  Capabilities: Router 
+Interface: FiveGigabitEthernet1/0/10,  Port ID (outgoing port): FastEthernet0/0
+Holdtime : 143 sec
+
+Version :
+Cisco IOS Software, vg224 Software (vg224-I6K9S-M), Version 15.1(4)M10, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2015 by Cisco Systems, Inc.
+Compiled Tue 24-Mar-15 15:15 by prod_rel_team
+
+advertisement version: 2
+Peer Source MAC: e8b7.487b.00be
+Duplex: full
+
+-------------------------
+Device ID: AGH-CORE
+Entry address(es): 
+  IP address: 172.17.1.254
+Platform: cisco WS-C3850-24XS,  Capabilities: Router Switch IGMP 
+Interface: TwentyFiveGigE1/1/2,  Port ID (outgoing port): TenGigabitEthernet4/1/1
+Holdtime : 149 sec
+
+Version :
+Cisco IOS Software [Everest], Catalyst L3 Switch Software (CAT3K_CAA-UNIVERSALK9-M), Version 16.6.4, RELEASE SOFTWARE (fc3)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2018 by Cisco Systems, Inc.
+Compiled Sun 08-Jul-18 02:57 by mcpre
+
+advertisement version: 2
+Peer Source MAC: 6cdd.30f2.4919
+VTP Management Domain: 'AGH'
+Native VLAN: 1
+Duplex: full
+Management address(es): 
+  IP address: 172.17.1.254
+
+-------------------------
+Device ID: AGH-CORE
+Entry address(es): 
+  IP address: 172.17.1.254
+Platform: cisco WS-C3850-24XS,  Capabilities: Router Switch IGMP 
+Interface: TwentyFiveGigE1/1/4,  Port ID (outgoing port): TenGigabitEthernet3/1/1
+Holdtime : 148 sec
+
+Version :
+Cisco IOS Software [Everest], Catalyst L3 Switch Software (CAT3K_CAA-UNIVERSALK9-M), Version 16.6.4, RELEASE SOFTWARE (fc3)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2018 by Cisco Systems, Inc.
+Compiled Sun 08-Jul-18 02:57 by mcpre
+
+advertisement version: 2
+Peer Source MAC: 6cdd.30f0.8c19
+VTP Management Domain: 'AGH'
+Native VLAN: 1
+Duplex: full
+Management address(es): 
+  IP address: 172.17.1.254
+
+-------------------------
+Device ID: bahcucsub
+Entry address(es): 
+  IP address: 10.3.253.8
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/1,  Port ID (outgoing port): eth0
+Holdtime : 136 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13900-61.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.394d
+Duplex: full
+
+-------------------------
+Device ID: bahcersub
+Entry address(es): 
+  IP address: 10.3.253.9
+Platform: VMware,  Capabilities: Host 
+Interface: FiveGigabitEthernet1/0/2,  Port ID (outgoing port): eth0
+Holdtime : 167 sec
+
+Version :
+Linux 4.18.0-553.22.1.el8_10.x86_64 #1 SMP Tue Sep 24 05:16:59 EDT 2024 CCM:15.0.1.13900-49.x86_64
+
+advertisement version: 2
+Peer Source MAC: 0050.56ad.11de
+Duplex: full
+
+
+Total cdp entries displayed : 17
+allegan-1a#
+2026-02-04 22:17:17,268 [DEBUG] read_channel: 
+2026-02-04 22:17:17,269 [DEBUG] write_channel: b'\n'
+2026-02-04 22:17:17,294 [DEBUG] read_channel: 
+2026-02-04 22:17:17,295 [DEBUG] write_channel: b'\n'
+2026-02-04 22:17:17,321 [DEBUG] read_channel: 
+2026-02-04 22:17:17,321 [DEBUG] write_channel: b'\n'
+2026-02-04 22:17:17,372 [DEBUG] read_channel: 
+allegan-1a#
+allegan-1a#
+2026-02-04 22:17:17,383 [DEBUG] read_channel: 
+allegan-1a#
+2026-02-04 22:17:17,383 [DEBUG] Clear buffer detects data in the channel
+2026-02-04 22:17:17,404 [DEBUG] read_channel: 
+2026-02-04 22:17:17,405 [DEBUG] [find_prompt()]: prompt is allegan-1a#
+2026-02-04 22:17:17,405 [DEBUG] write_channel: b'show lldp neighbors detail\n'
+2026-02-04 22:17:17,406 [DEBUG] read_channel: 
+2026-02-04 22:17:17,416 [DEBUG] read_channel: 
+2026-02-04 22:17:17,427 [DEBUG] read_channel: 
+2026-02-04 22:17:17,438 [DEBUG] read_channel: 
+2026-02-04 22:17:17,448 [DEBUG] read_channel: 
+2026-02-04 22:17:17,459 [DEBUG] read_channel: 
+2026-02-04 22:17:17,470 [DEBUG] read_channel: show ll
+2026-02-04 22:17:17,480 [DEBUG] read_channel: dp neighbors 
+2026-02-04 22:17:17,491 [DEBUG] read_channel: 
+2026-02-04 22:17:17,502 [DEBUG] read_channel: 
+2026-02-04 22:17:17,512 [DEBUG] read_channel: det
+2026-02-04 22:17:17,523 [DEBUG] read_channel: ail
+------------------------------------------------
+Local Intf: Twe1/1/1
+Local Intf service instance: -
+Chassis id: 50c7.09a0.6d1e
+Port id: 543
+Port Description: Access Handoff BeaconHealth.EV-ETHS-ON-149308.Inet VLAN 149 Copper
+System Name: ADV_RAD_SERVICES_EVM-ETHS-OF-12679.E0
+
+System Description: 
+Juniper Networks, Inc. ex3400-24t Ethernet Switch, kernel JUNOS 15.1X53-D592.1, Build date: 2019-10-24 19:15:40 UTC Copyright (c) 1996-2019 Juniper Networks, Inc.
+
+Time remaining: 96 seconds
+System Capabilities: B,R
+Enabled Capabilities: B,R
+Management Addresses - not advertised
+Auto Negotiation - not supported
+Physical media capabilities:
+    Other/unknown
+Media Attachment Unit type - not advertised
+Vlan ID: 149
+Peer Source MAC: 50c7.09a0.6d3d
+
+MED Information:
+
+    MED Codes:
+          (NP) Network Policy, (LI) Location Identification
+          (PS) Power Source Entity, (PD) Power Device
+          (IN) Inventory
+
+    Inventory information - not advertised
+    Capabilities: NP, LI, PS
+    Device type: Network connectivity
+    Network Policies - not advertised
+    Power requirements - not advertised
+    Location - not advertised
+
+------------------------------------------------
+Local Intf: Fi1/0/4
+Local Intf service instance: -
+Chassis id: 303e.a724.ef4b
+Port id: 303e.a724.ef4b
+Port Description - not advertised
+System Name - not advertised
+System Description - not advertised
+
+Time remaining: 113 seconds
+System Capabilities - not advertised
+Enabled Capabilities - not advertised
+Management Addresses - not advertised
+Auto Negotiation - not supported
+Physical media capabilities - not advertised
+Media Attachment Unit type - not advertised
+Vlan ID: - not advertised
+Peer Source MAC: 303e.a724.ef4b
+
+------------------------------------------------
+Local Intf: Fi1/0/2
+Local Intf service instance: -
+Chassis id: 303e.a724.f577
+Port id: 303e.a724.f577
+Port Description - not advertised
+System Name - not advertised
+System Description - not advertised
+
+Time remaining: 105 seconds
+System Capabilities - not advertised
+Enabled Capabilities - not advertised
+Management Addresses - not advertised
+Auto Negotiation - not supported
+Physical media capabilities - not advertised
+Media Attachment Unit type - not advertised
+Vlan ID: - not advertised
+Peer Source MAC: 303e.a724.f577
+
+------------------------------------------------
+Local Intf: Fi1/0/3
+Local Intf service instance: -
+Chassis id: 303e.a724.f407
+Port id: 303e.a724.f407
+Port Description - not advertised
+System Name - not advertised
+System Description - not advertised
+
+Time remaining: 96 seconds
+System Capabilities - not advertised
+Enabled Capabilities - not advertised
+Management Addresses - not advertised
+Auto Negotiation - not supported
+Physical media capabilities - not advertised
+Media Attachment Unit type - not advertised
+Vlan ID: - not advertised
+Peer Source MAC: 303e.a724.f407
+
+------------------------------------------------
+Local Intf: Fi1/0/1
+Local Intf service instance: -
+Chassis id: 303e.a724.f227
+Port id: 303e.a724.f227
+Port Description - not advertised
+System Name - not advertised
+System Description - not advertised
+
+Time remaining: 118 seconds
+System Capabilities - not advertised
+Enabled Capabilities - not advertised
+Management Addresses - not advertised
+Auto Negotiation - not supported
+Physical media capabilities - not advertised
+Media Attachment Unit type - not advertised
+Vlan ID: - not advertised
+Peer Source MAC: 303e.a724.f227
+
+
+Total entries displayed: 5
+
+allegan-1a#
+2026-02-04 22:17:17,524 [DEBUG] Pattern found: (show\ lldp\ neighbors\ detail) show lldp neighbors detail
+2026-02-04 22:17:17,549 [DEBUG] read_channel: 
+2026-02-04 22:17:17,550 [DEBUG] write_channel: b'\n'
+2026-02-04 22:17:17,551 [DEBUG] read_channel: 
+2026-02-04 22:17:17,561 [DEBUG] read_channel: 
+2026-02-04 22:17:17,572 [DEBUG] read_channel: 
+2026-02-04 22:17:17,582 [DEBUG] read_channel: 
+2026-02-04 22:17:17,593 [DEBUG] read_channel: 
+2026-02-04 22:17:17,603 [DEBUG] read_channel: 
+2026-02-04 22:17:17,614 [DEBUG] read_channel: 
+allegan-1a#
+2026-02-04 22:17:17,614 [DEBUG] Pattern found: ([>#]) 
+allegan-1a#
+2026-02-04 22:17:17,615 [DEBUG] write_channel: b'exit\n'
+2026-02-04 22:17:17,617 [INFO] 172.17.0.1 - - [04/Feb/2026 22:17:17] "POST / HTTP/1.1" 200 -
+2026-02-04 22:17:17,670 [DEBUG] EOF in transport thread
