@@ -4,9 +4,11 @@ from dataclasses import dataclass, field
 from typing import Dict, List
 from flask import Flask, render_template_string, request
 import logging
+from jinja2 import Environment, FileSystemLoader
 import os
 
-LOG_PATH = "/app/logs/app.log" 
+LOG_PATH = "/app/logs/app.log"
+TEMPLATES_DIR = "/app/templates/"
 
 logging.basicConfig( 
     filename=LOG_PATH, 
@@ -198,27 +200,9 @@ def render_text_topology(topo: Topology, root: str | None = None) -> str:
 
 app = Flask(__name__)
 
-TEMPLATE = """
-<!doctype html>
-<title>Layer 2 Neighbor Map</title>
-<h1>Layer 2 Neighbor Map</h1>
-<form method="post">
-  <label>Seed IP/Hostname: <input name="seed" required></label><br>
-  <label>Device Type: <select name="device_type" required>
-    <option value="cisco_xe">Cisco IOS-XE</option>
-    <option value="cisco_ios">Cisco IOS</option></select></label><br>
-  <label>Username: <input name="username" required></label><br>
-  <label>Password: <input name="password" type="password" required></label><br>
-  <button type="submit">Discover</button>
-</form>
-
-{% if error %} <div style="color: #b00020; font-weight: bold; margin-top: 1em;"> {{ error }} </div> {% endif %} 
-
-{% if topology %}
-<h2>Topology</h2>
-<pre>{{ topology }}</pre>
-{% endif %}
-"""
+environment = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
+root_template = environment.get_template("root.j2")
+TEMPLATE = root_template.render()
 
 @app.route("/", methods=["GET", "POST"])
 def index():

@@ -1,0 +1,19 @@
+<!doctype html>
+<title>Layer 2 Neighbor Map</title>
+<h1>Layer 2 Neighbor Map</h1>
+<form method="post">
+  <label>Seed Device: <input name="seed" required></label><br>
+  <label>Device Type: <select name="device_type" required>
+    <option value="cisco_xe">Cisco IOS-XE</option>
+    <option value="cisco_ios">Cisco IOS</option></select></label><br>
+  <label>Username: <input name="username" required></label><br>
+  <label>Password: <input name="password" type="password" required></label><br>
+  <button type="submit">Discover</button>
+</form>
+
+{% if error %} <div style="color: #b00020; font-weight: bold; margin-top: 1em;"> {{ error }} </div> {% endif %} 
+
+{% if topology %}
+<h2>Topology</h2>
+<pre>{{ topology }}</pre>
+{% endif %}
