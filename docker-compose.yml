@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  neighbor-mapper:
+    build: .
+    container_name: neighbor-mapper
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount logs directory for persistence
+      - ./logs:/app/logs
+      # Mount config for easy updates without rebuild
+      - ./config:/app/config
+    restart: unless-stopped
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

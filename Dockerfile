@@ -1,23 +1,27 @@
-FROM python:3.12-slim
+FROM python:3.11-slim
 
 WORKDIR /app
 
-# Create the logs directory inside the image
+# Install dependencies
+RUN pip install --no-cache-dir \
+    flask==3.0.0 \
+    netmiko==4.3.0 \
+    pyyaml==6.0.1
+
+# Create logs directory
 RUN mkdir -p /app/logs
 
-# Mark it as a volume so Docker stores logs outside the container filesystem
-# VOLUME ["/app/logs"]
+# Copy application files
+COPY app/ /app/
+COPY config/ /app/config/
+COPY templates/ /app/templates/
 
-# Install dependencies
-RUN pip install --no-cache-dir flask netmiko
-
-# Copy application code
-COPY app /app
-
-# Expose the web port
+# Expose port
 EXPOSE 8000
 
-ENV FLASK_APP=app.py
+# Set environment variables
 ENV PYTHONUNBUFFERED=1
+ENV FLASK_APP=app.py
 
+# Run application
 CMD ["python", "app.py"]
