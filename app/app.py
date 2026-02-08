@@ -72,7 +72,13 @@ def discover():
         
         # Prepare summary
         total_devices = len(topology.devices)
-        total_links = sum(len(device.links) for device in topology.devices.values())
+        unique_links = set()
+        for device in topology.devices.values():
+            for link in device.links:
+                # Create a sorted tuple so (A,B) and (B,A) are the same
+                link_pair = tuple(sorted([link.local_device, link.remote_device]))
+                unique_links.add(link_pair)
+        total_links = len(unique_links)
         
         summary = {
             'devices': total_devices,

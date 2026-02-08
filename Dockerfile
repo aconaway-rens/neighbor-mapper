@@ -2,11 +2,11 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
+# Copy requirements file
+COPY requirements.txt .
+
 # Install dependencies
-RUN pip install --no-cache-dir \
-    flask==3.0.0 \
-    netmiko==4.3.0 \
-    pyyaml==6.0.1
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Create logs directory
 RUN mkdir -p /app/logs
