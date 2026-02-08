@@ -1,0 +1,112 @@
+# Device Type Pattern Matching Configuration
+# This file maps CDP/LLDP platform strings to Netmiko device types
+# Add new patterns here without changing code!
+
+device_types:
+  # Cisco Nexus (NX-OS)
+  cisco_nxos:
+    platforms:
+      - nexus
+      - nx-os
+      - n9k
+      - n7k
+      - n5k
+      - n3k
+      - n2k
+    system_descriptions:
+      - "Cisco Nexus Operating System"
+      - "NX-OS"
+    priority: 100
+    
+  # Cisco IOS-XE (Modern IOS)
+  cisco_xe:
+    platforms:
+      - asr1
+      - isr4
+      - cat9
+      - c9300
+      - c9500
+      - c9400
+      - c9200
+      - csr1000
+      - catalyst 9
+    system_descriptions:
+      - "IOS-XE"
+      - "Cisco IOS XE"
+    priority: 90
+    
+  # Cisco IOS-XR
+  cisco_xr:
+    platforms:
+      - xr
+      - asr9
+      - ncs
+      - ios-xr
+    system_descriptions:
+      - "IOS XR"
+      - "Cisco IOS XR"
+    priority: 95
+    
+  # Cisco IOS (Traditional/Legacy)
+  cisco_ios:
+    platforms:
+      - catalyst
+      - c3750
+      - c3850
+      - c3650
+      - c2960
+      - c2950
+      - c2900
+      - isr
+      - ws-c
+      - cisco 2
+      - cisco 3
+      - c3560
+    system_descriptions:
+      - "Cisco IOS Software"
+      - "C2960"
+      - "C3750"
+      - "C3850"
+    priority: 50
+    
+  # Arista EOS
+  arista_eos:
+    platforms:
+      - arista
+      - dcs-
+    system_descriptions:
+      - "Arista"
+      - "EOS"
+    priority: 80
+    
+  # Juniper JunOS
+  juniper_junos:
+    platforms:
+      - juniper
+      - ex4
+      - ex3
+      - ex2
+      - qfx
+      - mx
+    system_descriptions:
+      - "Juniper"
+      - "JUNOS"
+    priority: 85
+
+# Device capability filtering
+# Only crawl devices with these capabilities
+allowed_capabilities:
+  - Router
+  - Switch
+  - R
+  - S
+  - B  # Bridge (switch)
+
+# Default fallback if no pattern matches
+default_device_type: cisco_ios
+
+# Discovery settings
+discovery:
+  max_depth: 3
+  connection_timeout: 15
+  command_timeout: 30

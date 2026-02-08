@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Neighbor Mapper</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .alert {
+            padding: 15px 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .alert-error {
+            background: #fee;
+            border-left: 4px solid #c33;
+            color: #c33;
+        }
+        
+        .alert-success {
+            background: #efe;
+            border-left: 4px solid #3c3;
+            color: #3c3;
+        }
+        
+        .topology-output {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            white-space: pre;
+        }
+        
+        .summary {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .summary-item {
+            text-align: center;
+        }
+        
+        .summary-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .summary-label {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+        
+        .info-box h3 {
+            color: #1976d2;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .info-box ul {
+            margin-left: 20px;
+            color: #555;
+        }
+        
+        .info-box li {
+            margin-bottom: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🗺️ Network Neighbor Mapper</h1>
+            <p class="subtitle">Discover network topology using CDP and LLDP</p>
+        </div>
+        
+        {% if error %}
+        <div class="alert alert-error">
+            ❌ {{ error }}
+        </div>
+        {% endif %}
+        
+        {% if success %}
+        <div class="alert alert-success">
+            ✅ Discovery completed successfully!
+        </div>
+        {% endif %}
+        
+        <div class="card">
+            <h2 style="margin-bottom: 20px; color: #333;">Discovery Configuration</h2>
+            <form method="POST" action="/discover">
+                <div class="form-group">
+                    <label for="seed_ip">Seed Device IP Address *</label>
+                    <input type="text" id="seed_ip" name="seed_ip" placeholder="192.168.1.1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="device_type">Device Type *</label>
+                    <select id="device_type" name="device_type" required>
+                        <option value="">-- Select Device Type --</option>
+                        {% for value, label in device_types %}
+                        <option value="{{ value }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="username">SSH Username *</label>
+                        <input type="text" id="username" name="username" placeholder="admin" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">SSH Password *</label>
+                        <input type="password" id="password" name="password" placeholder="••••••••" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="max_depth">Maximum Discovery Depth</label>
+                    <select id="max_depth" name="max_depth">
+                        <option value="1">1 hop (immediate neighbors only)</option>
+                        <option value="2">2 hops</option>
+                        <option value="3" selected>3 hops (recommended)</option>
+                        <option value="4">4 hops</option>
+                        <option value="5">5 hops</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn">🔍 Start Discovery</button>
+            </form>
+            
+            <div class="info-box">
+                <h3>ℹ️ How it works</h3>
+                <ul>
+                    <li>Connects to seed device via SSH</li>
+                    <li>Runs "show cdp neighbors detail" and "show lldp neighbors detail"</li>
+                    <li>Extracts neighbor information (hostname, IP, interfaces, platform)</li>
+                    <li>Automatically detects device types using YAML patterns</li>
+                    <li>Recursively discovers neighbors (routers and switches only)</li>
+                    <li>Displays topology tree with interface mappings and IPs</li>
+                </ul>
+            </div>
+        </div>
+        
+        {% if summary %}
+        <div class="card">
+            <h2 style="margin-bottom: 20px; color: #333;">Discovery Summary</h2>
+            <div class="summary">
+                <div class="summary-item">
+                    <div class="summary-value">{{ summary.devices }}</div>
+                    <div class="summary-label">Devices Discovered</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value">{{ summary.links }}</div>
+                    <div class="summary-label">Links Found</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value">{{ summary.visited|length }}</div>
+                    <div class="summary-label">Devices Visited</div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if topology %}
+        <div class="card">
+            <h2 style="margin-bottom: 20px; color: #333;">Network Topology Map</h2>
+            <div class="topology-output">{{ topology }}</div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
