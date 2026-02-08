@@ -11,6 +11,7 @@ from netmiko import ConnectHandler, NetmikoTimeoutException, NetmikoAuthenticati
 
 from device_detector import DeviceTypeDetector
 from parsers import parse_cdp_neighbors_detail, parse_lldp_neighbors_detail, merge_neighbor_info
+from mock_devices import is_mock_mode, get_mock_connection
 
 logger = logging.getLogger(__name__)
 
@@ -164,7 +165,15 @@ class TopologyDiscoverer:
         return self.topology
     
     def _connect(self, ip: str, device_type: str) -> ConnectHandler:
-        """Connect to a device via SSH"""
+        """Connect to a device via SSH (or mock for testing)"""
+        # Check if this is a mock device
+        if is_mock_mode(ip):
+            logger.info(f"Using MOCK mode for {ip}")
+            return get_mock_connection(ip, device_type, 
+                                      self.credentials['username'],
+                                      self.credentials['password'])
+        
+        # Real SSH connection
         try:
             conn = ConnectHandler(
                 device_type=device_type,
