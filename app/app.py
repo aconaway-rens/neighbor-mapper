@@ -69,6 +69,7 @@ def discover():
                              error="All fields are required")
     
     logger.info(f"Discovery request: seed={seed_ip}, type={device_type}, user={username}, depth={max_depth}")
+    logger.info(f"Filters: {filters}")
     
     try:
         # Create discoverer
