@@ -16,10 +16,10 @@ Test the neighbor-mapper application without needing actual switches or routers!
       (192.168.1.10)  (192.168.1.11)
            |
            |
-      ┌────┴────┐
-      |         |
-ACCESS-SW-01  ACCESS-SW-02
-(.1.20)       (.1.21)
+      ┌────┴─────┬────────┬────────┐
+      |          |        |        |
+ACCESS-SW-01  ACCESS-SW-02  IP-PHONE  AP
+(.1.20)       (.1.21)     (.1.100)  (.1.50)
 ```
 
 **Devices:**
@@ -28,12 +28,16 @@ ACCESS-SW-01  ACCESS-SW-02
 - DIST-SW-02: Cisco Catalyst 3750X (Distribution switch)
 - ACCESS-SW-01: Cisco Catalyst 2960X (Access switch)
 - ACCESS-SW-02: Cisco Catalyst 2960X (Access switch)
+- SEP001122334455: Cisco IP Phone 7965 (IP Phone - test filtering!)
+- AP-OFFICE-01: Cisco Access Point 3802 (Wireless AP - test filtering!)
 
 **Connections:**
 - CORE-SW-01 ↔ DIST-SW-01 (CDP + LLDP)
 - CORE-SW-01 ↔ DIST-SW-02 (CDP + LLDP)
 - DIST-SW-01 ↔ ACCESS-SW-01 (CDP + LLDP)
 - DIST-SW-01 ↔ ACCESS-SW-02 (CDP only)
+- DIST-SW-01 ↔ IP-PHONE (CDP - Host/Phone capabilities)
+- DIST-SW-01 ↔ AP (CDP - Trans-Bridge capabilities)
 
 ## 🚀 How to Use Demo Mode
 
@@ -85,17 +89,33 @@ CORE-SW-01 (192.168.1.1)
 - **Seed IP:** `192.168.1.10`
 - **Device Type:** `Cisco IOS`
 - **Max Depth:** `2`
+- **Filters:** Routers + Switches only (default)
 
 **Expected:** Discovers CORE-SW-01 (upstream) and ACCESS switches (downstream)
 
-### Scenario 2: Start from Access Switch
-- **Seed IP:** `192.168.1.20`
+### Scenario 2: Include IP Phones
+- **Seed IP:** `192.168.1.1`
 - **Device Type:** `Cisco IOS`
-- **Max Depth:** `2`
+- **Max Depth:** `3`
+- **Filters:** ✅ Routers, ✅ Switches, ✅ IP Phones
 
-**Expected:** Discovers only DIST-SW-01 (single connection)
+**Expected:** Also discovers SEP001122334455 phone connected to DIST-SW-01
 
-### Scenario 3: Limited Depth
+### Scenario 3: Include Access Points
+- **Seed IP:** `192.168.1.1`
+- **Max Depth:** `3`
+- **Filters:** ✅ Routers, ✅ Switches, ✅ Access Points
+
+**Expected:** Also discovers AP-OFFICE-01 connected to DIST-SW-01
+
+### Scenario 4: Everything
+- **Seed IP:** `192.168.1.1`
+- **Max Depth:** `3`
+- **Filters:** ✅ Check all boxes
+
+**Expected:** Discovers all 7 devices (switches + phone + AP)
+
+### Scenario 5: Limited Depth
 - **Seed IP:** `192.168.1.1`
 - **Max Depth:** `1`
 
@@ -112,6 +132,7 @@ CORE-SW-01 (192.168.1.1)
 ✅ **Device Type Detection** - Different Cisco platforms
 ✅ **Depth Limiting** - Respects max_depth setting
 ✅ **Loop Prevention** - Won't revisit devices
+✅ **Device Filtering** - Test with phones, APs, servers checkboxes
 
 ## 🔍 How Mock Mode Works
 

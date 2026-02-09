@@ -121,6 +121,28 @@ Holdtime : 145 sec
 
 Version :
 Cisco IOS Software, C2960X Software
+
+-------------------------
+Device ID: SEP001122334455
+Entry address(es): 
+  IP address: 192.168.1.100
+Platform: Cisco IP Phone 7965,  Capabilities: Host Phone 
+Interface: GigabitEthernet1/0/5,  Port ID (outgoing port): Port 1
+Holdtime : 132 sec
+
+Version :
+SCCP75.9-4-2SR3-1S
+
+-------------------------
+Device ID: AP-OFFICE-01
+Entry address(es): 
+  IP address: 192.168.1.50
+Platform: Cisco AIR-AP3802I-B-K9,  Capabilities: Trans-Bridge 
+Interface: GigabitEthernet1/0/15,  Port ID (outgoing port): GigabitEthernet0
+Holdtime : 125 sec
+
+Version :
+Cisco IOS Software, AP3800 Software
 """,
             "lldp_output": """
 ------------------------------------------------
@@ -235,6 +257,42 @@ Entry address(es):
 Platform: cisco WS-C3750X-48,  Capabilities: Router Switch IGMP 
 Interface: GigabitEthernet0/1,  Port ID (outgoing port): GigabitEthernet1/0/11
 Holdtime : 149 sec
+
+Version :
+Cisco IOS Software, C3750E Software (C3750E-UNIVERSALK9-M), Version 15.2(4)E8
+""",
+            "lldp_output": ""
+        },
+        
+        "192.168.1.100": {
+            "hostname": "SEP001122334455",
+            "device_type": "cisco_ios",
+            "platform": "Cisco IP Phone 7965",
+            "cdp_output": """
+Device ID: DIST-SW-01
+Entry address(es): 
+  IP address: 192.168.1.10
+Platform: cisco WS-C3750X-48,  Capabilities: Router Switch IGMP 
+Interface: Port 1,  Port ID (outgoing port): GigabitEthernet1/0/5
+Holdtime : 156 sec
+
+Version :
+Cisco IOS Software, C3750E Software (C3750E-UNIVERSALK9-M), Version 15.2(4)E8
+""",
+            "lldp_output": ""
+        },
+        
+        "192.168.1.50": {
+            "hostname": "AP-OFFICE-01",
+            "device_type": "cisco_ios",
+            "platform": "Cisco AIR-AP3802I-B-K9",
+            "cdp_output": """
+Device ID: DIST-SW-01
+Entry address(es): 
+  IP address: 192.168.1.10
+Platform: cisco WS-C3750X-48,  Capabilities: Router Switch IGMP 
+Interface: GigabitEthernet0,  Port ID (outgoing port): GigabitEthernet1/0/15
+Holdtime : 148 sec
 
 Version :
 Cisco IOS Software, C3750E Software (C3750E-UNIVERSALK9-M), Version 15.2(4)E8

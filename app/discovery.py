@@ -138,7 +138,15 @@ class TopologyDiscoverer:
                 
                 # Process each neighbor
                 for neighbor in neighbors:
-                    # Create link
+                    # Determine device type for neighbor (includes filtering)
+                    neighbor_device_type = self._detect_neighbor_type(neighbor)
+                    
+                    # Skip if filtered out (detect_neighbor_type returns None for filtered devices)
+                    if not neighbor_device_type:
+                        logger.debug(f"Skipping {neighbor.get('remote_device', 'Unknown')}: filtered out or no device type detected")
+                        continue
+                    
+                    # Create link (only for devices that pass the filter)
                     link = Link(
                         local_device=hostname,
                         local_intf=neighbor.get('local_intf', '?'),
@@ -149,16 +157,13 @@ class TopologyDiscoverer:
                     )
                     self.topology.add_link(link)
                     
-                    # Determine device type for neighbor
-                    neighbor_device_type = self._detect_neighbor_type(neighbor)
-                    
-                    # Queue for discovery if we detected a type and have an IP
-                    if neighbor_device_type and neighbor.get('remote_ip'):
+                    # Queue for discovery if we have an IP
+                    if neighbor.get('remote_ip'):
                         if neighbor['remote_ip'] not in self.visited:
                             queue.append((neighbor['remote_ip'], neighbor_device_type, depth + 1))
                             logger.info(f"Queued {neighbor['remote_device']} ({neighbor['remote_ip']}) as {neighbor_device_type}")
                     else:
-                        logger.debug(f"Skipping {neighbor.get('remote_device', 'Unknown')}: type={neighbor_device_type}, ip={neighbor.get('remote_ip')}")
+                        logger.debug(f"Not queuing {neighbor.get('remote_device', 'Unknown')}: no IP address")
                 
                 conn.disconnect()
                 

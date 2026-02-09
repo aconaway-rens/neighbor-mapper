@@ -128,6 +128,14 @@ class DeviceTypeDetector:
         Returns:
             Device category: 'router', 'switch', 'phone', 'server', 'ap', or 'other'
         """
+        # Access Point detection (check BEFORE bridge, since Trans-Bridge = AP)
+        if any(c in caps for c in ['WLAN', 'W', 'AP']):
+            return 'ap'
+        
+        # Check for Trans-Bridge (Cisco APs report as this)
+        if 'TRANS-BRIDGE' in caps:
+            return 'ap'
+        
         # Router detection
         if any(c in caps for c in ['ROUTER', 'R']):
             return 'router'
@@ -139,10 +147,6 @@ class DeviceTypeDetector:
         # Phone detection
         if any(c in caps for c in ['PHONE', 'P', 'T']):  # T = telephone
             return 'phone'
-        
-        # Access Point detection
-        if any(c in caps for c in ['WLAN', 'W', 'AP']):
-            return 'ap'
         
         # Server/Host detection
         if any(c in caps for c in ['HOST', 'H', 'STATION']):
