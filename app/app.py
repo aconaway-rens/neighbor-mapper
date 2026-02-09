@@ -52,6 +52,16 @@ def discover():
     password = request.form.get('password', '')
     max_depth = int(request.form.get('max_depth', 3))
     
+    # Get filter settings
+    filters = {
+        'include_routers': request.form.get('include_routers') == 'true',
+        'include_switches': request.form.get('include_switches') == 'true',
+        'include_phones': request.form.get('include_phones') == 'true',
+        'include_servers': request.form.get('include_servers') == 'true',
+        'include_aps': request.form.get('include_aps') == 'true',
+        'include_other': request.form.get('include_other') == 'true',
+    }
+    
     # Validate inputs
     if not all([seed_ip, device_type, username, password]):
         return render_template('index.html', 
@@ -62,7 +72,7 @@ def discover():
     
     try:
         # Create discoverer
-        discoverer = TopologyDiscoverer(detector, max_depth=max_depth)
+        discoverer = TopologyDiscoverer(detector, max_depth=max_depth, filters=filters)
         
         # Run discovery
         topology = discoverer.discover(seed_ip, device_type, username, password)
@@ -72,6 +82,8 @@ def discover():
         
         # Prepare summary
         total_devices = len(topology.devices)
+        
+        # Count unique links (each edge only once, not both directions)
         unique_links = set()
         for device in topology.devices.values():
             for link in device.links:

@@ -75,9 +75,17 @@ class DiscoveryError(Exception):
 class TopologyDiscoverer:
     """Discovers network topology recursively"""
     
-    def __init__(self, device_detector: DeviceTypeDetector, max_depth: int = 3):
+    def __init__(self, device_detector: DeviceTypeDetector, max_depth: int = 3, filters: dict = None):
         self.detector = device_detector
         self.max_depth = max_depth
+        self.filters = filters or {
+            'include_routers': True,
+            'include_switches': True,
+            'include_phones': False,
+            'include_servers': False,
+            'include_aps': False,
+            'include_other': False,
+        }
         self.topology = Topology()
         self.visited: Set[str] = set()
         self.credentials = {}
@@ -130,7 +138,15 @@ class TopologyDiscoverer:
                 
                 # Process each neighbor
                 for neighbor in neighbors:
-                    # Create link
+                    # Determine device type for neighbor (includes filtering)
+                    neighbor_device_type = self._detect_neighbor_type(neighbor)
+                    
+                    # Skip if filtered out (detect_neighbor_type returns None for filtered devices)
+                    if not neighbor_device_type:
+                        logger.debug(f"Skipping {neighbor.get('remote_device', 'Unknown')}: filtered out or no device type detected")
+                        continue
+                    
+                    # Create link (only for devices that pass the filter)
                     link = Link(
                         local_device=hostname,
                         local_intf=neighbor.get('local_intf', '?'),
@@ -141,16 +157,13 @@ class TopologyDiscoverer:
                     )
                     self.topology.add_link(link)
                     
-                    # Determine device type for neighbor
-                    neighbor_device_type = self._detect_neighbor_type(neighbor)
-                    
-                    # Queue for discovery if we detected a type and have an IP
-                    if neighbor_device_type and neighbor.get('remote_ip'):
+                    # Queue for discovery if we have an IP
+                    if neighbor.get('remote_ip'):
                         if neighbor['remote_ip'] not in self.visited:
                             queue.append((neighbor['remote_ip'], neighbor_device_type, depth + 1))
                             logger.info(f"Queued {neighbor['remote_device']} ({neighbor['remote_ip']}) as {neighbor_device_type}")
                     else:
-                        logger.debug(f"Skipping {neighbor.get('remote_device', 'Unknown')}: type={neighbor_device_type}, ip={neighbor.get('remote_ip')}")
+                        logger.debug(f"Not queuing {neighbor.get('remote_device', 'Unknown')}: no IP address")
                 
                 conn.disconnect()
                 
@@ -231,13 +244,13 @@ class TopologyDiscoverer:
         
         # Try CDP-based detection first (has better platform info)
         if platform:
-            device_type = self.detector.detect_from_cdp(platform, capabilities)
+            device_type = self.detector.detect_from_cdp(platform, capabilities, self.filters)
             if device_type:
                 return device_type
         
         # Fall back to LLDP system description
         if system_desc:
-            device_type = self.detector.detect_from_lldp(system_desc, capabilities)
+            device_type = self.detector.detect_from_lldp(system_desc, capabilities, self.filters)
             if device_type:
                 return device_type
         

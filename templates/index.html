@@ -249,6 +249,36 @@
                     </select>
                 </div>
                 
+                <div class="form-group">
+                    <label style="margin-bottom: 10px;">Device Types to Discover</label>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; background: #f8f9fa; padding: 15px; border-radius: 6px;">
+                        <label style="display: flex; align-items: center; font-weight: normal; cursor: pointer;">
+                            <input type="checkbox" name="include_routers" value="true" checked style="width: auto; margin-right: 8px;">
+                            Routers
+                        </label>
+                        <label style="display: flex; align-items: center; font-weight: normal; cursor: pointer;">
+                            <input type="checkbox" name="include_switches" value="true" checked style="width: auto; margin-right: 8px;">
+                            Switches
+                        </label>
+                        <label style="display: flex; align-items: center; font-weight: normal; cursor: pointer;">
+                            <input type="checkbox" name="include_phones" value="true" style="width: auto; margin-right: 8px;">
+                            IP Phones
+                        </label>
+                        <label style="display: flex; align-items: center; font-weight: normal; cursor: pointer;">
+                            <input type="checkbox" name="include_servers" value="true" style="width: auto; margin-right: 8px;">
+                            Servers
+                        </label>
+                        <label style="display: flex; align-items: center; font-weight: normal; cursor: pointer;">
+                            <input type="checkbox" name="include_aps" value="true" style="width: auto; margin-right: 8px;">
+                            Access Points
+                        </label>
+                        <label style="display: flex; align-items: center; font-weight: normal; cursor: pointer;">
+                            <input type="checkbox" name="include_other" value="true" style="width: auto; margin-right: 8px;">
+                            Other Devices
+                        </label>
+                    </div>
+                </div>
+                
                 <button type="submit" class="btn">🔍 Start Discovery</button>
             </form>
             
