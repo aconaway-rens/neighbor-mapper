@@ -89,6 +89,7 @@ class TopologyDiscoverer:
         self.topology = Topology()
         self.visited: Set[str] = set()
         self.credentials = {}
+        logger.info(f"TopologyDiscoverer initialized with filters: {self.filters}")
     
     def discover(self, seed_ip: str, seed_device_type: str, username: str, password: str) -> Topology:
         """
@@ -115,8 +116,14 @@ class TopologyDiscoverer:
         while queue:
             ip, device_type, depth = queue.popleft()
             
+            logger.info(f"Queue size: {len(queue)} | Processing: {ip} at depth {depth}")
+            
             # Skip if already visited or too deep
             if ip in self.visited or depth > self.max_depth:
+                if ip in self.visited:
+                    logger.info(f"Already visited {ip}, skipping")
+                if depth > self.max_depth:
+                    logger.info(f"Depth {depth} exceeds max_depth {self.max_depth}, skipping")
                 continue
             
             self.visited.add(ip)
@@ -141,9 +148,12 @@ class TopologyDiscoverer:
                     # Determine device type for neighbor (includes filtering)
                     neighbor_device_type = self._detect_neighbor_type(neighbor)
                     
+                    # Log what we found
+                    logger.info(f"Neighbor: {neighbor.get('remote_device', 'Unknown')} - Type: {neighbor_device_type} - Caps: {neighbor.get('remote_capabilities', 'None')}")
+                    
                     # Skip if filtered out (detect_neighbor_type returns None for filtered devices)
                     if not neighbor_device_type:
-                        logger.debug(f"Skipping {neighbor.get('remote_device', 'Unknown')}: filtered out or no device type detected")
+                        logger.info(f"⊗ Skipping {neighbor.get('remote_device', 'Unknown')}: filtered out or no device type detected")
                         continue
                     
                     # Create link (only for devices that pass the filter)
@@ -156,14 +166,17 @@ class TopologyDiscoverer:
                         protocols=neighbor.get('protocols', [])
                     )
                     self.topology.add_link(link)
+                    logger.info(f"✓ Added link: {hostname} ↔ {neighbor.get('remote_device', 'Unknown')}")
                     
                     # Queue for discovery if we have an IP
                     if neighbor.get('remote_ip'):
                         if neighbor['remote_ip'] not in self.visited:
                             queue.append((neighbor['remote_ip'], neighbor_device_type, depth + 1))
-                            logger.info(f"Queued {neighbor['remote_device']} ({neighbor['remote_ip']}) as {neighbor_device_type}")
+                            logger.info(f"→ Queued {neighbor['remote_device']} ({neighbor['remote_ip']}) as {neighbor_device_type} for depth {depth + 1}")
+                        else:
+                            logger.info(f"⊗ Already visited {neighbor['remote_ip']}")
                     else:
-                        logger.debug(f"Not queuing {neighbor.get('remote_device', 'Unknown')}: no IP address")
+                        logger.info(f"⊗ Not queuing {neighbor.get('remote_device', 'Unknown')}: no IP address")
                 
                 conn.disconnect()
                 
