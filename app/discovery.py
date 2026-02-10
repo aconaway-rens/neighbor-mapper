@@ -88,6 +88,7 @@ class TopologyDiscoverer:
         }
         self.topology = Topology()
         self.visited: Set[str] = set()
+        self.failed: Dict[str, str] = {}  # Track failed devices {ip: reason}
         self.credentials = {}
         logger.info(f"TopologyDiscoverer initialized with filters: {self.filters}")
     
@@ -182,12 +183,16 @@ class TopologyDiscoverer:
                 
             except DiscoveryError as e:
                 logger.error(f"Discovery error for {ip}: {e.message}")
+                self.failed[ip] = e.message
                 continue
             except Exception as e:
                 logger.error(f"Unexpected error discovering {ip}: {e}")
+                self.failed[ip] = str(e)
                 continue
         
-        logger.info(f"Discovery complete. Found {len(self.topology.devices)} devices")
+        logger.info(f"Discovery complete. Found {len(self.topology.devices)} devices, {len(self.failed)} failed")
+        if self.failed:
+            logger.warning(f"Failed devices: {self.failed}")
         return self.topology
     
     def _connect(self, ip: str, device_type: str) -> ConnectHandler:
@@ -199,23 +204,57 @@ class TopologyDiscoverer:
                                       self.credentials['username'],
                                       self.credentials['password'])
         
-        # Real SSH connection
-        try:
-            conn = ConnectHandler(
-                device_type=device_type,
-                host=ip,
-                username=self.credentials['username'],
-                password=self.credentials['password'],
-                timeout=15,
-                fast_cli=True,
-            )
-            return conn
-        except NetmikoTimeoutException:
-            raise DiscoveryError(f"Connection timeout to {ip}", "timeout")
-        except NetmikoAuthenticationException:
-            raise DiscoveryError(f"Authentication failed to {ip}", "auth")
-        except Exception as e:
-            raise DiscoveryError(f"Connection error to {ip}: {e}", "connection")
+        # Real SSH connection with device type fallback
+        logger.info(f"Connecting to {ip} with device_type={device_type}, username={self.credentials['username']}")
+        
+        # Try primary device type first
+        device_types_to_try = [device_type]
+        
+        # Add fallbacks for common Cisco types
+        if device_type == 'cisco_ios':
+            device_types_to_try.extend(['cisco_xe', 'cisco_nxos'])
+        elif device_type == 'cisco_xe':
+            device_types_to_try.extend(['cisco_ios'])
+        elif device_type == 'cisco_nxos':
+            device_types_to_try.extend(['cisco_ios'])
+        
+        last_error = None
+        
+        for dt in device_types_to_try:
+            try:
+                if dt != device_type:
+                    logger.info(f"  Trying fallback device_type={dt}")
+                
+                conn = ConnectHandler(
+                    device_type=dt,
+                    host=ip,
+                    username=self.credentials['username'],
+                    password=self.credentials['password'],
+                    timeout=30,
+                    session_timeout=60,
+                    auth_timeout=30,
+                    banner_timeout=20,
+                    fast_cli=False,
+                    global_delay_factor=2,
+                )
+                logger.info(f"✓ Successfully connected to {ip} using device_type={dt}")
+                return conn
+            except NetmikoTimeoutException as e:
+                last_error = f"Timeout: {str(e)}"
+                logger.warning(f"  Timeout with device_type={dt}")
+                continue
+            except NetmikoAuthenticationException as e:
+                # Don't try other device types for auth failures
+                logger.error(f"✗ Authentication failed to {ip}")
+                raise DiscoveryError(f"Authentication failed to {ip}", "auth")
+            except Exception as e:
+                last_error = f"{type(e).__name__}: {str(e)}"
+                logger.warning(f"  Failed with device_type={dt}: {type(e).__name__}")
+                continue
+        
+        # All device types failed
+        logger.error(f"✗ Failed to connect to {ip} with all device types. Last error: {last_error}")
+        raise DiscoveryError(f"Connection failed to {ip} (tried {device_types_to_try}): {last_error}", "connection")
     
     def _get_hostname(self, conn: ConnectHandler) -> str:
         """Extract hostname from device prompt"""

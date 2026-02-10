@@ -96,7 +96,9 @@ def discover():
         summary = {
             'devices': total_devices,
             'links': total_links,
-            'visited': list(discoverer.visited)
+            'visited': list(discoverer.visited),
+            'failed': discoverer.failed,
+            'failed_count': len(discoverer.failed)
         }
         
         logger.info(f"Discovery complete: {total_devices} devices, {total_links} links")

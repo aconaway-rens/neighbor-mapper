@@ -311,7 +311,24 @@
                     <div class="summary-value">{{ summary.visited|length }}</div>
                     <div class="summary-label">Devices Visited</div>
                 </div>
+                {% if summary.failed_count > 0 %}
+                <div class="summary-item">
+                    <div class="summary-value" style="color: #c33;">{{ summary.failed_count }}</div>
+                    <div class="summary-label">Failed Connections</div>
+                </div>
+                {% endif %}
             </div>
+            
+            {% if summary.failed %}
+            <div style="margin-top: 20px; padding: 15px; background: #fee; border-left: 4px solid #c33; border-radius: 6px;">
+                <h3 style="color: #c33; margin-bottom: 10px; font-size: 16px;">⚠️ Failed to Connect</h3>
+                <ul style="margin-left: 20px; color: #555;">
+                {% for ip, reason in summary.failed.items() %}
+                    <li><strong>{{ ip }}</strong>: {{ reason }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
         </div>
         {% endif %}
         
