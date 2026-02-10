@@ -36,9 +36,16 @@ def parse_cdp_neighbors_detail(output: str) -> List[Dict[str, str]]:
             # Sometimes includes domain, strip it
             current["remote_device"] = device_id.split('.')[0]
         
-        # IP address
-        elif line_stripped.startswith("IP address:"):
-            current["remote_ip"] = line_stripped.split("IP address:")[1].strip()
+        # IP address (multiple formats: "IP address:", "IPv4 Address:", etc.)
+        elif "IP address:" in line_stripped or "IPv4 Address:" in line_stripped:
+            # Handle both "IP address: X.X.X.X" and "IPv4 Address: X.X.X.X"
+            if "IPv4 Address:" in line_stripped:
+                ip = line_stripped.split("IPv4 Address:")[1].strip()
+            else:
+                ip = line_stripped.split("IP address:")[1].strip()
+            
+            if ip and not ip.startswith("("):  # Skip "(not available)" or similar
+                current["remote_ip"] = ip
         
         # Platform and capabilities
         elif line_stripped.startswith("Platform:"):
@@ -67,7 +74,11 @@ def parse_cdp_neighbors_detail(output: str) -> List[Dict[str, str]]:
     if current:
         neighbors.append(current)
     
+    # Log what we extracted
     logger.info(f"Parsed {len(neighbors)} CDP neighbors")
+    for i, n in enumerate(neighbors):
+        logger.debug(f"  CDP Neighbor {i+1}: {n.get('remote_device', '?')} - IP: {n.get('remote_ip', 'MISSING')} - Platform: {n.get('remote_platform', '?')}")
+    
     return neighbors
 
 
@@ -152,7 +163,11 @@ def parse_lldp_neighbors_detail(output: str) -> List[Dict[str, str]]:
     if current:
         neighbors.append(current)
     
+    # Log what we extracted
     logger.info(f"Parsed {len(neighbors)} LLDP neighbors")
+    for i, n in enumerate(neighbors):
+        logger.debug(f"  LLDP Neighbor {i+1}: {n.get('remote_device', '?')} - IP: {n.get('remote_ip', 'MISSING')}")
+    
     return neighbors
 
 

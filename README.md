@@ -6,6 +6,7 @@ A Flask-based web application that discovers network topology using CDP and LLDP
 
 - **Web Interface** - Easy-to-use HTML form for discovery
 - **Multi-Protocol** - Discovers neighbors via both CDP and LLDP
+- **Multi-Vendor Support** - Cisco, Arista, Juniper, Palo Alto, MikroTik, Fortinet, HPE, Dell, Extreme, Ubiquiti, Barracuda
 - **Smart Detection** - YAML-based device type detection
 - **Recursive Discovery** - Automatically crawls neighbors (routers/switches only)
 - **Interface Mapping** - Shows local and remote interface connections
