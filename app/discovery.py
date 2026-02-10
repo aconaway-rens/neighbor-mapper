@@ -210,13 +210,29 @@ class TopologyDiscoverer:
         # Try primary device type first
         device_types_to_try = [device_type]
         
-        # Add fallbacks for common Cisco types
+        # Add fallbacks for common device types
         if device_type == 'cisco_ios':
             device_types_to_try.extend(['cisco_xe', 'cisco_nxos'])
         elif device_type == 'cisco_xe':
             device_types_to_try.extend(['cisco_ios'])
         elif device_type == 'cisco_nxos':
             device_types_to_try.extend(['cisco_ios'])
+        elif device_type == 'hp_procurve':
+            device_types_to_try.extend(['hp_comware', 'aruba_os'])
+        elif device_type == 'hp_comware':
+            device_types_to_try.extend(['hp_procurve', 'aruba_os'])
+        elif device_type == 'aruba_os':
+            device_types_to_try.extend(['hp_procurve'])
+        elif device_type == 'dell_os10':
+            device_types_to_try.extend(['dell_force10'])
+        elif device_type == 'dell_force10':
+            device_types_to_try.extend(['dell_os10'])
+        elif device_type == 'extreme':
+            device_types_to_try.extend(['extreme_vsp'])
+        elif device_type == 'extreme_vsp':
+            device_types_to_try.extend(['extreme'])
+        elif device_type == 'ubiquiti_edge':
+            device_types_to_try.extend(['ubiquiti_unifi'])
         
         last_error = None
         

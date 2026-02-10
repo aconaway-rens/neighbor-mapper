@@ -88,10 +88,185 @@ device_types:
       - ex2
       - qfx
       - mx
+      - srx
     system_descriptions:
       - "Juniper"
       - "JUNOS"
     priority: 85
+  
+  # Barracuda
+  barracuda:
+    platforms:
+      - barracuda
+      - cloudgen firewall
+      - barracuda firewall
+    system_descriptions:
+      - "Barracuda"
+      - "CloudGen"
+    priority: 75
+  
+  # Dell Networking (OS10, Force10)
+  dell_os10:
+    platforms:
+      - dell
+      - s4048
+      - s5048
+      - s6000
+      - s6010
+      - z9100
+      - powerswitch
+      - dell emc
+    system_descriptions:
+      - "Dell EMC"
+      - "Dell Networking OS10"
+      - "OS10"
+    priority: 82
+  
+  dell_force10:
+    platforms:
+      - force10
+      - ftos
+      - s4810
+      - s6000
+    system_descriptions:
+      - "Force10"
+      - "FTOS"
+    priority: 80
+  
+  # Extreme Networks (ExtremeXOS, VOSS)
+  extreme:
+    platforms:
+      - extreme
+      - summit
+      - x440
+      - x450
+      - x460
+      - x670
+      - x870
+    system_descriptions:
+      - "Extreme"
+      - "ExtremeXOS"
+      - "EXOS"
+    priority: 78
+  
+  extreme_vsp:
+    platforms:
+      - vsp
+      - extreme vsp
+      - virtual services platform
+    system_descriptions:
+      - "VOSS"
+      - "Virtual Services Platform"
+    priority: 78
+  
+  # Fortinet FortiGate
+  fortinet:
+    platforms:
+      - fortinet
+      - fortigate
+      - fortiswitch
+    system_descriptions:
+      - "Fortinet"
+      - "FortiGate"
+      - "FortiOS"
+    priority: 83
+  
+  # HPE/HP (Aruba, ProCurve, Comware)
+  hp_procurve:
+    platforms:
+      - hp
+      - procurve
+      - 2530
+      - 2920
+      - 2930
+      - 5400
+    system_descriptions:
+      - "ProCurve"
+      - "HP"
+    priority: 77
+  
+  hp_comware:
+    platforms:
+      - comware
+      - hpe
+      - 5130
+      - 5900
+      - 12500
+    system_descriptions:
+      - "Comware"
+      - "HPE"
+    priority: 77
+  
+  aruba_os:
+    platforms:
+      - aruba
+      - arubaos-cx
+      - aruba cx
+      - 6300
+      - 8320
+      - 8400
+    system_descriptions:
+      - "Aruba"
+      - "ArubaOS-CX"
+    priority: 79
+  
+  # Ubiquiti (EdgeOS, UniFi)
+  ubiquiti_edge:
+    platforms:
+      - edgerouter
+      - edgeswitch
+      - edgemax
+      - ubiquiti
+    system_descriptions:
+      - "EdgeOS"
+      - "EdgeSwitch"
+      - "EdgeMax"
+    priority: 76
+  
+  ubiquiti_unifi:
+    platforms:
+      - unifi
+      - usw
+      - udm
+      - dream machine
+    system_descriptions:
+      - "UniFi"
+      - "USW"
+    priority: 76
+  
+  # Palo Alto Networks
+  paloalto_panos:
+    platforms:
+      - palo alto
+      - pa-220
+      - pa-440
+      - pa-450
+      - pa-850
+      - pa-3020
+      - pa-3050
+      - pa-3060
+      - pa-5220
+      - pa-5250
+      - pa-5260
+      - pa-7080
+    system_descriptions:
+      - "Palo Alto Networks"
+      - "PAN-OS"
+    priority: 84
+  
+  # MikroTik RouterOS
+  mikrotik_routeros:
+    platforms:
+      - mikrotik
+      - routerboard
+      - rb
+      - crs
+      - ccr
+      - hex
+    system_descriptions:
+      - "MikroTik"
+      - "RouterOS"
+    priority: 81
 
 # Device capability filtering
 # Only crawl devices with these capabilities

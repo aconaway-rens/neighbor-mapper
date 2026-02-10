@@ -33,6 +33,18 @@ DEVICE_TYPES = [
     ('cisco_xr', 'Cisco IOS-XR'),
     ('arista_eos', 'Arista EOS'),
     ('juniper_junos', 'Juniper JunOS'),
+    ('paloalto_panos', 'Palo Alto PAN-OS'),
+    ('mikrotik_routeros', 'MikroTik RouterOS'),
+    ('fortinet', 'Fortinet FortiGate'),
+    ('hp_procurve', 'HP ProCurve'),
+    ('hp_comware', 'HPE Comware'),
+    ('aruba_os', 'Aruba OS-CX'),
+    ('dell_os10', 'Dell OS10'),
+    ('dell_force10', 'Dell Force10'),
+    ('extreme', 'Extreme ExtremeXOS'),
+    ('extreme_vsp', 'Extreme VOSS'),
+    ('ubiquiti_edge', 'Ubiquiti EdgeOS'),
+    ('barracuda', 'Barracuda'),
 ]
 
 
