@@ -18,7 +18,8 @@ class DeviceTypeDetector:
         self.config_path = Path(config_path)
         self.patterns = self._load_patterns()
         self.default_type = self.patterns.get('default_device_type', 'cisco_ios')
-        self.allowed_capabilities = set(self.patterns.get('allowed_capabilities', []))
+        # Ensure all capabilities are strings
+        self.allowed_capabilities = set(str(c) for c in self.patterns.get('allowed_capabilities', []))
         logger.info(f"Device type detector initialized with {len(self.patterns.get('device_types', {}))} device types")
     
     def _load_patterns(self) -> Dict:
@@ -95,11 +96,11 @@ class DeviceTypeDetector:
             return filters.get('include_routers', True) or filters.get('include_switches', True)
         
         # Parse capabilities (could be "Router Switch" or "R,S" format)
-        caps = set(capabilities.replace(',', ' ').upper().split())
+        caps = set(str(capabilities).replace(',', ' ').upper().split())
         
         # If no filters provided, use old behavior (routers and switches only)
         if filters is None:
-            return bool(caps & {c.upper() for c in self.allowed_capabilities})
+            return bool(caps & {str(c).upper() for c in self.allowed_capabilities})
         
         # Check each device type based on capabilities
         device_category = self._categorize_device(caps)
@@ -166,8 +167,8 @@ class DeviceTypeDetector:
         Returns:
             Best matching device type
         """
-        platform_lower = platform.lower()
-        desc_lower = system_desc.lower()
+        platform_lower = str(platform).lower()
+        desc_lower = str(system_desc).lower()
         
         matches = []
         
@@ -176,14 +177,14 @@ class DeviceTypeDetector:
             
             # Check platform patterns
             for pattern in config.get('platforms', []):
-                if pattern.lower() in platform_lower:
+                if str(pattern).lower() in platform_lower:
                     score += config.get('priority', 10)
                     logger.debug(f"Platform pattern '{pattern}' matched for {device_type}")
                     break
             
             # Check system description patterns
             for pattern in config.get('system_descriptions', []):
-                if pattern.lower() in desc_lower:
+                if str(pattern).lower() in desc_lower:
                     score += config.get('priority', 10) * 0.5
                     logger.debug(f"Description pattern '{pattern}' matched for {device_type}")
                     break
