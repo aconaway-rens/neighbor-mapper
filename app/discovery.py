@@ -21,7 +21,9 @@ class Device:
     """Represents a discovered network device"""
     hostname: str
     mgmt_ip: Optional[str] = None
-    device_type: Optional[str] = None
+    device_type: Optional[str] = None  # Netmiko device type (e.g., "cisco_ios")
+    device_category: Optional[str] = None  # Category (e.g., "router", "switch", "firewall")
+    has_routing: bool = False  # Whether device has routing capabilities (for L3 switches)
     platform: Optional[str] = None
     links: List['Link'] = field(default_factory=list)
 
@@ -34,6 +36,8 @@ class Link:
     remote_device: str
     remote_intf: str
     remote_ip: Optional[str] = None
+    remote_device_category: Optional[str] = None  # Category of remote device
+    remote_has_routing: bool = False  # Whether remote device has routing capabilities
     protocols: List[str] = field(default_factory=list)
 
 
@@ -42,13 +46,14 @@ class Topology:
     """Network topology graph"""
     devices: Dict[str, Device] = field(default_factory=dict)
     
-    def add_device(self, hostname: str, mgmt_ip: str = None, device_type: str = None, platform: str = None):
+    def add_device(self, hostname: str, mgmt_ip: str = None, device_type: str = None, device_category: str = None, platform: str = None):
         """Add a device to the topology"""
         if hostname not in self.devices:
             self.devices[hostname] = Device(
                 hostname=hostname,
                 mgmt_ip=mgmt_ip,
                 device_type=device_type,
+                device_category=device_category,
                 platform=platform
             )
     
@@ -58,7 +63,16 @@ class Topology:
         if link.local_device not in self.devices:
             self.devices[link.local_device] = Device(hostname=link.local_device)
         if link.remote_device not in self.devices:
-            self.devices[link.remote_device] = Device(hostname=link.remote_device, mgmt_ip=link.remote_ip)
+            self.devices[link.remote_device] = Device(
+                hostname=link.remote_device, 
+                mgmt_ip=link.remote_ip,
+                device_category=link.remote_device_category,
+                has_routing=link.remote_has_routing
+            )
+        # If device exists but doesn't have category/routing, update it
+        elif link.remote_device_category and not self.devices[link.remote_device].device_category:
+            self.devices[link.remote_device].device_category = link.remote_device_category
+            self.devices[link.remote_device].has_routing = link.remote_has_routing
         
         # Add link to local device
         self.devices[link.local_device].links.append(link)
@@ -146,36 +160,46 @@ class TopologyDiscoverer:
                 
                 # Process each neighbor
                 for neighbor in neighbors:
-                    # Determine device type for neighbor (includes filtering)
-                    neighbor_device_type = self._detect_neighbor_type(neighbor)
+                    # Determine device type and category for neighbor
+                    neighbor_info = self._detect_neighbor_type(neighbor)
                     
-                    # Log what we found
-                    logger.info(f"Neighbor: {neighbor.get('remote_device', 'Unknown')} - Type: {neighbor_device_type} - Caps: {neighbor.get('remote_capabilities', 'None')}")
-                    
-                    # Skip if filtered out (detect_neighbor_type returns None for filtered devices)
-                    if not neighbor_device_type:
-                        logger.info(f"⊗ Skipping {neighbor.get('remote_device', 'Unknown')}: filtered out or no device type detected")
+                    # Skip if no device type could be detected
+                    if not neighbor_info:
+                        logger.info(f"⊗ Skipping {neighbor.get('remote_device', 'Unknown')}: no device type detected")
                         continue
                     
-                    # Create link (only for devices that pass the filter)
+                    neighbor_device_type, neighbor_device_category, neighbor_has_routing = neighbor_info
+                    
+                    # Log what we found
+                    logger.info(f"Neighbor: {neighbor.get('remote_device', 'Unknown')} - Type: {neighbor_device_type} - Category: {neighbor_device_category} - L3: {neighbor_has_routing} - Caps: {neighbor.get('remote_capabilities', 'None')}")
+                    
+                    # Create link and add to topology
                     link = Link(
                         local_device=hostname,
                         local_intf=neighbor.get('local_intf', '?'),
                         remote_device=neighbor.get('remote_device', 'Unknown'),
                         remote_intf=neighbor.get('remote_intf', '?'),
                         remote_ip=neighbor.get('remote_ip'),
+                        remote_device_category=neighbor_device_category,
+                        remote_has_routing=neighbor_has_routing,
                         protocols=neighbor.get('protocols', [])
                     )
                     self.topology.add_link(link)
                     logger.info(f"✓ Added link: {hostname} ↔ {neighbor.get('remote_device', 'Unknown')}")
                     
-                    # Queue for discovery if we have an IP
+                    # Queue for discovery if we have an IP AND device should be crawled
                     if neighbor.get('remote_ip'):
-                        if neighbor['remote_ip'] not in self.visited:
-                            queue.append((neighbor['remote_ip'], neighbor_device_type, depth + 1))
-                            logger.info(f"→ Queued {neighbor['remote_device']} ({neighbor['remote_ip']}) as {neighbor_device_type} for depth {depth + 1}")
+                        capabilities = neighbor.get('remote_capabilities', '')
+                        should_crawl = self.detector._should_crawl(capabilities, self.filters)
+                        
+                        if should_crawl:
+                            if neighbor['remote_ip'] not in self.visited:
+                                queue.append((neighbor['remote_ip'], neighbor_device_type, depth + 1))
+                                logger.info(f"→ Queued {neighbor['remote_device']} ({neighbor['remote_ip']}) as {neighbor_device_type} for depth {depth + 1}")
+                            else:
+                                logger.info(f"⊗ Already visited {neighbor['remote_ip']}")
                         else:
-                            logger.info(f"⊗ Already visited {neighbor['remote_ip']}")
+                            logger.info(f"⊗ Not queuing {neighbor.get('remote_device', 'Unknown')}: non-crawlable device type ({neighbor_device_category})")
                     else:
                         logger.info(f"⊗ Not queuing {neighbor.get('remote_device', 'Unknown')}: no IP address")
                 
@@ -304,23 +328,38 @@ class TopologyDiscoverer:
         merged = merge_neighbor_info(cdp_neighbors, lldp_neighbors)
         return merged
     
-    def _detect_neighbor_type(self, neighbor: Dict) -> Optional[str]:
-        """Detect Netmiko device type for a neighbor"""
+    def _detect_neighbor_type(self, neighbor: Dict) -> Optional[tuple]:
+        """
+        Detect Netmiko device type and category for a neighbor
+        
+        Returns:
+            Tuple of (device_type, device_category, has_routing) or None if filtered
+        """
         platform = neighbor.get('remote_platform', '')
         capabilities = neighbor.get('remote_capabilities', '')
         system_desc = neighbor.get('system_description', '')
+        
+        # Parse capabilities into a set
+        caps = set()
+        if capabilities:
+            # Handle both "Router Switch" and "R,S" formats
+            cap_str = capabilities.replace(',', ' ').upper()
+            caps = set(cap_str.split())
+        
+        # Get device category and routing capability (pass platform and system_desc for firewall detection)
+        device_category, has_routing = self.detector._categorize_device(caps, platform, system_desc) if (caps or platform or system_desc) else ('unknown', False)
         
         # Try CDP-based detection first (has better platform info)
         if platform:
             device_type = self.detector.detect_from_cdp(platform, capabilities, self.filters)
             if device_type:
-                return device_type
+                return (device_type, device_category, has_routing)
         
         # Fall back to LLDP system description
         if system_desc:
             device_type = self.detector.detect_from_lldp(system_desc, capabilities, self.filters)
             if device_type:
-                return device_type
+                return (device_type, device_category, has_routing)
         
         return None
 

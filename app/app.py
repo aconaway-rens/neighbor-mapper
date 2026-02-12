@@ -4,9 +4,20 @@ Web interface for network topology discovery
 """
 
 import logging
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_file
 from device_detector import DeviceTypeDetector
 from discovery import TopologyDiscoverer, render_topology_tree, DiscoveryError
+from visualizer import NetworkVisualizer
+import tempfile
+import os
+
+# Read version
+VERSION = "0.2"
+try:
+    with open('/app/VERSION', 'r') as f:
+        VERSION = f.read().strip()
+except:
+    pass
 
 # Configure logging
 logging.basicConfig(
@@ -51,7 +62,7 @@ DEVICE_TYPES = [
 @app.route('/')
 def index():
     """Main page with discovery form"""
-    return render_template('index.html', device_types=DEVICE_TYPES)
+    return render_template('index.html', device_types=DEVICE_TYPES, version=VERSION)
 
 
 @app.route('/discover', methods=['POST'])
@@ -78,6 +89,7 @@ def discover():
     if not all([seed_ip, device_type, username, password]):
         return render_template('index.html', 
                              device_types=DEVICE_TYPES,
+                             version=VERSION,
                              error="All fields are required")
     
     logger.info(f"Discovery request: seed={seed_ip}, type={device_type}, user={username}, depth={max_depth}")
@@ -115,22 +127,66 @@ def discover():
         
         logger.info(f"Discovery complete: {total_devices} devices, {total_links} links")
         
+        # Generate network visualization
+        viz_file = None
+        try:
+            # Convert topology to dict format for visualizer
+            topology_dict = {}
+            for device_name, device in topology.devices.items():
+                neighbors = []
+                for link in device.links:
+                    neighbors.append({
+                        'neighbor_device': link.remote_device,
+                        'local_interface': link.local_intf,
+                        'remote_interface': link.remote_intf
+                    })
+                
+                # Use device_category for visualization, fallback to 'unknown'
+                device_category = device.device_category if device.device_category else 'unknown'
+                
+                topology_dict[device_name] = {
+                    'device_type': device_category,  # Visualizer expects category here
+                    'has_routing': device.has_routing,  # For L3 switch labeling
+                    'neighbors': neighbors
+                }
+            
+            # Generate visualization with seed device
+            # Find the hostname that corresponds to the seed IP
+            seed_hostname = None
+            for device_name, device in topology.devices.items():
+                if device.mgmt_ip == seed_ip:
+                    seed_hostname = device_name
+                    break
+            
+            visualizer = NetworkVisualizer(topology_dict, seed_device=seed_hostname)
+            viz_filename = f"topology_{seed_ip.replace('.', '_')}.html"
+            viz_path = os.path.join('/tmp', viz_filename)
+            visualizer.generate_html(viz_path)
+            viz_file = viz_filename
+            logger.info(f"Generated visualization: {viz_path} (seed: {seed_hostname})")
+        except Exception as e:
+            logger.warning(f"Failed to generate visualization: {e}")
+        
         return render_template('index.html',
                              device_types=DEVICE_TYPES,
+                             version=VERSION,
                              topology=tree_output,
                              summary=summary,
+                             visualization=viz_file,
                              success=True)
     
     except DiscoveryError as e:
         logger.error(f"Discovery error: {e.message}")
         return render_template('index.html',
                              device_types=DEVICE_TYPES,
+                             version=VERSION,
                              error=f"Discovery failed: {e.message}")
     
     except Exception as e:
         logger.exception("Unexpected error during discovery")
         return render_template('index.html',
                              device_types=DEVICE_TYPES,
+                             version=VERSION,
                              error=f"Unexpected error: {str(e)}")
 
 
@@ -138,6 +194,20 @@ def discover():
 def health():
     """Health check endpoint"""
     return jsonify({'status': 'healthy'})
+
+
+@app.route('/visualization/<filename>')
+def serve_visualization(filename):
+    """Serve generated visualization files"""
+    try:
+        file_path = os.path.join('/tmp', filename)
+        if os.path.exists(file_path):
+            return send_file(file_path, mimetype='text/html')
+        else:
+            return "Visualization file not found", 404
+    except Exception as e:
+        logger.error(f"Error serving visualization: {e}")
+        return "Error loading visualization", 500
 
 
 if __name__ == '__main__':

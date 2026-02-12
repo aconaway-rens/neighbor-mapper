@@ -132,7 +132,7 @@ def parse_lldp_neighbors_detail(output: str) -> List[Dict[str, str]]:
             in_mgmt_addresses = False
             # Description might continue on next lines
             current["system_description"] = ""
-        elif "system_description" in current and line_stripped and not line_stripped.startswith(("Time remaining", "System Capabilities", "Enabled Capabilities", "Management")):
+        elif "system_description" in current and line_stripped and not line_stripped.startswith(("Time remaining", "System Capabilities", "Enabled Capabilities", "Management", "IP:", "IPv4", "IPv6", "Auto Negotiation", "Physical media", "Vlan ID", "Local Port id")):
             # Accumulate multi-line description
             if current["system_description"]:
                 current["system_description"] += " "
@@ -146,17 +146,21 @@ def parse_lldp_neighbors_detail(output: str) -> List[Dict[str, str]]:
         
         # Management Address section
         elif line_stripped.startswith("Management Addresses:") or line_stripped.startswith("Management Address:"):
+            logger.info(f"[LLDP] Found Management Addresses section")
             in_mgmt_addresses = True
         
         # IP address in management section
         elif in_mgmt_addresses and line_stripped.startswith("IP:"):
             ip_addr = line_stripped.split("IP:")[1].strip()
+            logger.info(f"[LLDP] Extracting IP in mgmt section: '{ip_addr}'")
             if ip_addr:
                 current["remote_ip"] = ip_addr
+                logger.info(f"[LLDP] Set remote_ip = {ip_addr}")
         
         # End of management addresses section
         elif line_stripped and in_mgmt_addresses:
             if not any(line_stripped.startswith(x) for x in ["IP", "IPv4", "IPv6", "Other"]):
+                logger.info(f"[LLDP] Ending mgmt section on line: {line_stripped}")
                 in_mgmt_addresses = False
     
     # Don't forget the last neighbor
