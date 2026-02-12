@@ -170,6 +170,27 @@ class TopologyDiscoverer:
                     
                     neighbor_device_type, neighbor_device_category, neighbor_has_routing = neighbor_info
                     
+                    # Check if this device type should be included based on filters
+                    should_include = False
+                    if neighbor_device_category == 'router':
+                        should_include = self.filters.get('include_routers', False)
+                    elif neighbor_device_category == 'firewall':
+                        should_include = self.filters.get('include_routers', False)
+                    elif neighbor_device_category == 'switch':
+                        should_include = self.filters.get('include_switches', False)
+                    elif neighbor_device_category == 'phone':
+                        should_include = self.filters.get('include_phones', False)
+                    elif neighbor_device_category == 'server':
+                        should_include = self.filters.get('include_servers', False)
+                    elif neighbor_device_category == 'access_point':
+                        should_include = self.filters.get('include_aps', False)
+                    else:
+                        should_include = self.filters.get('include_other', False)
+                    
+                    if not should_include:
+                        logger.info(f"⊗ Skipping {neighbor.get('remote_device', 'Unknown')}: {neighbor_device_category} filtered out by user settings")
+                        continue
+                    
                     # Log what we found
                     logger.info(f"Neighbor: {neighbor.get('remote_device', 'Unknown')} - Type: {neighbor_device_type} - Category: {neighbor_device_category} - L3: {neighbor_has_routing} - Caps: {neighbor.get('remote_capabilities', 'None')}")
                     
@@ -270,19 +291,19 @@ class TopologyDiscoverer:
                     host=ip,
                     username=self.credentials['username'],
                     password=self.credentials['password'],
-                    timeout=30,
-                    session_timeout=60,
-                    auth_timeout=30,
-                    banner_timeout=20,
-                    fast_cli=False,
-                    global_delay_factor=2,
+                    timeout=10,           # Reduced from 30
+                    session_timeout=20,   # Reduced from 60
+                    auth_timeout=10,      # Reduced from 30
+                    banner_timeout=10,    # Reduced from 20
+                    fast_cli=True,        # Changed from False - speeds up commands
+                    global_delay_factor=1, # Reduced from 2
                 )
                 logger.info(f"✓ Successfully connected to {ip} using device_type={dt}")
                 return conn
             except NetmikoTimeoutException as e:
-                last_error = f"Timeout: {str(e)}"
-                logger.warning(f"  Timeout with device_type={dt}")
-                continue
+                # Don't try other device types for timeout - the device isn't reachable
+                logger.error(f"✗ Connection timeout to {ip}")
+                raise DiscoveryError(f"Connection timeout to {ip}", "timeout")
             except NetmikoAuthenticationException as e:
                 # Don't try other device types for auth failures
                 logger.error(f"✗ Authentication failed to {ip}")
@@ -310,7 +331,7 @@ class TopologyDiscoverer:
         
         # Try CDP
         try:
-            cdp_output = conn.send_command("show cdp neighbors detail", read_timeout=30)
+            cdp_output = conn.send_command("show cdp neighbors detail", read_timeout=15)
             cdp_neighbors = parse_cdp_neighbors_detail(cdp_output)
             logger.info(f"Found {len(cdp_neighbors)} CDP neighbors on {hostname}")
         except Exception as e:
@@ -318,7 +339,7 @@ class TopologyDiscoverer:
         
         # Try LLDP
         try:
-            lldp_output = conn.send_command("show lldp neighbors detail", read_timeout=30)
+            lldp_output = conn.send_command("show lldp neighbors detail", read_timeout=15)
             lldp_neighbors = parse_lldp_neighbors_detail(lldp_output)
             logger.info(f"Found {len(lldp_neighbors)} LLDP neighbors on {hostname}")
         except Exception as e:
