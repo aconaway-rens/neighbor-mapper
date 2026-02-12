@@ -404,7 +404,39 @@ Local Port id: ge-0/0/20
             "hostname": "ACCESS-CISCO-01",
             "device_type": "cisco_ios",
             "platform": "cisco WS-C2960X-48",
-            "cdp_output": "",
+            "cdp_output": """
+Device ID: SEP001122334455
+Entry address(es): 
+  IP address: 192.168.1.100
+Platform: Cisco IP Phone 7965,  Capabilities: Host Phone
+Interface: GigabitEthernet0/5,  Port ID (outgoing port): Port 1
+Holdtime : 156 sec
+
+Version :
+SCCP75.9-4-2SR3-1S
+
+-------------------------
+Device ID: AP-OFFICE-01
+Entry address(es): 
+  IP address: 192.168.1.50
+Platform: Cisco AIR-AP3802I-B-K9,  Capabilities: Trans-Bridge
+Interface: GigabitEthernet0/10,  Port ID (outgoing port): GigabitEthernet0
+Holdtime : 143 sec
+
+Version :
+Cisco IOS Software, AP3800 Software (AP3G2-K9W8-M), Version 17.3.4
+
+-------------------------
+Device ID: SRV-DB-01
+Entry address(es): 
+  IP address: 192.168.1.200
+Platform: VMware ESXi,  Capabilities: Host
+Interface: GigabitEthernet0/15,  Port ID (outgoing port): eth0
+Holdtime : 138 sec
+
+Version :
+Ubuntu 20.04 LTS
+""",
             "lldp_output": """
 ------------------------------------------------
 Chassis id: 00:1c:73:dd:ee:ff
@@ -519,6 +551,24 @@ Entry address(es):
 Platform: cisco WS-C2960X-48,  Capabilities: Switch IGMP 
 Interface: GigabitEthernet0,  Port ID (outgoing port): GigabitEthernet0/15
 Holdtime : 148 sec
+
+Version :
+Cisco IOS Software, C2960X Software
+""",
+            "lldp_output": ""
+        },
+        
+        "192.168.1.200": {
+            "hostname": "SRV-DB-01",
+            "device_type": "linux",
+            "platform": "VMware ESXi",
+            "cdp_output": """
+Device ID: ACCESS-CISCO-01
+Entry address(es): 
+  IP address: 192.168.1.21
+Platform: cisco WS-C2960X-48,  Capabilities: Switch IGMP 
+Interface: eth0,  Port ID (outgoing port): GigabitEthernet0/15
+Holdtime : 138 sec
 
 Version :
 Cisco IOS Software, C2960X Software

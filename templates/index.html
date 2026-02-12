@@ -194,6 +194,7 @@
         <div class="header">
             <h1>🗺️ Network Neighbor Mapper</h1>
             <p class="subtitle">Discover network topology using CDP and LLDP</p>
+            <p style="margin-top: 10px; font-size: 14px; color: #888;">v{{ version }}</p>
         </div>
         
         {% if error %}
@@ -327,6 +328,18 @@
                     <li><strong>{{ ip }}</strong>: {{ reason }}</li>
                 {% endfor %}
                 </ul>
+            </div>
+            {% endif %}
+            
+            {% if visualization %}
+            <div style="margin-top: 20px; text-align: center;">
+                <a href="/visualization/{{ visualization }}" target="_blank" 
+                   style="display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: bold; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: all 0.3s;">
+                    🌐 View Interactive Network Diagram
+                </a>
+                <p style="margin-top: 10px; color: #666; font-size: 14px;">
+                    Click to open the interactive visualization in a new tab
+                </p>
             </div>
             {% endif %}
         </div>

@@ -46,13 +46,8 @@ class DeviceTypeDetector:
             filters: Device type filters (include_routers, include_switches, etc.)
             
         Returns:
-            Netmiko device type string or None if filtered out
+            Netmiko device type string or None if no match found
         """
-        # Check if this is a device we should crawl based on filters
-        if not self._should_crawl(capabilities, filters):
-            logger.debug(f"Skipping device with capabilities: {capabilities} (filtered out)")
-            return None
-        
         device_type = self._match_patterns(platform, "")
         logger.debug(f"CDP platform '{platform}' detected as '{device_type}'")
         return device_type
@@ -67,13 +62,8 @@ class DeviceTypeDetector:
             filters: Device type filters (include_routers, include_switches, etc.)
             
         Returns:
-            Netmiko device type string or None if filtered out
+            Netmiko device type string or None if no match found
         """
-        # Check if this is a device we should crawl based on filters
-        if not self._should_crawl(capabilities, filters):
-            logger.debug(f"Skipping device with capabilities: {capabilities} (filtered out)")
-            return None
-        
         device_type = self._match_patterns("", system_desc)
         logger.debug(f"LLDP description detected as '{device_type}'")
         return device_type
@@ -103,10 +93,13 @@ class DeviceTypeDetector:
             return bool(caps & {str(c).upper() for c in self.allowed_capabilities})
         
         # Check each device type based on capabilities
-        device_category = self._categorize_device(caps)
+        device_category, _ = self._categorize_device(caps, platform="", system_desc="")
         
         # Return based on filter settings
         if device_category == 'router':
+            return filters.get('include_routers', False)
+        elif device_category == 'firewall':
+            # Firewalls are crawlable like routers
             return filters.get('include_routers', False)
         elif device_category == 'switch':
             return filters.get('include_switches', False)
@@ -114,47 +107,65 @@ class DeviceTypeDetector:
             return filters.get('include_phones', False)
         elif device_category == 'server':
             return filters.get('include_servers', False)
-        elif device_category == 'ap':
+        elif device_category == 'access_point':
             return filters.get('include_aps', False)
         else:
             return filters.get('include_other', False)
     
-    def _categorize_device(self, caps: set) -> str:
+    def _categorize_device(self, caps: set, platform: str = "", system_desc: str = "") -> tuple:
         """
-        Categorize device based on capabilities
+        Categorize device based on capabilities, platform, and system description
         
         Args:
             caps: Set of capability strings (uppercase)
+            platform: Platform string for additional detection (e.g., "Palo Alto Networks PA-3220")
+            system_desc: System description (LLDP) for additional detection
             
         Returns:
-            Device category: 'router', 'switch', 'phone', 'server', 'ap', or 'other'
+            Tuple of (category, has_routing) where:
+            - category: 'router', 'switch', 'phone', 'server', 'access_point', 'firewall', or 'other'
+            - has_routing: Boolean indicating if device has Router capability
         """
+        has_routing = any(c in caps for c in ['ROUTER', 'R'])
+        
+        # Platform-based detection for firewalls (check FIRST before capability-based)
+        # Firewalls typically report "Router" capability but we can detect them by platform or system description
+        firewall_keywords = ['palo alto', 'paloalto', 'fortinet', 'fortigate', 'checkpoint', 
+                            'cisco asa', 'firepower', 'sophos', 'sonicwall', 'watchguard',
+                            'barracuda', 'juniper srx', 'pa-', 'fw-', 'pan-os']
+        
+        # Check both platform and system_desc (LLDP uses system_desc for platform info)
+        text_to_check = (platform + " " + system_desc).lower()
+        if any(keyword in text_to_check for keyword in firewall_keywords):
+            return ('firewall', has_routing)
+        
         # Access Point detection (check BEFORE bridge, since Trans-Bridge = AP)
         if any(c in caps for c in ['WLAN', 'W', 'AP']):
-            return 'ap'
+            return ('access_point', has_routing)
         
         # Check for Trans-Bridge (Cisco APs report as this)
         if 'TRANS-BRIDGE' in caps:
-            return 'ap'
-        
-        # Router detection
-        if any(c in caps for c in ['ROUTER', 'R']):
-            return 'router'
-        
-        # Switch/Bridge detection
-        if any(c in caps for c in ['SWITCH', 'S', 'BRIDGE', 'B']):
-            return 'switch'
+            return ('access_point', has_routing)
         
         # Phone detection
         if any(c in caps for c in ['PHONE', 'P', 'T']):  # T = telephone
-            return 'phone'
+            return ('phone', has_routing)
         
         # Server/Host detection
-        if any(c in caps for c in ['HOST', 'H', 'STATION']):
-            return 'server'
+        if any(c in caps for c in ['HOST', 'H', 'SERVER']):
+            return ('server', has_routing)
+        
+        # Switch/Bridge detection - CHECK THIS BEFORE ROUTER
+        # Many switches report both "Router Switch" but should be categorized as switches
+        if any(c in caps for c in ['SWITCH', 'S', 'BRIDGE', 'B']):
+            return ('switch', has_routing)
+        
+        # Router detection - AFTER switch check
+        if has_routing:
+            return ('router', has_routing)
         
         # Default to other
-        return 'other'
+        return ('other', has_routing)
     
     def _match_patterns(self, platform: str, system_desc: str) -> str:
         """

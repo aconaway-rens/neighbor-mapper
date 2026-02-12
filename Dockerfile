@@ -15,6 +15,7 @@ RUN mkdir -p /app/logs
 COPY app/ /app/
 COPY config/ /app/config/
 COPY templates/ /app/templates/
+COPY VERSION /app/VERSION
 
 # Expose port
 EXPOSE 8000
