@@ -2,6 +2,40 @@
 
 All notable changes to Network Neighbor Mapper will be documented in this file.
 
+## [1.0] - 2026-02-12 🎉
+
+**First stable release!**
+
+### Performance Improvements (CRITICAL)
+- **20x faster discovery** - Reduced from 10+ minutes to 30 seconds for 9 devices
+- Eliminated timeout retry loop - fail fast instead of trying all device types
+- Aggressive timeout reductions:
+  - Connection: 30s → 10s
+  - Session: 60s → 20s
+  - Auth: 30s → 10s
+  - Commands: 30s → 15s
+- Enabled fast_cli mode for faster command execution
+- Reduced global_delay_factor from 2 to 1
+
+### Bug Fixes (CRITICAL)
+- Fixed device filtering - phones/APs/servers now properly respect checkbox settings
+- Devices are only added to topology if their type filter is enabled
+- Connection timeouts now properly raise errors instead of retrying all device types
+
+### What's Included in 1.0
+- Multi-vendor network discovery (CDP & LLDP)
+- Interactive D3.js visualization with high-contrast colors
+- Smart device categorization (routers, switches, firewalls, phones, APs, servers)
+- L3 switch labeling
+- Firewall detection by platform keywords
+- Device type filtering
+- Seed device highlighting with star marker
+- PNG export with white background
+- Abbreviated interface names
+- Physics simulation controls
+- Docker deployment
+- Demo mode with mock multi-vendor network
+
 ## [0.3] - 2026-02-12
 
 ### Added
