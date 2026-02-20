@@ -85,6 +85,7 @@ def discover():
         'include_servers': request.form.get('include_servers') == 'true',
         'include_aps': request.form.get('include_aps') == 'true',
         'include_other': request.form.get('include_other') == 'true',
+        'include_l3': request.form.get('include_l3') == 'true',
     }
     
     # Validate inputs

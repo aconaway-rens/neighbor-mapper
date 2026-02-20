@@ -19,6 +19,21 @@ class MockNetworkDevice:
             "hostname": "CORE-NX-01",
             "device_type": "cisco_nxos",
             "platform": "cisco Nexus9000 N9K-C93180YC-EX",
+            "ospf_output": """OSPF Process ID 1 VRF default
+Total number of neighbors: 2
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+192.168.1.10      1   FULL/DR         00:00:39    192.168.1.10    Eth1/1
+192.168.1.11      1   FULL/BDR        00:00:37    192.168.1.11    Eth1/2
+""",
+            "bgp_output": """
+BGP neighbor is 10.0.0.1,  remote AS 65001, ebgp link,  Peer index 1
+  BGP version 4, remote router ID 10.0.0.1
+  BGP state = Established, up for 2d17h
+  Last read 00:00:43, Last write 00:00:19
+  Hold time is 180, keepalive interval is 60 seconds
+  Configured hold time is 180, keepalive interval is 60 seconds
+""",
             "cdp_output": """
 Device ID: DIST-EXTREME-01
 Entry address(es): 
@@ -564,9 +579,9 @@ Cisco IOS Software, C2960X Software
             "platform": "VMware ESXi",
             "cdp_output": """
 Device ID: ACCESS-CISCO-01
-Entry address(es): 
+Entry address(es):
   IP address: 192.168.1.21
-Platform: cisco WS-C2960X-48,  Capabilities: Switch IGMP 
+Platform: cisco WS-C2960X-48,  Capabilities: Switch IGMP
 Interface: eth0,  Port ID (outgoing port): GigabitEthernet0/15
 Holdtime : 138 sec
 
@@ -574,6 +589,23 @@ Version :
 Cisco IOS Software, C2960X Software
 """,
             "lldp_output": ""
+        },
+
+        # L3-only WAN router — no CDP/LLDP, only reachable via BGP from CORE-NX-01
+        "10.0.0.1": {
+            "hostname": "WAN-ROUTER-01",
+            "device_type": "cisco_ios",
+            "platform": "Cisco ISR4451-X/K9",
+            "cdp_output": "",
+            "lldp_output": "",
+            "bgp_output": """
+BGP neighbor is 192.168.1.1,  remote AS 65000, ebgp link,  Peer index 1
+  BGP version 4, remote router ID 192.168.1.1
+  BGP state = Established, up for 2d17h
+  Last read 00:00:43, Last write 00:00:19
+  Hold time is 180, keepalive interval is 60 seconds
+""",
+            "ospf_output": "",
         }
     }
     
@@ -598,11 +630,19 @@ Cisco IOS Software, C2960X Software
     def send_command(self, command: str, **kwargs) -> str:
         """Simulate command execution"""
         logger.info(f"[MOCK] Executing: {command} on {self.device_config['hostname']}")
-        
+
         if "show cdp neighbors detail" in command:
             return self.device_config.get("cdp_output", "")
         elif "show lldp neighbors detail" in command:
             return self.device_config.get("lldp_output", "")
+        elif "ospf neighbor" in command or "ospf neighbors" in command or "ospf adjacency" in command:
+            return self.device_config.get("ospf_output", "")
+        elif "eigrp neighbor" in command or "eigrp neighbors" in command:
+            return self.device_config.get("eigrp_output", "")
+        elif "bgp neighbor" in command or "bgp neighbors" in command or "bgp ipv4 unicast neighbor" in command:
+            return self.device_config.get("bgp_output", "")
+        elif "isis neighbor" in command or "isis adjacency" in command:
+            return self.device_config.get("isis_output", "")
         else:
             return ""
     

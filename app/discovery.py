@@ -1,6 +1,6 @@
 """
 Network Topology Discovery Engine
-Recursively discovers network topology using CDP/LLDP
+Recursively discovers network topology using CDP/LLDP and L3 routing protocols
 """
 
 import logging
@@ -10,10 +10,54 @@ from typing import Dict, List, Optional, Set
 from netmiko import ConnectHandler, NetmikoTimeoutException, NetmikoAuthenticationException
 
 from device_detector import DeviceTypeDetector
-from parsers import parse_cdp_neighbors_detail, parse_lldp_neighbors_detail, merge_neighbor_info
+from parsers import (parse_cdp_neighbors_detail, parse_lldp_neighbors_detail,
+                     merge_neighbor_info, parse_l3_neighbors)
 from mock_devices import is_mock_mode, get_mock_connection
 
 logger = logging.getLogger(__name__)
+
+# L3 routing protocol commands per device type.
+# Each protocol key maps to the command that lists established neighbors.
+L3_COMMANDS = {
+    'cisco_ios': {
+        'ospf':  'show ip ospf neighbor',
+        'eigrp': 'show ip eigrp neighbors',
+        'bgp':   'show ip bgp neighbors',
+        'isis':  'show isis neighbors',
+    },
+    'cisco_xe': {
+        'ospf':  'show ip ospf neighbor',
+        'eigrp': 'show ip eigrp neighbors',
+        'bgp':   'show ip bgp neighbors',
+        'isis':  'show isis neighbors',
+    },
+    'cisco_nxos': {
+        'ospf':  'show ip ospf neighbors',
+        'eigrp': 'show ip eigrp neighbors',
+        'bgp':   'show bgp ipv4 unicast neighbors',
+        'isis':  'show isis adjacency',
+    },
+    'arista_eos': {
+        'ospf':  'show ip ospf neighbor',
+        'bgp':   'show ip bgp neighbors',
+        'isis':  'show isis neighbors',
+    },
+    'juniper_junos': {
+        'ospf':  'show ospf neighbor',
+        'bgp':   'show bgp neighbor',
+        'isis':  'show isis adjacency',
+    },
+    'extreme': {
+        'ospf':  'show ospf neighbor',
+        'bgp':   'show bgp neighbor',
+    },
+    'default': {
+        'ospf':  'show ip ospf neighbor',
+        'eigrp': 'show ip eigrp neighbors',
+        'bgp':   'show ip bgp neighbors',
+        'isis':  'show isis neighbors',
+    },
+}
 
 
 @dataclass
@@ -99,6 +143,7 @@ class TopologyDiscoverer:
             'include_servers': False,
             'include_aps': False,
             'include_other': False,
+            'include_l3': False,
         }
         self.topology = Topology()
         self.visited: Set[str] = set()
@@ -156,7 +201,7 @@ class TopologyDiscoverer:
                 self.topology.add_device(hostname, ip, device_type)
                 
                 # Discover neighbors
-                neighbors = self._discover_neighbors(conn, hostname)
+                neighbors = self._discover_neighbors(conn, hostname, device_type)
                 
                 # Process each neighbor
                 for neighbor in neighbors:
@@ -195,11 +240,15 @@ class TopologyDiscoverer:
                     logger.info(f"Neighbor: {neighbor.get('remote_device', 'Unknown')} - Type: {neighbor_device_type} - Category: {neighbor_device_category} - L3: {neighbor_has_routing} - Caps: {neighbor.get('remote_capabilities', 'None')}")
                     
                     # Create link and add to topology
+                    # Use IP as device name for L3-only neighbors that have no hostname yet
+                    remote_name = (neighbor.get('remote_device')
+                                   or neighbor.get('remote_ip')
+                                   or 'Unknown')
                     link = Link(
                         local_device=hostname,
-                        local_intf=neighbor.get('local_intf', '?'),
-                        remote_device=neighbor.get('remote_device', 'Unknown'),
-                        remote_intf=neighbor.get('remote_intf', '?'),
+                        local_intf=neighbor.get('local_intf') or '?',
+                        remote_device=remote_name,
+                        remote_intf=neighbor.get('remote_intf') or '?',
                         remote_ip=neighbor.get('remote_ip'),
                         remote_device_category=neighbor_device_category,
                         remote_has_routing=neighbor_has_routing,
@@ -324,11 +373,12 @@ class TopologyDiscoverer:
         hostname = prompt.rstrip('#>').strip()
         return hostname
     
-    def _discover_neighbors(self, conn: ConnectHandler, hostname: str) -> List[Dict]:
-        """Discover neighbors using CDP and LLDP"""
+    def _discover_neighbors(self, conn: ConnectHandler, hostname: str,
+                            device_type: str = None) -> List[Dict]:
+        """Discover neighbors using CDP, LLDP, and optionally L3 routing protocols"""
         cdp_neighbors = []
         lldp_neighbors = []
-        
+
         # Try CDP
         try:
             cdp_output = conn.send_command("show cdp neighbors detail", read_timeout=15)
@@ -336,7 +386,7 @@ class TopologyDiscoverer:
             logger.info(f"Found {len(cdp_neighbors)} CDP neighbors on {hostname}")
         except Exception as e:
             logger.warning(f"CDP discovery failed on {hostname}: {e}")
-        
+
         # Try LLDP
         try:
             lldp_output = conn.send_command("show lldp neighbors detail", read_timeout=15)
@@ -344,9 +394,23 @@ class TopologyDiscoverer:
             logger.info(f"Found {len(lldp_neighbors)} LLDP neighbors on {hostname}")
         except Exception as e:
             logger.warning(f"LLDP discovery failed on {hostname}: {e}")
-        
-        # Merge CDP and LLDP information
-        merged = merge_neighbor_info(cdp_neighbors, lldp_neighbors)
+
+        # Try L3 routing protocols (optional, controlled by filter)
+        l3_neighbors = []
+        if self.filters.get('include_l3', False):
+            commands = L3_COMMANDS.get(device_type, L3_COMMANDS['default'])
+            for protocol, command in commands.items():
+                try:
+                    output = conn.send_command(command, read_timeout=15)
+                    parsed = parse_l3_neighbors(output, protocol)
+                    if parsed:
+                        logger.info(f"Found {len(parsed)} {protocol.upper()} neighbors on {hostname}")
+                    l3_neighbors.extend(parsed)
+                except Exception as e:
+                    logger.debug(f"L3 {protocol.upper()} discovery failed on {hostname}: {e}")
+
+        # Merge all neighbor sources
+        merged = merge_neighbor_info(cdp_neighbors, lldp_neighbors, l3_neighbors)
         return merged
     
     def _detect_neighbor_type(self, neighbor: Dict) -> Optional[tuple]:
@@ -356,9 +420,9 @@ class TopologyDiscoverer:
         Returns:
             Tuple of (device_type, device_category, has_routing) or None if filtered
         """
-        platform = neighbor.get('remote_platform', '')
-        capabilities = neighbor.get('remote_capabilities', '')
-        system_desc = neighbor.get('system_description', '')
+        platform = neighbor.get('remote_platform') or ''
+        capabilities = neighbor.get('remote_capabilities') or ''
+        system_desc = neighbor.get('system_description') or ''
         
         # Parse capabilities into a set
         caps = set()
@@ -381,7 +445,13 @@ class TopologyDiscoverer:
             device_type = self.detector.detect_from_lldp(system_desc, capabilities, self.filters)
             if device_type:
                 return (device_type, device_category, has_routing)
-        
+
+        # Fallback for L3-only neighbors: no platform or system_desc, but we know the category
+        # from capabilities (e.g. remote_capabilities='Router' set by L3 parsers).
+        # Use detector default type so the device can be queued for SSH discovery.
+        if device_category and device_category != 'unknown':
+            return (self.detector.default_type, device_category, has_routing)
+
         return None
 
 
