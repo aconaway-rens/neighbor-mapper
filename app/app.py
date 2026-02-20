@@ -3,13 +3,15 @@ Neighbor Mapper Flask Application
 Web interface for network topology discovery
 """
 
+import io
+import json
 import logging
+import os
 from flask import Flask, render_template, request, jsonify, send_file
 from device_detector import DeviceTypeDetector
 from discovery import TopologyDiscoverer, render_topology_tree, DiscoveryError
 from visualizer import NetworkVisualizer
-import tempfile
-import os
+import exporter
 
 # Read version
 VERSION = "0.2"
@@ -126,7 +128,23 @@ def discover():
         }
         
         logger.info(f"Discovery complete: {total_devices} devices, {total_links} links")
-        
+
+        # Store topology data for export
+        export_key = seed_ip.replace('.', '_')
+        try:
+            topo_data = exporter.topology_to_dict(
+                topology,
+                seed_ip=seed_ip,
+                params={'max_depth': max_depth, 'filters': filters, 'failed_count': len(discoverer.failed)},
+            )
+            topo_path = os.path.join('/tmp', f"topology_{export_key}.json")
+            with open(topo_path, 'w') as f:
+                f.write(exporter.generate_json(topo_data))
+            logger.info(f"Saved topology data for export: {topo_path}")
+        except Exception as e:
+            logger.warning(f"Failed to save topology export data: {e}")
+            export_key = None
+
         # Generate network visualization
         viz_file = None
         try:
@@ -173,6 +191,7 @@ def discover():
                              topology=tree_output,
                              summary=summary,
                              visualization=viz_file,
+                             export_key=export_key,
                              success=True)
     
     except DiscoveryError as e:
@@ -208,6 +227,60 @@ def serve_visualization(filename):
     except Exception as e:
         logger.error(f"Error serving visualization: {e}")
         return "Error loading visualization", 500
+
+
+def _load_export_data(key):
+    """Load stored topology JSON for a given export key, or return None."""
+    topo_path = os.path.join('/tmp', f"topology_{key}.json")
+    if not os.path.exists(topo_path):
+        return None
+    with open(topo_path, 'r') as f:
+        return json.load(f)
+
+
+@app.route('/export/json/<key>')
+def export_json(key):
+    """Download topology as JSON"""
+    data = _load_export_data(key)
+    if data is None:
+        return "Export data not found. Run a discovery first.", 404
+    json_bytes = exporter.generate_json(data).encode('utf-8')
+    return send_file(
+        io.BytesIO(json_bytes),
+        mimetype='application/json',
+        as_attachment=True,
+        download_name=f"topology_{key}.json",
+    )
+
+
+@app.route('/export/csv/<key>')
+def export_csv(key):
+    """Download topology as CSV"""
+    data = _load_export_data(key)
+    if data is None:
+        return "Export data not found. Run a discovery first.", 404
+    csv_bytes = exporter.generate_csv(data).encode('utf-8')
+    return send_file(
+        io.BytesIO(csv_bytes),
+        mimetype='text/csv',
+        as_attachment=True,
+        download_name=f"topology_{key}.csv",
+    )
+
+
+@app.route('/export/pdf/<key>')
+def export_pdf(key):
+    """Download topology as PDF"""
+    data = _load_export_data(key)
+    if data is None:
+        return "Export data not found. Run a discovery first.", 404
+    pdf_bytes = exporter.generate_pdf(data)
+    return send_file(
+        io.BytesIO(pdf_bytes),
+        mimetype='application/pdf',
+        as_attachment=True,
+        download_name=f"topology_{key}.pdf",
+    )
 
 
 if __name__ == '__main__':

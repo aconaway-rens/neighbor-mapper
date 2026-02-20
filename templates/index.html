@@ -333,13 +333,33 @@
             
             {% if visualization %}
             <div style="margin-top: 20px; text-align: center;">
-                <a href="/visualization/{{ visualization }}" target="_blank" 
+                <a href="/visualization/{{ visualization }}" target="_blank"
                    style="display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: bold; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: all 0.3s;">
                     🌐 View Interactive Network Diagram
                 </a>
                 <p style="margin-top: 10px; color: #666; font-size: 14px;">
                     Click to open the interactive visualization in a new tab
                 </p>
+            </div>
+            {% endif %}
+
+            {% if export_key %}
+            <div style="margin-top: 20px;">
+                <h3 style="color: #333; font-size: 16px; margin-bottom: 12px;">Export Results</h3>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <a href="/export/json/{{ export_key }}"
+                       style="display: inline-block; padding: 10px 20px; background: #28a745; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px;">
+                        ⬇ Download JSON
+                    </a>
+                    <a href="/export/csv/{{ export_key }}"
+                       style="display: inline-block; padding: 10px 20px; background: #17a2b8; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px;">
+                        ⬇ Download CSV
+                    </a>
+                    <a href="/export/pdf/{{ export_key }}"
+                       style="display: inline-block; padding: 10px 20px; background: #dc3545; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px;">
+                        ⬇ Download PDF
+                    </a>
+                </div>
             </div>
             {% endif %}
         </div>
