@@ -371,13 +371,19 @@ def parse_l3_neighbors(output: str, protocol: str) -> List[Dict]:
     return []
 
 
+_NX_FLAGS = frozenset(('*', '+', '#', 'CP', 'PS', 'RO', 'D'))
+
+
 def parse_arp_table(output: str) -> List[Dict]:
     """
     Parse ARP table output into a list of host entries.
 
     Handles:
-    - Cisco IOS/XE/NX-OS/Arista: 'show ip arp'
+    - Cisco IOS/XE/Arista: 'show ip arp'
       Internet  10.1.1.100  15  0050.56aa.bb01  ARPA  GigabitEthernet0/1
+    - Cisco NX-OS: 'show ip arp'
+      10.1.1.100  00:00:15  0050.56aa.bb01  Ethernet1/1
+      * 10.1.1.101  00:00:20  0050.56aa.bb02  Ethernet1/1  (flagged entry)
     - Juniper JunOS: 'show arp'
       00:50:56:aa:bb:cc  10.1.1.100  10.1.1.100  ge-0/0/1.0  none
 
@@ -390,12 +396,12 @@ def parse_arp_table(output: str) -> List[Dict]:
             continue
         # Skip header/summary lines
         if line.startswith(('Protocol', 'MAC', 'Destination', 'Address',
-                             'IP', 'Total', 'ARP', '#')):
+                             'IP', 'Total', 'ARP', 'Flags')):
             continue
 
         parts = line.split()
 
-        # Cisco IOS/XE/NX-OS/Arista tabular format:
+        # Cisco IOS/XE/Arista tabular format:
         # Internet  <ip>  <age>  <mac>  ARPA  <interface>
         if len(parts) >= 5 and parts[0] == 'Internet':
             ip = parts[1]
@@ -418,6 +424,22 @@ def parse_arp_table(output: str) -> List[Dict]:
                 'mac': parts[0],
                 'age': '?',
                 'interface': parts[3],
+            })
+            continue
+
+        # NX-OS format: [optional_flag]  <ip>  <age>  <mac>  <interface>
+        # Flags: * + # CP PS RO D  (see 'show ip arp' legend)
+        idx = 1 if parts[0] in _NX_FLAGS else 0
+        if len(parts) >= idx + 3 and _is_ip(parts[idx]):
+            ip = parts[idx]
+            age = parts[idx + 1]
+            mac_raw = parts[idx + 2]
+            interface = parts[idx + 3] if len(parts) > idx + 3 else ''
+            entries.append({
+                'ip': ip,
+                'mac': _normalize_mac(mac_raw),
+                'age': age,
+                'interface': interface,
             })
 
     logger.info(f"Parsed {len(entries)} ARP entries")
