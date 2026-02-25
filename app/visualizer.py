@@ -392,31 +392,58 @@ class NetworkVisualizer:
             padding: 0 0 10px;
         }}
 
-        #arp-table {{
+        .arp-group {{
+            border-bottom: 1px solid #222;
+        }}
+
+        .arp-group summary {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 14px;
+            cursor: pointer;
+            background: #1a2332;
+            color: #4ECDC4;
+            font-size: 12px;
+            font-weight: 600;
+            list-style: none;
+            user-select: none;
+        }}
+
+        .arp-group summary::-webkit-details-marker {{ display: none; }}
+
+        .arp-group summary:hover {{
+            background: #1f2937;
+        }}
+
+        .arp-group[open] summary {{
+            border-bottom: 1px solid #333;
+        }}
+
+        .arp-group-count {{
+            background: #FFB800;
+            color: #000;
+            border-radius: 8px;
+            padding: 1px 7px;
+            font-size: 11px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }}
+
+        .arp-subtable {{
             width: 100%;
             border-collapse: collapse;
             font-size: 12px;
         }}
 
-        #arp-table th {{
-            position: sticky;
-            top: 0;
-            background: #1f2937;
-            color: #4ECDC4;
-            padding: 8px 12px;
-            text-align: left;
-            font-weight: 600;
-            border-bottom: 1px solid #333;
-        }}
-
-        #arp-table td {{
-            padding: 6px 12px;
+        .arp-subtable td {{
+            padding: 5px 12px 5px 22px;
             color: #ccc;
-            border-bottom: 1px solid #222;
+            border-bottom: 1px solid #1a1a1a;
             font-family: 'Courier New', monospace;
         }}
 
-        #arp-table tr:hover td {{
+        .arp-subtable tr:hover td {{
             background: #1a2332;
         }}
 
@@ -510,21 +537,11 @@ class NetworkVisualizer:
         </div>
         <div id="arp-device-info"></div>
         <div id="arp-search-wrap">
-            <input type="text" id="arp-search" placeholder="Filter by IP or MAC...">
+            <input type="text" id="arp-search" placeholder="Filter by IP, MAC, or interface...">
         </div>
         <div id="arp-table-wrap">
             <p id="arp-no-data">No ARP entries collected for this device.</p>
-            <table id="arp-table" style="display:none">
-                <thead>
-                    <tr>
-                        <th>IP Address</th>
-                        <th>MAC Address</th>
-                        <th>Interface</th>
-                        <th>Age</th>
-                    </tr>
-                </thead>
-                <tbody id="arp-tbody"></tbody>
-            </table>
+            <div id="arp-groups"></div>
         </div>
     </div>
 
@@ -788,27 +805,55 @@ class NetworkVisualizer:
         }}
 
         function renderArpTable(entries) {{
-            const search = document.getElementById('arp-search').value.toLowerCase();
-            const filtered = entries.filter(e =>
-                e.ip.includes(search) || (e.mac && e.mac.toLowerCase().includes(search))
-            );
-            const tbody = document.getElementById('arp-tbody');
-            const table = document.getElementById('arp-table');
+            const container = document.getElementById('arp-groups');
             const noData = document.getElementById('arp-no-data');
-            tbody.innerHTML = '';
+            const search = document.getElementById('arp-search').value.toLowerCase().trim();
+
+            const filtered = search
+                ? entries.filter(e =>
+                    e.ip.includes(search) ||
+                    (e.mac && e.mac.toLowerCase().includes(search)) ||
+                    (e.interface && e.interface.toLowerCase().includes(search)))
+                : entries;
+
             if (filtered.length === 0) {{
                 noData.style.display = 'block';
-                table.style.display = 'none';
-            }} else {{
-                noData.style.display = 'none';
-                table.style.display = 'table';
-                filtered.forEach(e => {{
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `<td>${{e.ip}}</td><td>${{e.mac || ''}}</td>` +
-                                   `<td>${{e.interface || ''}}</td><td>${{e.age || ''}}</td>`;
-                    tbody.appendChild(tr);
-                }});
+                container.innerHTML = '';
+                return;
             }}
+            noData.style.display = 'none';
+
+            // Group by interface
+            const groups = {{}};
+            filtered.forEach(e => {{
+                const intf = e.interface || 'Unknown';
+                if (!groups[intf]) groups[intf] = [];
+                groups[intf].push(e);
+            }});
+
+            // Sort: VLANs by number, then everything else alphabetically
+            const sortedIntfs = Object.keys(groups).sort((a, b) => {{
+                const aV = a.match(/^[Vv]lan(\d+)$/);
+                const bV = b.match(/^[Vv]lan(\d+)$/);
+                if (aV && bV) return parseInt(aV[1]) - parseInt(bV[1]);
+                return a.localeCompare(b);
+            }});
+
+            let html = '';
+            sortedIntfs.forEach((intf, i) => {{
+                const rows = groups[intf];
+                const open = (search || i === 0) ? 'open' : '';
+                html += `<details class="arp-group" ${{open}}>`;
+                html += `<summary><span>${{intf}}</span>` +
+                        `<span class="arp-group-count">${{rows.length}}</span></summary>`;
+                html += `<table class="arp-subtable"><tbody>`;
+                rows.forEach(e => {{
+                    html += `<tr><td>${{e.ip}}</td><td>${{e.mac || ''}}</td>` +
+                            `<td>${{e.age || ''}}</td></tr>`;
+                }});
+                html += `</tbody></table></details>`;
+            }});
+            container.innerHTML = html;
         }}
 
         function closeArpPanel() {{
