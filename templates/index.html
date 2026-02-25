@@ -252,7 +252,13 @@
                 
                 <div class="form-group">
                     <label style="margin-bottom: 10px;">Device Types to Discover</label>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; background: #f8f9fa; padding: 15px; border-radius: 6px;">
+                    <div style="margin-bottom: 8px;">
+                        <label style="display: flex; align-items: center; font-weight: normal; cursor: pointer; color: #555;">
+                            <input type="checkbox" id="select_all_types" style="width: auto; margin-right: 8px;">
+                            <em>Select / deselect all</em>
+                        </label>
+                    </div>
+                    <div id="device_type_checkboxes" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; background: #f8f9fa; padding: 15px; border-radius: 6px;">
                         <label style="display: flex; align-items: center; font-weight: normal; cursor: pointer;">
                             <input type="checkbox" name="include_routers" value="true" checked style="width: auto; margin-right: 8px;">
                             Routers
@@ -277,6 +283,24 @@
                             <input type="checkbox" name="include_other" value="true" style="width: auto; margin-right: 8px;">
                             Other Devices
                         </label>
+                    </div>
+                    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #e0e0e0;">
+                        <label style="display: flex; align-items: center; font-weight: normal; cursor: pointer;">
+                            <input type="checkbox" name="include_l3" value="true" style="width: auto; margin-right: 8px;">
+                            <strong>L3 Routing Neighbors</strong>&nbsp;(OSPF, EIGRP, BGP, IS-IS)
+                        </label>
+                        <p style="margin-top: 6px; margin-left: 24px; color: #888; font-size: 12px;">
+                            Queries routing protocol tables on each discovered device. Adds L3-only neighbors (e.g. WAN peers) not visible via CDP/LLDP.
+                        </p>
+                    </div>
+                    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #e0e0e0;">
+                        <label style="display: flex; align-items: center; font-weight: normal; cursor: pointer;">
+                            <input type="checkbox" name="include_arp" value="true" style="width: auto; margin-right: 8px;">
+                            <strong>ARP Neighbors</strong>&nbsp;(end hosts from ARP tables)
+                        </label>
+                        <p style="margin-top: 6px; margin-left: 24px; color: #888; font-size: 12px;">
+                            Collects ARP tables from each discovered device. Hosts are shown as a count badge on each node and in an expandable side panel — not added as graph nodes.
+                        </p>
                     </div>
                 </div>
                 
@@ -372,5 +396,30 @@
         </div>
         {% endif %}
     </div>
+<script>
+    (function () {
+        var master = document.getElementById('select_all_types');
+        var boxes  = document.querySelectorAll('#device_type_checkboxes input[type="checkbox"]');
+
+        // Sync master state to match current individual checkboxes on load
+        function syncMaster() {
+            var allChecked  = Array.from(boxes).every(function(b)  { return b.checked; });
+            var someChecked = Array.from(boxes).some(function(b)   { return b.checked; });
+            master.checked       = allChecked;
+            master.indeterminate = !allChecked && someChecked;
+        }
+
+        master.addEventListener('change', function () {
+            boxes.forEach(function(b) { b.checked = master.checked; });
+            master.indeterminate = false;
+        });
+
+        boxes.forEach(function(b) {
+            b.addEventListener('change', syncMaster);
+        });
+
+        syncMaster();
+    })();
+</script>
 </body>
 </html>

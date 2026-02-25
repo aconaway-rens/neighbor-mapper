@@ -79,12 +79,17 @@ class NetworkVisualizer:
             device_type = device_info.get('device_type', 'unknown')
             has_routing = device_info.get('has_routing', False)
             
-            # Extract short hostname (everything before first dot)
-            short_name = device_name.split('.')[0]
+            # Extract short hostname (strip domain suffix, but keep full IP addresses)
+            parts = device_name.split('.')
+            if len(parts) == 4 and all(p.isdigit() for p in parts):
+                short_name = device_name  # It's an IP — show it in full
+            else:
+                short_name = parts[0]
             
             # Check if this is the seed device
             is_seed = (device_name == self.seed_device)
             
+            arp_entries = device_info.get('arp_entries', [])
             node = {
                 'id': device_name,
                 'label': short_name,
@@ -92,32 +97,51 @@ class NetworkVisualizer:
                 'color': self.DEVICE_COLORS.get(device_type, self.DEVICE_COLORS['unknown']),
                 'full_name': device_name,
                 'is_seed': is_seed,
-                'has_routing': has_routing
+                'has_routing': has_routing,
+                'arp_count': len(arp_entries),
+                'arp_entries': arp_entries,
             }
             self.nodes.append(node)
         
         # Create edges with interface labels
         edge_set = set()  # Track edges to avoid duplicates
-        
+
+        L2_PROTOS = {'CDP', 'LLDP'}
+        L3_PROTOS = {'OSPF', 'EIGRP', 'BGP', 'IS-IS'}
+
         for device_name, device_info in self.topology.items():
             for neighbor in device_info.get('neighbors', []):
                 neighbor_device = neighbor['neighbor_device']
                 local_int = neighbor['local_interface']
                 remote_int = neighbor['remote_interface']
-                
+                protocols = neighbor.get('protocols', [])
+
+                # Classify link as l2, l3, or both
+                proto_set = {p.upper() for p in protocols}
+                has_l2 = bool(proto_set & L2_PROTOS)
+                has_l3 = bool(proto_set & L3_PROTOS)
+                if has_l2 and has_l3:
+                    link_type = 'both'
+                elif has_l3:
+                    link_type = 'l3'
+                else:
+                    link_type = 'l2'
+
                 # Shorten interface names
                 local_int_short = self.shorten_interface_name(local_int)
                 remote_int_short = self.shorten_interface_name(remote_int)
-                
+
                 # Create a unique edge identifier (sorted to avoid duplicates)
                 edge_id = tuple(sorted([device_name, neighbor_device]))
-                
+
                 if edge_id not in edge_set:
                     edge = {
                         'source': device_name,
                         'target': neighbor_device,
                         'local_interface': local_int_short,
-                        'remote_interface': remote_int_short
+                        'remote_interface': remote_int_short,
+                        'link_type': link_type,
+                        'protocols': '+'.join(protocols) if protocols else '',
                     }
                     self.edges.append(edge)
                     edge_set.add(edge_id)
@@ -187,11 +211,25 @@ class NetworkVisualizer:
         }}
         
         .link {{
-            stroke: #999;
             stroke-opacity: 0.6;
             stroke-width: 2px;
+            fill: none;
         }}
-        
+
+        .link-l2 {{
+            stroke: #999;
+        }}
+
+        .link-l3 {{
+            stroke: #FF9944;
+            stroke-dasharray: 6,4;
+        }}
+
+        .link-both {{
+            stroke: #BB77FF;
+            stroke-dasharray: 10,3;
+        }}
+
         .link:hover {{
             stroke: #4ECDC4;
             stroke-opacity: 1;
@@ -262,6 +300,133 @@ class NetworkVisualizer:
         button:hover {{
             background: #3db8b0;
         }}
+
+        #arp-panel {{
+            display: none;
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 380px;
+            height: 100vh;
+            background: #161b22;
+            border-left: 2px solid #4ECDC4;
+            flex-direction: column;
+            z-index: 1000;
+            overflow: hidden;
+        }}
+
+        #arp-panel-header {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px 12px;
+            border-bottom: 1px solid #333;
+            flex-shrink: 0;
+        }}
+
+        #arp-panel-title {{
+            color: #4ECDC4;
+            font-size: 15px;
+            font-weight: bold;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-right: 10px;
+        }}
+
+        #arp-panel-close {{
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            flex-shrink: 0;
+            width: auto;
+        }}
+
+        #arp-device-info {{
+            padding: 12px 20px;
+            border-bottom: 1px solid #333;
+            font-size: 13px;
+            color: #ccc;
+            flex-shrink: 0;
+        }}
+
+        .arp-info-row {{
+            display: flex;
+            justify-content: space-between;
+            margin: 4px 0;
+        }}
+
+        .arp-badge-count {{
+            background: #FFB800;
+            color: #000;
+            border-radius: 10px;
+            padding: 1px 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }}
+
+        #arp-search-wrap {{
+            padding: 10px 20px;
+            border-bottom: 1px solid #333;
+            flex-shrink: 0;
+        }}
+
+        #arp-search {{
+            width: 100%;
+            padding: 7px 10px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background: #0d1117;
+            color: #fff;
+            font-size: 13px;
+            box-sizing: border-box;
+        }}
+
+        #arp-table-wrap {{
+            overflow-y: auto;
+            flex: 1;
+            padding: 0 0 10px;
+        }}
+
+        #arp-table {{
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }}
+
+        #arp-table th {{
+            position: sticky;
+            top: 0;
+            background: #1f2937;
+            color: #4ECDC4;
+            padding: 8px 12px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 1px solid #333;
+        }}
+
+        #arp-table td {{
+            padding: 6px 12px;
+            color: #ccc;
+            border-bottom: 1px solid #222;
+            font-family: 'Courier New', monospace;
+        }}
+
+        #arp-table tr:hover td {{
+            background: #1a2332;
+        }}
+
+        #arp-no-data {{
+            color: #666;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 13px;
+            padding: 0 20px;
+        }}
     </style>
 </head>
 <body>
@@ -313,10 +478,56 @@ class NetworkVisualizer:
                 <span>Seed Device</span>
             </div>
         </div>
+        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #555;">
+            <div style="font-weight: bold; margin-bottom: 8px; color: #ccc; font-size: 13px;">Link Types</div>
+            <div class="legend-item">
+                <svg width="30" height="12" style="margin-right: 10px; flex-shrink: 0;">
+                    <line x1="0" y1="6" x2="30" y2="6" stroke="#999" stroke-width="2"/>
+                </svg>
+                <span>L2 (CDP/LLDP)</span>
+            </div>
+            <div class="legend-item">
+                <svg width="30" height="12" style="margin-right: 10px; flex-shrink: 0;">
+                    <line x1="0" y1="6" x2="30" y2="6" stroke="#FF9944" stroke-width="2" stroke-dasharray="6,4"/>
+                </svg>
+                <span>L3 only</span>
+            </div>
+            <div class="legend-item">
+                <svg width="30" height="12" style="margin-right: 10px; flex-shrink: 0;">
+                    <line x1="0" y1="6" x2="30" y2="6" stroke="#BB77FF" stroke-width="2" stroke-dasharray="10,3"/>
+                </svg>
+                <span>L2 + L3</span>
+            </div>
+        </div>
     </div>
     
     <div class="tooltip" id="tooltip"></div>
-    
+
+    <div id="arp-panel">
+        <div id="arp-panel-header">
+            <span id="arp-panel-title"></span>
+            <button id="arp-panel-close" onclick="closeArpPanel()">&#x2715;</button>
+        </div>
+        <div id="arp-device-info"></div>
+        <div id="arp-search-wrap">
+            <input type="text" id="arp-search" placeholder="Filter by IP or MAC...">
+        </div>
+        <div id="arp-table-wrap">
+            <p id="arp-no-data">No ARP entries collected for this device.</p>
+            <table id="arp-table" style="display:none">
+                <thead>
+                    <tr>
+                        <th>IP Address</th>
+                        <th>MAC Address</th>
+                        <th>Interface</th>
+                        <th>Age</th>
+                    </tr>
+                </thead>
+                <tbody id="arp-tbody"></tbody>
+            </table>
+        </div>
+    </div>
+
     <script>
         // Graph data
         const nodes = {json.dumps(self.nodes, indent=8)};
@@ -357,7 +568,9 @@ class NetworkVisualizer:
             .data(links)
             .enter()
             .append("line")
-            .attr("class", "link");
+            .attr("class", d => "link link-" + d.link_type)
+            .on("mouseover", showLinkTooltip)
+            .on("mouseout", hideTooltip);
         
         // Create interface labels for links
         const linkLabels = g.append("g")
@@ -433,6 +646,28 @@ class NetworkVisualizer:
             .style("pointer-events", "none")
             .text("L3");
         
+        // ARP count badges (amber circle + number, only on nodes with ARP data)
+        const arpBadgeGroup = g.append("g")
+            .selectAll("g")
+            .data(nodes.filter(d => d.arp_count > 0))
+            .enter().append("g")
+            .attr("class", "arp-badge")
+            .style("pointer-events", "none");
+
+        arpBadgeGroup.append("circle")
+            .attr("r", 10)
+            .attr("fill", "#FFB800")
+            .attr("stroke", "#1a1a1a")
+            .attr("stroke-width", 1.5);
+
+        arpBadgeGroup.append("text")
+            .attr("text-anchor", "middle")
+            .attr("dy", "0.35em")
+            .style("font-size", "9px")
+            .style("font-weight", "bold")
+            .style("fill", "#000")
+            .text(d => d.arp_count > 99 ? "99+" : d.arp_count);
+
         // Tooltip
         const tooltip = d3.select("#tooltip");
         
@@ -459,7 +694,10 @@ class NetworkVisualizer:
             l3Labels
                 .attr("x", d => d.x)
                 .attr("y", d => d.y);
-            
+
+            arpBadgeGroup
+                .attr("transform", d => `translate(${{d.x + 18}},${{d.y - 18}})`);
+
             // Position interface labels along links
             linkLabels.each(function(d) {{
                 const labels = d3.select(this).selectAll("text");
@@ -511,15 +749,76 @@ class NetworkVisualizer:
                 `);
         }}
         
+        function showLinkTooltip(event, d) {{
+            const protos = d.protocols || (d.link_type === 'l2' ? 'CDP/LLDP' : d.link_type.toUpperCase());
+            tooltip
+                .style("opacity", 1)
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 10) + "px")
+                .html(`
+                    <strong>${{d.source.id}} ↔ ${{d.target.id}}</strong><br>
+                    Protocols: ${{protos}}<br>
+                    ${{d.local_interface}} ↔ ${{d.remote_interface}}
+                `);
+        }}
+
         function hideTooltip() {{
             tooltip.style("opacity", 0);
         }}
         
+        // ARP panel state
+        let arpPanelData = null;
+
         function nodeClicked(event, d) {{
-            console.log("Clicked node:", d);
-            const seedInfo = d.is_seed ? '\\n⭐ SEED DEVICE' : '';
-            alert(`Device: ${{d.full_name}}\\nType: ${{d.type}}${{seedInfo}}`);
+            showArpPanel(d);
         }}
+
+        function showArpPanel(d) {{
+            arpPanelData = d.arp_entries || [];
+            document.getElementById('arp-panel-title').textContent = d.full_name;
+            const seedBadge = d.is_seed ? ' <span style="color:#FFD700;">⭐ SEED</span>' : '';
+            document.getElementById('arp-device-info').innerHTML =
+                `<div class="arp-info-row"><span>Type:</span><span>${{d.type}}</span></div>` +
+                `<div class="arp-info-row"><span>ARP entries:</span>` +
+                `<span class="arp-badge-count">${{d.arp_count || 0}}</span></div>` +
+                (d.is_seed ? '<div class="arp-info-row" style="color:#FFD700;">⭐ Seed device</div>' : '');
+            document.getElementById('arp-search').value = '';
+            renderArpTable(arpPanelData);
+            document.getElementById('arp-panel').style.display = 'flex';
+        }}
+
+        function renderArpTable(entries) {{
+            const search = document.getElementById('arp-search').value.toLowerCase();
+            const filtered = entries.filter(e =>
+                e.ip.includes(search) || (e.mac && e.mac.toLowerCase().includes(search))
+            );
+            const tbody = document.getElementById('arp-tbody');
+            const table = document.getElementById('arp-table');
+            const noData = document.getElementById('arp-no-data');
+            tbody.innerHTML = '';
+            if (filtered.length === 0) {{
+                noData.style.display = 'block';
+                table.style.display = 'none';
+            }} else {{
+                noData.style.display = 'none';
+                table.style.display = 'table';
+                filtered.forEach(e => {{
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `<td>${{e.ip}}</td><td>${{e.mac || ''}}</td>` +
+                                   `<td>${{e.interface || ''}}</td><td>${{e.age || ''}}</td>`;
+                    tbody.appendChild(tr);
+                }});
+            }}
+        }}
+
+        function closeArpPanel() {{
+            document.getElementById('arp-panel').style.display = 'none';
+            arpPanelData = null;
+        }}
+
+        document.getElementById('arp-search').addEventListener('input', () => {{
+            if (arpPanelData) renderArpTable(arpPanelData);
+        }});
         
         // Control functions
         function resetZoom() {{

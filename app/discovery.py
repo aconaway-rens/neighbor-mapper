@@ -1,6 +1,6 @@
 """
 Network Topology Discovery Engine
-Recursively discovers network topology using CDP/LLDP
+Recursively discovers network topology using CDP/LLDP and L3 routing protocols
 """
 
 import logging
@@ -10,10 +10,66 @@ from typing import Dict, List, Optional, Set
 from netmiko import ConnectHandler, NetmikoTimeoutException, NetmikoAuthenticationException
 
 from device_detector import DeviceTypeDetector
-from parsers import parse_cdp_neighbors_detail, parse_lldp_neighbors_detail, merge_neighbor_info
+from parsers import (parse_cdp_neighbors_detail, parse_lldp_neighbors_detail,
+                     merge_neighbor_info, parse_l3_neighbors, parse_arp_table)
 from mock_devices import is_mock_mode, get_mock_connection
 
 logger = logging.getLogger(__name__)
+
+# L3 routing protocol commands per device type.
+# Each protocol key maps to the command that lists established neighbors.
+L3_COMMANDS = {
+    'cisco_ios': {
+        'ospf':  'show ip ospf neighbor',
+        'eigrp': 'show ip eigrp neighbors',
+        'bgp':   'show ip bgp neighbors',
+        'isis':  'show isis neighbors',
+    },
+    'cisco_xe': {
+        'ospf':  'show ip ospf neighbor',
+        'eigrp': 'show ip eigrp neighbors',
+        'bgp':   'show ip bgp neighbors',
+        'isis':  'show isis neighbors',
+    },
+    'cisco_nxos': {
+        'ospf':  'show ip ospf neighbors',
+        'eigrp': 'show ip eigrp neighbors',
+        'bgp':   'show bgp ipv4 unicast neighbors',
+        'isis':  'show isis adjacency',
+    },
+    'arista_eos': {
+        'ospf':  'show ip ospf neighbor',
+        'bgp':   'show ip bgp neighbors',
+        'isis':  'show isis neighbors',
+    },
+    'juniper_junos': {
+        'ospf':  'show ospf neighbor',
+        'bgp':   'show bgp neighbor',
+        'isis':  'show isis adjacency',
+    },
+    'extreme': {
+        'ospf':  'show ospf neighbor',
+        'bgp':   'show bgp neighbor',
+    },
+    'default': {
+        'ospf':  'show ip ospf neighbor',
+        'eigrp': 'show ip eigrp neighbors',
+        'bgp':   'show ip bgp neighbors',
+        'isis':  'show isis neighbors',
+    },
+}
+
+
+ARP_COMMANDS = {
+    'cisco_ios':     'show ip arp',
+    'cisco_xe':      'show ip arp',
+    'cisco_nxos':    'show ip arp',
+    'arista_eos':    'show ip arp',
+    'extreme':       'show iparp',
+    'extreme_vsp':   'show ip arp',
+    'juniper_junos': 'show arp',
+    'default':       'show ip arp',
+}
 
 
 @dataclass
@@ -26,6 +82,7 @@ class Device:
     has_routing: bool = False  # Whether device has routing capabilities (for L3 switches)
     platform: Optional[str] = None
     links: List['Link'] = field(default_factory=list)
+    arp_entries: List[Dict] = field(default_factory=list)
 
 
 @dataclass
@@ -47,7 +104,7 @@ class Topology:
     devices: Dict[str, Device] = field(default_factory=dict)
     
     def add_device(self, hostname: str, mgmt_ip: str = None, device_type: str = None, device_category: str = None, platform: str = None):
-        """Add a device to the topology"""
+        """Add a device to the topology, or update fields if it already exists."""
         if hostname not in self.devices:
             self.devices[hostname] = Device(
                 hostname=hostname,
@@ -56,7 +113,45 @@ class Topology:
                 device_category=device_category,
                 platform=platform
             )
+        else:
+            # Device may have been created as a placeholder by add_link before SSH.
+            # Fill in fields that weren't available at placeholder-creation time.
+            d = self.devices[hostname]
+            if device_type and not d.device_type:
+                d.device_type = device_type
+            if mgmt_ip and not d.mgmt_ip:
+                d.mgmt_ip = mgmt_ip
+            if device_category and not d.device_category:
+                d.device_category = device_category
+            if platform and not d.platform:
+                d.platform = platform
     
+    def find_hostname_by_ip(self, ip: str) -> Optional[str]:
+        """Return the hostname of the device whose mgmt_ip matches ip, or None."""
+        if not ip:
+            return None
+        for hostname, device in self.devices.items():
+            if device.mgmt_ip == ip:
+                return hostname
+        return None
+
+    def rename_device(self, old_name: str, new_name: str):
+        """
+        Rename an IP-placeholder device to its real hostname.
+        Updates the device entry and all link references.
+        """
+        if old_name not in self.devices or old_name == new_name:
+            return
+        device = self.devices.pop(old_name)
+        device.hostname = new_name
+        self.devices[new_name] = device
+        for d in self.devices.values():
+            for link in d.links:
+                if link.local_device == old_name:
+                    link.local_device = new_name
+                if link.remote_device == old_name:
+                    link.remote_device = new_name
+
     def add_link(self, link: Link):
         """Add a link and ensure both devices exist"""
         # Ensure devices exist
@@ -99,6 +194,7 @@ class TopologyDiscoverer:
             'include_servers': False,
             'include_aps': False,
             'include_other': False,
+            'include_l3': False,
         }
         self.topology = Topology()
         self.visited: Set[str] = set()
@@ -151,12 +247,25 @@ class TopologyDiscoverer:
                 # Get hostname
                 hostname = self._get_hostname(conn)
                 logger.info(f"Connected to {hostname} ({ip})")
-                
+
+                # If an IP-placeholder node exists for this IP (created when
+                # a neighbor referenced it before we SSH'd in), rename it so
+                # all existing links automatically point to the real hostname.
+                existing = self.topology.find_hostname_by_ip(ip)
+                if existing and existing != hostname:
+                    self.topology.rename_device(existing, hostname)
+                    logger.info(f"Renamed placeholder '{existing}' → '{hostname}'")
+
                 # Add device to topology
                 self.topology.add_device(hostname, ip, device_type)
                 
+                # Collect ARP table (optional)
+                if self.filters.get('include_arp', False):
+                    arp_entries = self._discover_arp(conn, hostname, device_type)
+                    self.topology.devices[hostname].arp_entries = arp_entries
+
                 # Discover neighbors
-                neighbors = self._discover_neighbors(conn, hostname)
+                neighbors = self._discover_neighbors(conn, hostname, device_type)
                 
                 # Process each neighbor
                 for neighbor in neighbors:
@@ -194,18 +303,32 @@ class TopologyDiscoverer:
                     # Log what we found
                     logger.info(f"Neighbor: {neighbor.get('remote_device', 'Unknown')} - Type: {neighbor_device_type} - Category: {neighbor_device_category} - L3: {neighbor_has_routing} - Caps: {neighbor.get('remote_capabilities', 'None')}")
                     
-                    # Create link and add to topology
+                    # Create link and add to topology.
+                    # For L3-only neighbors with no hostname, check if the IP is already
+                    # known in the topology (avoids duplicate IP-placeholder nodes).
+                    remote_name = (neighbor.get('remote_device')
+                                   or self.topology.find_hostname_by_ip(neighbor.get('remote_ip'))
+                                   or neighbor.get('remote_ip')
+                                   or 'Unknown')
                     link = Link(
                         local_device=hostname,
-                        local_intf=neighbor.get('local_intf', '?'),
-                        remote_device=neighbor.get('remote_device', 'Unknown'),
-                        remote_intf=neighbor.get('remote_intf', '?'),
+                        local_intf=neighbor.get('local_intf') or '?',
+                        remote_device=remote_name,
+                        remote_intf=neighbor.get('remote_intf') or '?',
                         remote_ip=neighbor.get('remote_ip'),
                         remote_device_category=neighbor_device_category,
                         remote_has_routing=neighbor_has_routing,
                         protocols=neighbor.get('protocols', [])
                     )
                     self.topology.add_link(link)
+                    # Persist the CDP/LLDP platform string on the remote device so
+                    # it shows up in exports (device_type is set when we SSH in;
+                    # platform is only available from the advertising neighbor here).
+                    remote_platform = neighbor.get('remote_platform')
+                    if remote_platform and remote_name in self.topology.devices:
+                        d = self.topology.devices[remote_name]
+                        if not d.platform:
+                            d.platform = remote_platform
                     logger.info(f"✓ Added link: {hostname} ↔ {neighbor.get('remote_device', 'Unknown')}")
                     
                     # Queue for discovery if we have an IP AND device should be crawled
@@ -324,11 +447,12 @@ class TopologyDiscoverer:
         hostname = prompt.rstrip('#>').strip()
         return hostname
     
-    def _discover_neighbors(self, conn: ConnectHandler, hostname: str) -> List[Dict]:
-        """Discover neighbors using CDP and LLDP"""
+    def _discover_neighbors(self, conn: ConnectHandler, hostname: str,
+                            device_type: str = None) -> List[Dict]:
+        """Discover neighbors using CDP, LLDP, and optionally L3 routing protocols"""
         cdp_neighbors = []
         lldp_neighbors = []
-        
+
         # Try CDP
         try:
             cdp_output = conn.send_command("show cdp neighbors detail", read_timeout=15)
@@ -336,7 +460,7 @@ class TopologyDiscoverer:
             logger.info(f"Found {len(cdp_neighbors)} CDP neighbors on {hostname}")
         except Exception as e:
             logger.warning(f"CDP discovery failed on {hostname}: {e}")
-        
+
         # Try LLDP
         try:
             lldp_output = conn.send_command("show lldp neighbors detail", read_timeout=15)
@@ -344,11 +468,38 @@ class TopologyDiscoverer:
             logger.info(f"Found {len(lldp_neighbors)} LLDP neighbors on {hostname}")
         except Exception as e:
             logger.warning(f"LLDP discovery failed on {hostname}: {e}")
-        
-        # Merge CDP and LLDP information
-        merged = merge_neighbor_info(cdp_neighbors, lldp_neighbors)
+
+        # Try L3 routing protocols (optional, controlled by filter)
+        l3_neighbors = []
+        if self.filters.get('include_l3', False):
+            commands = L3_COMMANDS.get(device_type, L3_COMMANDS['default'])
+            for protocol, command in commands.items():
+                try:
+                    output = conn.send_command(command, read_timeout=15)
+                    parsed = parse_l3_neighbors(output, protocol)
+                    if parsed:
+                        logger.info(f"Found {len(parsed)} {protocol.upper()} neighbors on {hostname}")
+                    l3_neighbors.extend(parsed)
+                except Exception as e:
+                    logger.debug(f"L3 {protocol.upper()} discovery failed on {hostname}: {e}")
+
+        # Merge all neighbor sources
+        merged = merge_neighbor_info(cdp_neighbors, lldp_neighbors, l3_neighbors)
         return merged
     
+    def _discover_arp(self, conn: ConnectHandler, hostname: str,
+                      device_type: str = None) -> List[Dict]:
+        """Collect the ARP table from a device. Returns list of ARP entry dicts."""
+        command = ARP_COMMANDS.get(device_type, ARP_COMMANDS['default'])
+        try:
+            output = conn.send_command(command, read_timeout=15)
+            entries = parse_arp_table(output)
+            logger.info(f"Collected {len(entries)} ARP entries from {hostname}")
+            return entries
+        except Exception as e:
+            logger.debug(f"ARP collection failed on {hostname}: {e}")
+            return []
+
     def _detect_neighbor_type(self, neighbor: Dict) -> Optional[tuple]:
         """
         Detect Netmiko device type and category for a neighbor
@@ -356,9 +507,9 @@ class TopologyDiscoverer:
         Returns:
             Tuple of (device_type, device_category, has_routing) or None if filtered
         """
-        platform = neighbor.get('remote_platform', '')
-        capabilities = neighbor.get('remote_capabilities', '')
-        system_desc = neighbor.get('system_description', '')
+        platform = neighbor.get('remote_platform') or ''
+        capabilities = neighbor.get('remote_capabilities') or ''
+        system_desc = neighbor.get('system_description') or ''
         
         # Parse capabilities into a set
         caps = set()
@@ -381,7 +532,13 @@ class TopologyDiscoverer:
             device_type = self.detector.detect_from_lldp(system_desc, capabilities, self.filters)
             if device_type:
                 return (device_type, device_category, has_routing)
-        
+
+        # Fallback for L3-only neighbors: no platform or system_desc, but we know the category
+        # from capabilities (e.g. remote_capabilities='Router' set by L3 parsers).
+        # Use detector default type so the device can be queued for SSH discovery.
+        if device_category and device_category != 'unknown':
+            return (self.detector.default_type, device_category, has_routing)
+
         return None
 
 

@@ -85,6 +85,8 @@ def discover():
         'include_servers': request.form.get('include_servers') == 'true',
         'include_aps': request.form.get('include_aps') == 'true',
         'include_other': request.form.get('include_other') == 'true',
+        'include_l3': request.form.get('include_l3') == 'true',
+        'include_arp': request.form.get('include_arp') == 'true',
     }
     
     # Validate inputs
@@ -156,16 +158,19 @@ def discover():
                     neighbors.append({
                         'neighbor_device': link.remote_device,
                         'local_interface': link.local_intf,
-                        'remote_interface': link.remote_intf
+                        'remote_interface': link.remote_intf,
+                        'protocols': link.protocols or [],
                     })
                 
                 # Use device_category for visualization, fallback to 'unknown'
                 device_category = device.device_category if device.device_category else 'unknown'
-                
+
                 topology_dict[device_name] = {
                     'device_type': device_category,  # Visualizer expects category here
                     'has_routing': device.has_routing,  # For L3 switch labeling
-                    'neighbors': neighbors
+                    'neighbors': neighbors,
+                    'arp_entries': device.arp_entries,
+                    'arp_count': len(device.arp_entries),
                 }
             
             # Generate visualization with seed device
