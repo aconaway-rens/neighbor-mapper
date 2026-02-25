@@ -492,12 +492,19 @@ class TopologyDiscoverer:
         """Collect the ARP table from a device. Returns list of ARP entry dicts."""
         command = ARP_COMMANDS.get(device_type, ARP_COMMANDS['default'])
         try:
-            output = conn.send_command(command, read_timeout=15)
+            output = conn.send_command(command, read_timeout=30, use_textfsm=False)
             entries = parse_arp_table(output)
-            logger.info(f"Collected {len(entries)} ARP entries from {hostname}")
+            if entries:
+                logger.info(f"Collected {len(entries)} ARP entries from {hostname}")
+            else:
+                logger.warning(
+                    f"Collected 0 ARP entries from {hostname} "
+                    f"(device_type={device_type}, cmd='{command}'). "
+                    f"Raw output preview: {output[:400]!r}"
+                )
             return entries
         except Exception as e:
-            logger.debug(f"ARP collection failed on {hostname}: {e}")
+            logger.warning(f"ARP collection failed on {hostname}: {e}")
             return []
 
     def _detect_neighbor_type(self, neighbor: Dict) -> Optional[tuple]:
