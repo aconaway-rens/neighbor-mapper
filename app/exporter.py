@@ -33,6 +33,7 @@ def topology_to_dict(topology, seed_ip=None, params=None):
             'device_category': device.device_category,
             'has_routing': device.has_routing,
             'platform': device.platform,
+            'arp_entries': device.arp_entries if device.arp_entries else [],
         })
 
     links = []
@@ -109,6 +110,23 @@ def generate_csv(data):
             link.get('remote_ip', ''),
             link.get('protocols', ''),
         ])
+
+    # --- ARP section (only if any device has ARP entries) ---
+    arp_devices = [d for d in data.get('devices', []) if d.get('arp_entries')]
+    if arp_devices:
+        writer.writerow([])
+        writer.writerow(['ARP ENTRIES'])
+        writer.writerow(['Device', 'Interface', 'IP', 'MAC', 'Age'])
+        for device in arp_devices:
+            hostname = device.get('hostname', '')
+            for entry in device.get('arp_entries', []):
+                writer.writerow([
+                    hostname,
+                    entry.get('interface', ''),
+                    entry.get('ip', ''),
+                    entry.get('mac', ''),
+                    entry.get('age', ''),
+                ])
 
     return output.getvalue()
 
@@ -386,6 +404,46 @@ def _build_pdf_html(data):
     else:
         link_section = '<p>No links found.</p>'
 
+    # --- ARP summary section (grouped by device + interface, count only) ---
+    arp_devices = [d for d in devices if d.get('arp_entries')]
+    if arp_devices:
+        arp_rows = ''
+        for d in arp_devices:
+            hostname = d.get('hostname', '')
+            # Group entries by interface
+            by_intf = {}
+            for entry in d.get('arp_entries', []):
+                intf = entry.get('interface') or 'Unknown'
+                by_intf[intf] = by_intf.get(intf, 0) + 1
+            # Sort VLANs numerically, then alphabetically
+            def _intf_sort_key(name):
+                import re as _re
+                m = _re.match(r'^[Vv]lan(\d+)$', name)
+                return (0, int(m.group(1))) if m else (1, name)
+            first = True
+            for intf in sorted(by_intf.keys(), key=_intf_sort_key):
+                arp_rows += (
+                    f'<tr>'
+                    f'<td>{"<strong>" + _esc(hostname) + "</strong>" if first else ""}</td>'
+                    f'<td>{_esc(intf)}</td>'
+                    f'<td style="text-align:right">{by_intf[intf]}</td>'
+                    f'</tr>'
+                )
+                first = False
+        arp_section = (
+            f'<table>'
+            f'<thead><tr>'
+            f'<th>Device</th><th>Interface</th><th style="text-align:right">ARP Entries</th>'
+            f'</tr></thead>'
+            f'<tbody>{arp_rows}</tbody>'
+            f'</table>'
+            f'<p style="font-size:8pt;color:#888">Full ARP entry detail is available in the CSV export.</p>'
+        )
+    else:
+        arp_section = None
+
+    arp_html = f'\n<h2>ARP Summary</h2>\n{arp_section}' if arp_section else ''
+
     return f"""<!DOCTYPE html>
 <html>
 <head>
@@ -406,7 +464,7 @@ def _build_pdf_html(data):
 {device_section}
 
 <h2>Link Inventory</h2>
-{link_section}
+{link_section}{arp_html}
 
 </body>
 </html>"""
